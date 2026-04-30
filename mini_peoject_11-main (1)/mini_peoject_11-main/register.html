@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ServNet | Register</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <main class="auth-page">
+    <div class="auth-card wide">
+      <h1 class="auth-title" id="registerTitle">Customer Registration</h1>
+      <p class="auth-subtitle" id="registerSubtitle">Create an account to get started.</p>
+
+      <form action="#" method="post" id="registerForm" class="auth-form">
+        <input type="hidden" name="role" value="customer" id="registerRole" />
+
+        <div class="auth-grid">
+          <div class="auth-input-group">
+            <label id="nameLabel">Full Name</label>
+            <div class="auth-input-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <input type="text" name="name" id="nameInput" placeholder="John Doe" required />
+            </div>
+          </div>
+
+          <div class="auth-input-group">
+            <label>Phone Number</label>
+            <div class="auth-input-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                </path>
+              </svg>
+              <input type="tel" name="phone" placeholder="+1 (555) 000-0000" required />
+            </div>
+          </div>
+
+          <div class="auth-input-group" id="categoryGroup" style="display: none;">
+            <label>Service Category</label>
+            <div class="auth-input-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
+              </svg>
+              <select name="serviceCategory" id="serviceCategoryInput"
+                style="width: 100%; border: none; outline: none; background: transparent; color: var(--ink-950); font-weight: 500; font-family: inherit; font-size: 0.95rem;">
+                <option value="">Select Category</option>
+                <option value="Plumber">Plumber</option>
+                <option value="Electrician">Electrician</option>
+                <option value="Carpenter">Carpenter</option>
+                <option value="Cleaner">Cleaner</option>
+                <option value="Gardener">Gardener</option>
+                <option value="Painter">Painter</option>
+                <option value="HVAC">HVAC</option>
+                <option value="Security">Security</option>
+                <option value="Packers">Packers</option>
+                <option value="Handyman">Handyman</option>
+                <option value="Smart Home">Smart Home</option>
+              </select>
+            </div>
+          </div>
+
+
+          <div class="auth-input-group full-width">
+            <label>Address</label>
+            <div class="auth-input-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <input type="text" name="address" placeholder="123 Main St, City" required />
+            </div>
+          </div>
+
+          <div class="auth-input-group full-width">
+            <label>Email</label>
+            <div class="auth-input-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              <input type="email" name="email" placeholder="john@example.com" required />
+            </div>
+          </div>
+
+          <div class="auth-input-group">
+            <label>Create Password</label>
+            <div class="auth-input-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <input type="password" name="password" placeholder="••••••••" required />
+            </div>
+          </div>
+
+          <div class="auth-input-group">
+            <label>Confirm Password</label>
+            <div class="auth-input-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <input type="password" name="confirm_password" placeholder="••••••••" required />
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-auth" type="submit" id="registerButton" style="margin-top: 16px;">Register</button>
+      </form>
+
+      <p class="auth-footer" style="margin-top: 24px;">
+        Already have an account? <a href="login.html" id="loginLink">Login here</a>
+      </p>
+    </div>
+  </main>
+
+  <script>
+    function getQueryParam(name) {
+      return new URLSearchParams(window.location.search).get(name);
+    }
+
+    function initRegister() {
+      const role = getQueryParam('role') || 'customer';
+      document.getElementById("registerRole").value = role;
+
+      const redirectUrl = getQueryParam('redirect');
+      let loginHref = 'login.html?role=' + role;
+      if (redirectUrl) {
+        loginHref += '&redirect=' + encodeURIComponent(redirectUrl);
+      }
+
+      const title = document.getElementById('registerTitle');
+      const subtitle = document.getElementById('registerSubtitle');
+      const nameLabel = document.getElementById('nameLabel');
+      const nameInput = document.getElementById('nameInput');
+      const registerButton = document.getElementById('registerButton');
+      const loginLink = document.getElementById('loginLink');
+
+      if (role === 'provider') {
+        title.textContent = 'Service Provider Registration';
+        subtitle.textContent = 'Create your provider account to offer services.';
+        nameLabel.textContent = 'Service Provider Name';
+        nameInput.setAttribute('placeholder', 'Your provider name');
+        registerButton.textContent = 'Register as Provider';
+        loginLink.setAttribute('href', loginHref);
+        // Show Service Category for provider
+        document.getElementById('categoryGroup').style.display = 'block';
+        document.getElementById('serviceCategoryInput').required = true;
+      } else if (role === 'admin') {
+        title.textContent = 'Admin Registration';
+        subtitle.textContent = 'Create admin credentials for platform management.';
+        nameLabel.textContent = 'Admin Name';
+        nameInput.setAttribute('placeholder', 'Your name');
+        registerButton.textContent = 'Register as Admin';
+        loginLink.setAttribute('href', loginHref);
+      } else {
+        title.textContent = 'Customer Registration';
+        subtitle.textContent = 'Create an account to get started.';
+        nameLabel.textContent = 'Full Name';
+        nameInput.setAttribute('placeholder', 'John Doe');
+        registerButton.textContent = 'Register';
+        loginLink.setAttribute('href', loginHref);
+        // Ensure category is hidden for non-providers (in case of dynamic switches)
+        document.getElementById('categoryGroup').style.display = 'none';
+        document.getElementById('serviceCategoryInput').required = false;
+      }
+
+      // Handle form submission and connect to real API backend
+      document.getElementById('registerForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const registerButton = document.getElementById('registerButton');
+        const originalText = registerButton.textContent;
+        registerButton.textContent = 'Registering...';
+        registerButton.disabled = true;
+
+        const formData = new FormData(this);
+        const name = formData.get('name');
+        const phone = formData.get('phone');
+        const location = formData.get('address');
+        const email = formData.get('email');
+        const password = formData.get('password');
+        const confirm_password = formData.get('confirm_password');
+        const userRole = document.getElementById('registerRole').value;
+        const serviceCategory = formData.get('serviceCategory');
+
+        if (password !== confirm_password) {
+          alert('Passwords do not match!');
+          registerButton.textContent = originalText;
+          registerButton.disabled = false;
+          return;
+        }
+
+        try {
+          const newUser = { name, email: email.toLowerCase(), password, role: userRole, phone, location, serviceCategory };
+
+          const response = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newUser)
+          });
+
+          if (!response.ok) {
+            const error = await response.json();
+            alert(`Registration failed: ${error.message}`);
+            registerButton.textContent = originalText;
+            registerButton.disabled = false;
+            return;
+          }
+
+          const result = await response.json();
+
+          // Save token and user to authentic localStorage
+          localStorage.setItem('servnet_token', result.token);
+          localStorage.setItem('servnet_user', JSON.stringify({
+            _id: result._id,
+            name: result.name,
+            email: result.email,
+            role: result.role,
+            phone: result.phone || '',
+            location: result.location || '',
+            serviceCategory: result.serviceCategory || ''
+          }));
+
+          // Sync with Admin Dashboard's local data
+          const allUsers = JSON.parse(localStorage.getItem('users') || '[]');
+          if (!allUsers.some(u => u.email === result.email.toLowerCase())) {
+            allUsers.push({
+              name: result.name,
+              email: result.email.toLowerCase(),
+              role: result.role,
+              phone: result.phone || '',
+              location: result.location || formData.get('address') || '',
+              serviceCategory: result.serviceCategory || '',
+              active: true,
+              verified: result.role === 'provider' ? false : true,
+              blocked: false,
+              rating: 5.0
+            });
+            localStorage.setItem('users', JSON.stringify(allUsers));
+          }
+
+          alert('Registration successful!');
+
+          // Check for redirect parameter
+          const redirectUrl = getQueryParam("redirect");
+          if (redirectUrl) {
+            window.location.href = decodeURIComponent(redirectUrl);
+            return;
+          }
+
+          // Redirect based on role
+          if (userRole === 'provider') {
+            window.location.href = 'provider.html';
+          } else if (userRole === 'admin') {
+            window.location.href = 'admin.html';
+          } else {
+            window.location.href = 'customer.html';
+          }
+        } catch (error) {
+          console.error('Registration Error:', error);
+          alert('System error saving registration data. Please try again.');
+          registerButton.textContent = originalText;
+          registerButton.disabled = false;
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", initRegister);
+  </script>
+</body>
+
+</html>

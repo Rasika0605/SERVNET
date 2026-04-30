@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ServNet | Messaging</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="messaging.css" />
+</head>
+
+<body class="dash-v2-body">
+  <header class="topbar dash-v2-topbar">
+    <div class="container nav-wrap dash-v2-nav">
+      <a class="brand" href="customer.html">
+        <span class="brand-mark">S</span><span style="letter-spacing: 0.05em; font-weight: 800;">SERVNET</span>
+      </a>
+
+      <nav class="nav-links dash-v2-links">
+        <a href="customer.html">Discover Services</a>
+        <a href="profile.html">Profile</a>
+      </nav>
+
+      <div class="user-menu dash-v2-user">
+        <button class="icon-btn" aria-label="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </button>
+        <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=100&q=80" alt="JD"
+          class="user-avatar-img">
+      </div>
+    </div>
+  </header>
+
+  <main class="dash-v2-main">
+    <div class="container dash-v2-grid messaging-shell">
+      <!-- Chat list -->
+      <aside class="chat-list-panel">
+        <div class="chat-list-head">
+          <h2 class="section-title">Messages</h2>
+          <span class="badge-pill" id="unread-count">2 new</span>
+        </div>
+
+        <div class="chat-search">
+          <input type="text" id="chat-search" placeholder="Search providers..." />
+        </div>
+
+        <ul class="chat-list" id="chat-list"></ul>
+      </aside>
+
+      <!-- Chat window -->
+      <section class="chat-window">
+        <header class="chat-header" id="chat-header">
+          <div class="chat-partner">
+            <div class="chat-avatar" id="chat-avatar">D</div>
+            <div>
+              <div class="chat-name" id="chat-name">Select a conversation</div>
+              <div class="chat-sub" id="chat-sub">Messages with your service providers will appear here.</div>
+            </div>
+          </div>
+          <a class="btn btn-teal-sm hidden" id="chat-book-btn" href="booking.html">Book Service</a>
+        </header>
+
+        <div class="chat-body" id="chat-body">
+          <div class="chat-empty">
+            Choose a provider from the list to start chatting.
+          </div>
+        </div>
+
+        <footer class="chat-input-bar">
+          <button class="icon-sm" type="button" aria-label="Emoji">😊</button>
+          <button class="icon-sm" type="button" aria-label="Attach file">📎</button>
+          <input type="text" id="chat-input" placeholder="Type your message here..." />
+          <button class="btn btn-teal-sm" type="button" id="chat-send">Send</button>
+        </footer>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const DEMO_THREADS = [
+      {
+        id: 'david',
+        name: 'David Parker',
+        avatar: 'D',
+        service: 'Plumber',
+        lastPreview: 'Hello, I am available tomorrow.',
+        lastTime: '3:45 PM',
+        unread: 1,
+        bookingUrl: 'booking.html?service=Plumber&provider=David%20Parker',
+        messages: [
+          { from: 'customer', text: 'Hello, are you available tomorrow for plumbing repair?', time: '3:40 PM' },
+          { from: 'provider', text: 'Yes, I am available after 2 PM.', time: '3:42 PM' },
+          { from: 'customer', text: 'Okay, I will book the service.', time: '3:44 PM' },
+          { from: 'provider', text: 'Great, I will be there.', time: '3:45 PM' },
+        ],
+      },
+      {
+        id: 'samantha',
+        name: 'Samantha Cleaning',
+        avatar: 'S',
+        service: 'Cleaner',
+        lastPreview: 'Your booking is confirmed.',
+        lastTime: 'Yesterday',
+        unread: 1,
+        bookingUrl: 'booking.html?service=Cleaner&provider=Samantha%20Cleaning',
+        messages: [
+          { from: 'provider', text: 'Your booking is confirmed for tomorrow 10 AM.', time: 'Yesterday' },
+        ],
+      },
+    ];
+
+    const els = {
+      list: document.getElementById('chat-list'),
+      search: document.getElementById('chat-search'),
+      body: document.getElementById('chat-body'),
+      input: document.getElementById('chat-input'),
+      send: document.getElementById('chat-send'),
+      unreadBadge: document.getElementById('unread-count'),
+      name: document.getElementById('chat-name'),
+      sub: document.getElementById('chat-sub'),
+      avatar: document.getElementById('chat-avatar'),
+      bookBtn: document.getElementById('chat-book-btn'),
+    };
+
+    let activeId = null;
+
+    function getThreads() {
+      return DEMO_THREADS;
+    }
+
+    function renderList() {
+      const term = String(els.search.value || '').toLowerCase().trim();
+      const threads = getThreads();
+      let unread = 0;
+
+      els.list.innerHTML = threads
+        .filter(t => !term || `${t.name} ${t.service}`.toLowerCase().includes(term))
+        .map((t) => {
+          unread += t.unread || 0;
+          const activeClass = t.id === activeId ? 'active' : '';
+          const badge = t.unread ? `<span class="chat-badge">${t.unread}</span>` : '';
+          return `
+            <li class="chat-item ${activeClass}" data-id="${t.id}">
+              <div class="chat-item-avatar">${t.avatar}</div>
+              <div class="chat-item-main">
+                <div class="chat-item-row">
+                  <span class="chat-item-name">${t.name}</span>
+                  <span class="chat-item-time">${t.lastTime}</span>
+                </div>
+                <div class="chat-item-row">
+                  <span class="chat-item-service">${t.service}</span>
+                  ${badge}
+                </div>
+                <div class="chat-item-preview">${t.lastPreview}</div>
+              </div>
+            </li>
+          `;
+        }).join('');
+
+      els.unreadBadge.textContent = unread ? `${unread} new` : 'No new';
+    }
+
+    function renderMessages(thread) {
+      if (!thread) {
+        els.body.innerHTML = '<div class="chat-empty">Choose a provider from the list to start chatting.</div>';
+        return;
+      }
+
+      els.body.innerHTML = thread.messages.map((m) => {
+        const side = m.from === 'customer' ? 'me' : 'them';
+        return `
+          <div class="msg-row ${side}">
+            <div class="msg-bubble">
+              <div class="msg-text">${m.text}</div>
+              <div class="msg-time">${m.time}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      els.body.scrollTop = els.body.scrollHeight;
+    }
+
+    function setActive(id) {
+      const threads = getThreads();
+      const t = threads.find(x => x.id === id);
+      activeId = id;
+      if (!t) {
+        renderList();
+        renderMessages(null);
+        els.bookBtn.classList.add('hidden');
+        return;
+      }
+
+      t.unread = 0;
+      els.name.textContent = t.name;
+      els.sub.textContent = `${t.service} • Chat with your provider`;
+      els.avatar.textContent = t.avatar;
+      els.bookBtn.href = t.bookingUrl;
+      els.bookBtn.classList.remove('hidden');
+
+      renderList();
+      renderMessages(t);
+    }
+
+    function sendMessage() {
+      const text = String(els.input.value || '').trim();
+      if (!text || !activeId) return;
+      const threads = getThreads();
+      const t = threads.find(x => x.id === activeId);
+      if (!t) return;
+
+      const time = 'Just now';
+      t.messages.push({ from: 'customer', text, time });
+      t.lastPreview = text;
+      t.lastTime = time;
+
+      els.input.value = '';
+      renderMessages(t);
+      renderList();
+    }
+
+    els.search.addEventListener('input', renderList);
+
+    els.list.addEventListener('click', (e) => {
+      const item = e.target.closest('.chat-item');
+      if (!item) return;
+      const id = item.getAttribute('data-id');
+      setActive(id);
+    });
+
+    els.send.addEventListener('click', sendMessage);
+    els.input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    renderList();
+    if (getThreads()[0]) setActive(getThreads()[0].id);
+  </script>
+</body>
+
+</html>

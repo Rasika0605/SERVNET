@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ServNet | Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="auth-page">
+    <div class="auth-card">
+      <h1 class="auth-title" id="loginTitle">Customer Login</h1>
+      <p class="auth-subtitle" id="loginSubtitle">Welcome back! Please enter your details.</p>
+
+      <form action="#" method="post" id="loginForm" class="auth-form">
+        <input type="hidden" name="role" value="customer" id="loginRole" />
+
+        <div class="auth-input-group">
+          <label>Email</label>
+          <div class="auth-input-wrapper">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <input type="email" name="email" placeholder="Enter your email" required />
+          </div>
+        </div>
+
+        <div class="auth-input-group">
+          <label>Password</label>
+          <div class="auth-input-wrapper">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <input type="password" name="password" placeholder="Enter your password" required />
+          </div>
+        </div>
+
+        <div style="text-align: right; margin-bottom: 24px;">
+          <a href="#" id="forgotBtn" style="color: #12463e; font-size: 0.85rem; font-weight: 600; text-decoration: none;">Forgot Password?</a>
+        </div>
+        <button class="btn-auth" type="submit">Login</button>
+      </form>
+
+      <p class="auth-footer">
+        New user? <a href="register.html" id="registerLink">Register here</a>
+      </p>
+
+      <div class="auth-subfooter">
+        <!-- Re-added to allow navigation to different logins easily for this demo without going back -->
+        <a href="login.html?role=admin" id="adminLink">Admin Access</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Forgot Password OTP Modal -->
+  <div id="otp-modal" class="modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:9999; flex-direction:column;">
+    <div class="auth-card" style="margin:20px; width:100%; max-width:400px; box-sizing:border-box;">
+      <h2 class="auth-title" id="otp-modal-title" style="font-size:1.5rem; margin-bottom:8px;">Reset Password</h2>
+      <p class="auth-subtitle" id="otp-modal-subtitle" style="margin-bottom:24px;">Enter your email to receive a secure 6-digit OTP code.</p>
+
+      <!-- Step 1: Request OTP -->
+      <form id="otp-request-form" class="auth-form">
+        <div class="auth-input-group">
+          <label>Email Address</label>
+          <div class="auth-input-wrapper">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <input type="email" id="otp-email" placeholder="registered@email.com" required />
+          </div>
+        </div>
+        
+        <div class="auth-input-group">
+          <label>Phone Number (SMS OTP)</label>
+          <div class="auth-input-wrapper">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            <input type="tel" id="otp-phone" placeholder="+1 (415) 555-5555" required />
+          </div>
+        </div>
+        
+        <button class="btn-auth" type="submit" id="requestOtpBtn">Send Secure SMS OTP</button>
+        <div style="text-align:center; margin-top:24px;">
+          <a href="#" id="cancelOtpBtn" style="color:var(--ink-400); font-weight:600; font-size:0.9rem; text-decoration:none;">Cancel</a>
+        </div>
+      </form>
+
+      <!-- Step 2: Verify OTP and Reset -->
+      <form id="otp-reset-form" class="auth-form" style="display:none;">
+        <div class="auth-input-group">
+          <label>6-Digit OTP Code</label>
+          <div class="auth-input-wrapper">
+            <input type="text" id="otp-code" placeholder="123456" required autocomplete="off" style="letter-spacing:4px; font-weight:bold;"/>
+          </div>
+        </div>
+        <div class="auth-input-group">
+          <label>New Password</label>
+          <div class="auth-input-wrapper">
+            <input type="password" id="otp-new-password" placeholder="Enter new secured password" minlength="6" required />
+          </div>
+        </div>
+        <button class="btn-auth" type="submit" id="submitResetBtn">Confirm Password Reset</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const roles = {
+      customer: {
+        title: "Customer Login",
+        subtitle: "Welcome back! Please enter your details.",
+        registerHref: "register.html?role=customer"
+      },
+      provider: {
+        title: "Provider Login",
+        subtitle: "Welcome back! Please enter your details.",
+        registerHref: "register.html?role=provider"
+      },
+      admin: {
+        title: "Admin Login",
+        subtitle: "Welcome back! Please enter your details.",
+        registerHref: "register.html?role=admin"
+      }
+    };
+
+    function getQueryParam(name) {
+      return new URLSearchParams(window.location.search).get(name);
+    }
+
+    function initLogin() {
+      let role = getQueryParam("role") || "customer";
+      if(!roles[role]) role = "customer";
+      const config = roles[role];
+
+      document.getElementById("loginTitle").textContent = config.title;
+      document.getElementById("loginSubtitle").textContent = config.subtitle;
+      document.getElementById("loginRole").value = role;
+      
+      const redirectUrl = getQueryParam("redirect");
+      let registerHref = config.registerHref;
+      if (redirectUrl) {
+        registerHref += "&redirect=" + encodeURIComponent(redirectUrl);
+      }
+      document.getElementById("registerLink").setAttribute("href", registerHref);
+      
+      const adminLink = document.getElementById("adminLink");
+      if (role === 'admin') {
+         adminLink.style.display = 'none';
+      }
+
+      // Show message if present
+      const msg = getQueryParam("msg");
+      if (msg) {
+        document.getElementById("loginSubtitle").innerHTML = `<span style="color: #ef4444; font-weight: 700;">${decodeURIComponent(msg)}</span>`;
+      }
+
+      // Handle form submission, authenticate via API, and redirect
+      document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault(); 
+        
+        const loginBtn = this.querySelector('button[type="submit"]');
+        const originalText = loginBtn.textContent;
+        loginBtn.textContent = 'Logging in...';
+        loginBtn.disabled = true;
+
+        const formData = new FormData(this);
+        const email = formData.get('email');
+        const password = formData.get('password');
+        const role = formData.get('role');
+
+        try {
+          const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password, role })
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            alert(`Login failed: ${errorData.message}`);
+            loginBtn.textContent = originalText;
+            loginBtn.disabled = false;
+            return;
+          }
+
+          const loginData = await response.json();
+
+          if (loginData) {
+            // Securely save JWT token and user snapshot to persistent browser storage
+            localStorage.setItem('servnet_token', loginData.token);
+            localStorage.setItem('servnet_user', JSON.stringify(loginData));
+
+            // Check for redirect parameter
+            const redirectUrl = getQueryParam("redirect");
+            if (redirectUrl) {
+              window.location.href = decodeURIComponent(redirectUrl);
+              return;
+            }
+
+            // Mathematically route based directly on the validated DB role
+            const userRole = loginData.role;
+            if (userRole === 'customer') {
+              window.location.href = 'customer.html';
+            } else if (userRole === 'provider') {
+              window.location.href = 'provider.html';
+            } else if (userRole === 'admin') {
+              window.location.href = 'admin.html';
+            } else {
+              window.location.href = 'index.html';
+            }
+          } else {
+            alert('Verification failed. Incorrect email or password.');
+            loginBtn.textContent = originalText;
+            loginBtn.disabled = false;
+          }
+        } catch (error) {
+          console.error('Login Error:', error);
+          alert('Error during login process.');
+          loginBtn.textContent = originalText;
+          loginBtn.disabled = false;
+        }
+      });
+    }
+
+    // OTP Logic
+    const otpModal = document.getElementById('otp-modal');
+    const reqForm = document.getElementById('otp-request-form');
+    const resForm = document.getElementById('otp-reset-form');
+
+    document.getElementById('forgotBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      otpModal.style.display = 'flex';
+      reqForm.style.display = 'block';
+      resForm.style.display = 'none';
+      document.getElementById('otp-modal-subtitle').textContent = 'Enter your email and mobile number to receive a secure 6-digit SMS OTP.';
+    });
+
+    document.getElementById('cancelOtpBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      otpModal.style.display = 'none';
+    });
+
+    reqForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('otp-email').value;
+      const phone = document.getElementById('otp-phone').value;
+      const btn = document.getElementById('requestOtpBtn');
+      btn.textContent = 'Sending SMS...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('http://localhost:5000/api/auth/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, phone })
+        });
+        const data = await res.json();
+        
+        if (res.ok) {
+          alert('📱 SMS SIMULATION:\n\n' + data.simulatedEmailContent); // Simulating an SMS
+          reqForm.style.display = 'none';
+          resForm.style.display = 'block';
+          document.getElementById('otp-modal-subtitle').textContent = `SMS OTP securely sent to ${phone}. Please verify it below.`;
+        } else {
+          alert(data.message || 'Failed to send OTP SMS.');
+        }
+      } catch (err) {
+        alert('Server unreachable.');
+      } finally {
+        btn.textContent = 'Send Secure SMS OTP';
+        btn.disabled = false;
+      }
+    });
+
+    resForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('otp-email').value;
+      const otp = document.getElementById('otp-code').value;
+      const newPassword = document.getElementById('otp-new-password').value;
+      const btn = document.getElementById('submitResetBtn');
+      btn.textContent = 'Verifying...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('http://localhost:5000/api/auth/reset-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, otp, newPassword })
+        });
+        const data = await res.json();
+        
+        if (res.ok) {
+          alert('Password successfully reset! You can now log in.');
+          otpModal.style.display = 'none';
+          document.querySelector('input[name="email"]').value = email; // Autocomplete real login box
+        } else {
+          alert(data.message || 'Invalid OTP.');
+        }
+      } catch (err) {
+        alert('Server unreachable.');
+      } finally {
+        btn.textContent = 'Confirm Password Reset';
+        btn.disabled = false;
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", initLogin);
+  </script>
+</body>
+</html>

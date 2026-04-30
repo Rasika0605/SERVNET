@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ServNet | More Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html"><span class="brand-mark">S</span> ServNet</a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="index.html#services">Home</a>
+        <a href="index.html#services">Services</a>
+        <a href="index.html#about">About Us</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+      <div class="actions"><a class="btn btn-outline" href="role.html">Login</a><a class="btn btn-primary" href="register.html">Register</a></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" style="padding-top: 70px;">
+      <div class="container">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+          <div>
+            <p id="current-date-display" style="font-size:.85rem; color:#0e9f6f; text-transform:uppercase; letter-spacing:.1em; margin-bottom:4px;">Sunday, March 15, 2026</p>
+            <h1 style="font-size:clamp(1.8rem, 5vw, 2.65rem); margin:0; line-height:1.2;">Find the Perfect <span style="color:#0e9f6f;">Home Service</span></h1>
+            <p style="margin:10px 0 0; color:#475569; max-width: 620px;">Browse our professional services and book in minutes.</p>
+          </div>
+          <a class="btn btn-primary" href="index.html" style="font-size:.89rem;">Back to Home</a>
+        </div>
+
+        <div class="service-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
+          <article class="service-card"><div class="service-icon">🔧</div><h3>Plumber</h3><a class="btn btn-dark" href="booking.html?service=Plumber">Book Now</a></article>
+          <article class="service-card"><div class="service-icon">⚡</div><h3>Electrician</h3><a class="btn btn-dark" href="booking.html?service=Electrician">Book Now</a></article>
+          <article class="service-card"><div class="service-icon">🧱</div><h3>Carpenter</h3><a class="btn btn-dark" href="booking.html?service=Carpenter">Book Now</a></article>
+          <article class="service-card"><div class="service-icon">🧽</div><h3>Cleaner</h3><a class="btn btn-dark" href="booking.html?service=Cleaner">Book Now</a></article>
+          <article class="service-card"><div class="service-icon">🌿</div><h3>Gardener</h3><a class="btn btn-dark" href="booking.html?service=Gardener">Book Now</a></article>
+          <article class="service-card"><div class="service-icon">🎨</div><h3>Painter</h3><a class="btn btn-dark" href="booking.html?service=Painter">Book Now</a></article>
+          <article class="service-card"><div class="service-icon">🚚</div><h3>Movers</h3><a class="btn btn-dark" href="booking.html?service=Movers">Book Now</a></article>
+          <article class="service-card"><div class="service-icon">❄️</div><h3>HVAC</h3><a class="btn btn-dark" href="booking.html?service=HVAC">Book Now</a></article>
+          <article class="service-card"><div class="service-icon">🛡️</div><h3>Security</h3><a class="btn btn-dark" href="booking.html?service=Security">Book Now</a></article>
+          <article class="service-card"><div class="service-icon">📦</div><h3>Packers</h3><a class="btn btn-dark" href="booking.html?service=Packers">Book Now</a></article>
+          <article class="service-card"><div class="service-icon">🧰</div><h3>Handyman</h3><a class="btn btn-dark" href="booking.html?service=Handyman">Book Now</a></article>
+          <article class="service-card"><div class="service-icon">💡</div><h3>Smart Home</h3><a class="btn btn-dark" href="booking.html?service=Smart Home">Book Now</a></article>
+          
+          <!-- Add Service Card -->
+          <article class="service-card add-service-card" id="add-service-card" style="cursor: pointer; border: 2px dashed #0e9f6f; background: #f0fff4;">
+            <div class="service-icon" style="color: #0e9f6f;">➕</div>
+            <h3 style="color: #0e9f6f;">Add Your Service</h3>
+            <p style="font-size: 0.8rem; color: #047481; font-weight: 600;">+ Add Service</p>
+          </article>
+        </div>
+
+        <div style="margin-top: 28px; display:flex; align-items:center; gap:12px;">
+          <div style="background:#0e9f6f; width:12px; height:12px; border-radius:50%;"></div>
+          <h3 style="margin:0;">How It Works</h3>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px; margin-top:10px;">
+          <div style="background:#fff; border:1px solid #dbe9f2; border-radius:12px; padding:14px; font-weight:700;">1. Request Service</div>
+          <div style="background:#fff; border:1px solid #dbe9f2; border-radius:12px; padding:14px; font-weight:700;">2. Receive Proposal</div>
+          <div style="background:#fff; border:1px solid #dbe9f2; border-radius:12px; padding:14px; font-weight:700;">3. Hire & Relax</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById('add-service-card').addEventListener('click', () => {
+      const token = localStorage.getItem('servnet_token');
+      const userStr = localStorage.getItem('servnet_user');
+      
+      if (!token || !userStr) {
+        alert("Please login as Service Provider");
+        window.location.href = 'login.html?role=provider&redirect=provider.html%23add-service&msg=Please%20login%20as%20Service%20Provider';
+        return;
+      }
+
+      try {
+        const user = JSON.parse(userStr);
+        if (user.role === 'provider') {
+          window.location.href = 'provider.html#add-service';
+        } else {
+          alert("Please login as Service Provider");
+          // Optionally redirect to login even if logged in as customer, if they want to switch accounts
+          window.location.href = 'login.html?role=provider&redirect=provider.html%23add-service&msg=Please%20login%20as%20Service%20Provider';
+        }
+      } catch (e) {
+        localStorage.removeItem('servnet_token');
+        localStorage.removeItem('servnet_user');
+        window.location.href = 'login.html?role=provider&redirect=provider.html%23add-service&msg=Please%20login%20as%20Service%20Provider';
+      }
+    });
+
+    // Make date dynamic and use "dsy" suffix
+    function updateDashboardDate() {
+      const dateEl = document.getElementById('current-date-display');
+      if (dateEl) {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        let dateStr = now.toLocaleDateString('en-US', options);
+        // Replace "day" with "dsy" in the day name (e.g., Thursday -> Thursdsy)
+        dateStr = dateStr.replace('day', 'dsy');
+        dateEl.textContent = dateStr;
+      }
+    }
+    document.addEventListener('DOMContentLoaded', updateDashboardDate);
+
+    // Intercept "Book Now" clicks to enforce customer login
+    document.addEventListener('click', function(e) {
+      const link = e.target.closest('a[href^="booking.html"]');
+      if (link) {
+        if (!localStorage.getItem('servnet_token') || !localStorage.getItem('servnet_user')) {
+          e.preventDefault();
+          window.location.href = 'login.html?role=customer&redirect=' + encodeURIComponent(link.getAttribute('href'));
+        }
+      }
+    });
+  </script>
+</body>
+</html>

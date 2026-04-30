@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ServNet | Admin Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+
+<body class="dash-v2-body">
+  <!-- Top Navigation -->
+  <header class="topbar dash-v2-topbar">
+    <div class="container nav-wrap dash-v2-nav">
+      <a class="brand" href="admin.html">
+        <span class="brand-mark">S</span><span style="letter-spacing: 0.05em; font-weight: 800;">SERVNET</span>
+      </a>
+
+      <nav class="nav-links dash-v2-links admin-links" aria-label="Admin navigation">
+        <a href="#dashboard" class="active">Dashboard</a>
+        <a href="#customers">Manage Customers</a>
+        <a href="#providers">Manage Service Providers</a>
+        <a href="#services">Manage Services</a>
+        <a href="#bookings">Manage Bookings</a>
+        <a href="#reviews">Reviews & Ratings</a>
+        <a href="#reports">Reports / Analytics</a>
+      </nav>
+
+      <div class="user-menu dash-v2-user" style="position: relative; gap: 16px; display: flex; align-items: center;">
+
+
+        <!-- Notification Dropdown Wrapper -->
+        <div class="dropdown-wrapper" id="notif-wrapper">
+          <button class="icon-btn" aria-label="Notifications" id="notif-btn"
+            style="position: relative; background: none; border: none; cursor: pointer; color: var(--ink-700); padding: 4px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="notif-badge-icon"
+              style="position: absolute; top: 0px; right: 0px; background: #ef4444; color: white; font-size: 0.65rem; font-weight: bold; width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">4</span>
+          </button>
+
+          <div class="dropdown-panel" id="notif-panel"
+            style="display: none; position: absolute; top: 120%; right: 0; width: 320px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 1000;">
+            <div class="notif-panel-header"
+              style="padding: 16px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+              <h3 style="margin: 0; font-size: 1rem; color: var(--ink-700);">Notifications</h3>
+              <div style="display:flex; gap: 12px;">
+                <button class="text-btn"
+                  onclick="document.querySelector('.notif-badge-icon').style.display='none'; document.querySelectorAll('.unread-dot').forEach(el=>el.style.display='none');"
+                  style="font-size: 0.8rem; color: var(--brand-500); cursor: pointer; border: none; background: none; padding: 0;">Mark
+                  as read</button>
+                <button class="text-btn"
+                  onclick="document.getElementById('notif-list-items').innerHTML='<div style=\'padding:20px;text-align:center;color:#64748b;\'>No notifications</div>'; document.querySelector('.notif-badge-icon').style.display='none';"
+                  style="font-size: 0.8rem; color: #ef4444; cursor: pointer; border: none; background: none; padding: 0;">Clear
+                  all</button>
+              </div>
+            </div>
+            <div class="notif-list" id="notif-list-items" style="max-height: 350px; overflow-y: auto;">
+              <a href="#" class="notif-item unread"
+                style="display: flex; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; text-decoration: none; color: inherit; align-items: flex-start; gap: 12px; position: relative;">
+                <div class="notif-icon"
+                  style="background: #dcfce7; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; font-size: 14px;">
+                  ✅</div>
+                <div class="notif-content" style="flex: 1;">
+                  <h4 style="margin: 0; font-size: 0.9rem; color: var(--ink-700);">Booking Accepted</h4>
+                  <p style="margin: 4px 0 0; font-size: 0.8rem; color: #475569;">Your booking is accepted.</p>
+                </div>
+                <div class="unread-dot"
+                  style="width: 8px; height: 8px; background: var(--brand-500); border-radius: 50%; margin-top: 6px;">
+                </div>
+              </a>
+              <a href="#" class="notif-item unread"
+                style="display: flex; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; text-decoration: none; color: inherit; align-items: flex-start; gap: 12px; position: relative;">
+                <div class="notif-icon"
+                  style="background: #fee2e2; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; font-size: 14px;">
+                  ❌</div>
+                <div class="notif-content" style="flex: 1;">
+                  <h4 style="margin: 0; font-size: 0.9rem; color: var(--ink-700);">Booking Rejected</h4>
+                  <p style="margin: 4px 0 0; font-size: 0.8rem; color: #475569;">Your request is rejected.</p>
+                </div>
+                <div class="unread-dot"
+                  style="width: 8px; height: 8px; background: var(--brand-500); border-radius: 50%; margin-top: 6px;">
+                </div>
+              </a>
+              <a href="#" class="notif-item unread"
+                style="display: flex; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; text-decoration: none; color: inherit; align-items: flex-start; gap: 12px; position: relative;">
+                <div class="notif-icon"
+                  style="background: #fef3c7; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; font-size: 14px;">
+                  ⭐</div>
+                <div class="notif-content" style="flex: 1;">
+                  <h4 style="margin: 0; font-size: 0.9rem; color: var(--ink-700);">New Review</h4>
+                  <p style="margin: 4px 0 0; font-size: 0.8rem; color: #475569;">New review received.</p>
+                </div>
+                <div class="unread-dot"
+                  style="width: 8px; height: 8px; background: var(--brand-500); border-radius: 50%; margin-top: 6px;">
+                </div>
+              </a>
+              <a href="#" class="notif-item unread"
+                style="display: flex; padding: 12px 16px; text-decoration: none; color: inherit; align-items: flex-start; gap: 12px; position: relative;">
+                <div class="notif-icon"
+                  style="background: #dbeafe; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; font-size: 14px;">
+                  📅</div>
+                <div class="notif-content" style="flex: 1;">
+                  <h4 style="margin: 0; font-size: 0.9rem; color: var(--ink-700);">Upcoming Service</h4>
+                  <p style="margin: 4px 0 0; font-size: 0.8rem; color: #475569;">Upcoming service reminder.</p>
+                </div>
+                <div class="unread-dot"
+                  style="width: 8px; height: 8px; background: var(--brand-500); border-radius: 50%; margin-top: 6px;">
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Logout Button -->
+        <a href="#" onclick="handleLogout()" title="Logout"
+          style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; color: #ef4444; background: #fef2f2; text-decoration: none; transition: background 0.2s;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </a>
+
+        <!-- Admin Profile -->
+        <a href="admin_profile.html" id="nav-edit-admin-profile"
+          style="display: flex; align-items: center; gap: 12px; margin-left: 8px; padding-left: 16px; border-left: 1px solid #dbe9f2; cursor: pointer; text-decoration: none;">
+          <div style="text-align: right; display: none; @media(min-width: 768px){display: block;}">
+            <div id="nav-admin-name" style="font-size: 0.85rem; font-weight: 800; color: var(--ink-950);">Admin User
+            </div>
+            <div id="nav-admin-role" style="font-size: 0.7rem; color: var(--ink-500); font-weight: 600;">Super Admin
+            </div>
+          </div>
+          <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80"
+            alt="Admin" class="user-avatar-img"
+            style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+        </a>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero / Overview -->
+  <section class="dash-v2-hero" id="dashboard">
+    <div class="container dash-v2-hero-content admin-hero">
+      <div class="hero-text-block">
+        <h1 id="welcome-message">Admin Console</h1>
+        <p>Monitor platform activity and manage users, services, and bookings.</p>
+
+        <div class="admin-actions" style="display: none;">
+        </div>
+
+        <div class="stats-grid admin-stats" aria-label="Admin Overview Stats">
+          <div class="stat-card">
+            <div class="stat-label">Total Customers</div>
+            <div class="stat-value" id="stat-customers">120</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Providers</div>
+            <div class="stat-value" id="stat-providers">35</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Bookings</div>
+            <div class="stat-value" id="stat-bookings">240</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Completed Services</div>
+            <div class="stat-value" id="stat-completed">200</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Pending Requests</div>
+            <div class="stat-value" id="stat-pending">40</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-illustration admin-hero-panel" aria-hidden="true">
+        <div class="admin-panel">
+          <div class="panel-title">System Health</div>
+          <div class="panel-row"><span>Uptime</span><strong>99.9%</strong></div>
+          <div class="panel-row"><span>New signups</span><strong id="panel-signups">12</strong></div>
+          <div class="panel-row"><span>Flags</span><strong id="panel-flags">3</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="dash-v2-main">
+    <div class="container dash-v2-grid admin-grid">
+      <!-- Manage Customers -->
+      <section class="widget-card admin-section" id="customers">
+        <div class="sec-head">
+          <h2 class="section-title">Manage Customers</h2>
+          <input class="table-search" id="customer-search" type="text" placeholder="Search customers..." />
+        </div>
+        <div class="table-wrap">
+          <table class="dash-table">
+            <thead>
+              <tr>
+                <th>Customer Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Status</th>
+                <th style="width: 220px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="customers-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Manage Providers -->
+      <section class="widget-card admin-section" id="providers">
+        <div class="sec-head">
+          <h2 class="section-title">Manage Service Providers</h2>
+          <div class="inline-form">
+            <input class="table-search" id="provider-search" type="text" placeholder="Search providers..." />
+            <select class="status-select" id="provider-city-filter" style="width: auto;">
+              <option value="">All Cities</option>
+              <option value="Mumbai">Mumbai</option>
+              <option value="Pune">Pune</option>
+              <option value="Vasai">Vasai</option>
+              <option value="Thane">Thane</option>
+            </select>
+            <select class="status-select" id="provider-service-filter" style="width: auto;">
+              <option value="">All Services</option>
+              <option value="Plumbing">Plumbing</option>
+              <option value="Cleaning">Cleaning</option>
+              <option value="Electrical Repair">Electrical</option>
+              <option value="Appliance Repair">Appliance</option>
+              <option value="HVAC">HVAC</option>
+            </select>
+            <select class="status-select" id="provider-rating-filter" style="width: auto;">
+              <option value="">Any Rating</option>
+              <option value="4.5">4.5+ Stars</option>
+              <option value="4.0">4.0+ Stars</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="dash-table">
+            <thead>
+              <tr>
+                <th>Provider Name</th>
+                <th>Service Category</th>
+                <th>Location</th>
+                <th>Rating</th>
+                <th>Verification</th>
+                <th>Status</th>
+                <th style="width: 280px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="providers-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Manage Services -->
+      <section class="widget-card admin-section" id="services">
+        <div class="sec-head">
+          <h2 class="section-title">Manage Services</h2>
+          <button class="btn btn-teal-sm" type="button" id="add-service-btn"
+            style="display: flex; align-items: center; gap: 6px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              style="width: 16px; height: 16px;">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Add New Service
+          </button>
+        </div>
+        <div class="table-wrap">
+          <table class="dash-table">
+            <thead>
+              <tr>
+                <th>Service Name</th>
+                <th>Category</th>
+                <th>Price Range</th>
+                <th>Total Bookings</th>
+                <th style="width: 180px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="services-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Manage Bookings -->
+      <section class="widget-card admin-section" id="bookings">
+        <div class="sec-head">
+          <h2 class="section-title">Manage Bookings</h2>
+          <div class="inline-form">
+            <input class="table-search" id="booking-search" type="text" placeholder="Search ID or Customer..."
+              style="width: 220px;" />
+            <input type="date" class="status-select" id="booking-date-filter" style="width: auto;" />
+            <select class="status-select" id="booking-status-filter" style="width: auto;">
+              <option value="">All Statuses</option>
+              <option value="Pending">Pending</option>
+              <option value="Confirmed">Confirmed</option>
+              <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+            <select class="status-select" id="booking-service-filter" style="width: auto;">
+              <option value="">All Services</option>
+              <option value="Plumbing">Plumbing</option>
+              <option value="Cleaning">Cleaning</option>
+              <option value="Electrical Repair">Electrical</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="dash-table">
+            <thead>
+              <tr>
+                <th>Date/Time</th>
+                <th>Booking ID</th>
+                <th>Customer</th>
+                <th>Provider</th>
+                <th>Service</th>
+                <th>Payment</th>
+                <th>Status</th>
+                <th style="width: 200px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="bookings-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Reviews & Ratings -->
+      <section class="widget-card admin-section" id="reviews">
+        <div class="sec-head">
+          <h2 class="section-title">Reviews & Ratings Monitoring</h2>
+          <div class="inline-form">
+            <input type="date" class="status-select" id="review-date-filter" style="width: auto;">
+            <select class="status-select" id="review-provider-filter" style="width: auto;">
+              <option value="">All Providers</option>
+            </select>
+            <select class="status-select" id="review-rating-filter" style="width: auto;">
+              <option value="">All Ratings</option>
+              <option value="5">5 Stars</option>
+              <option value="4">4+ Stars</option>
+              <option value="3">3+ Stars</option>
+              <option value="2">2+ Stars</option>
+              <option value="1">1+ Stars</option>
+            </select>
+            <button class="btn btn-teal-sm" type="button" id="add-review-btn">Add Demo</button>
+          </div>
+        </div>
+        <div id="reviews-list"></div>
+      </section>
+
+      <!-- Reports -->
+      <section class="widget-card admin-section" id="reports">
+        <div class="sec-head">
+          <h2 class="section-title">Reports / Analytics</h2>
+          <div class="inline-form">
+            <select class="status-select" id="report-date-filter" style="width: auto;">
+              <option value="all">All Time</option>
+              <option value="year">This Year</option>
+              <option value="month">This Month</option>
+              <option value="week">This Week</option>
+            </select>
+            <button class="btn btn-teal-outline" type="button" onclick="alert('Downloading PDF Report...')">Download
+              PDF</button>
+            <button class="btn btn-teal-sm" type="button" onclick="alert('Exporting to Excel...')">Export CSV</button>
+          </div>
+        </div>
+
+        <!-- Revenue & Stats summary row -->
+        <div
+          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 16px; margin-bottom: 24px;">
+          <div
+            style="background: rgba(43, 89, 255, 0.05); border: 1px solid rgba(43, 89, 255, 0.1); border-radius: 16px; padding: 20px; display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <div style="color: var(--ink-500); font-weight: 600; font-size: 0.85rem; text-transform: uppercase;">Total
+                Revenue</div>
+              <div style="color: var(--brand-900); font-weight: 900; font-size: 1.8rem; margin-top: 4px;"
+                id="report-revenue">$0</div>
+            </div>
+            <div
+              style="width: 48px; height: 48px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--brand-600); box-shadow: 0 4px 12px rgba(43, 89, 255, 0.1);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                style="width:24px;height:24px;">
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+            </div>
+          </div>
+          <div
+            style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.1); border-radius: 16px; padding: 20px; display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <div style="color: var(--ink-500); font-weight: 600; font-size: 0.85rem; text-transform: uppercase;">Avg.
+                Rating</div>
+              <div style="color: #047857; font-weight: 900; font-size: 1.8rem; margin-top: 4px;" id="report-avg-rating">
+                0.0</div>
+            </div>
+            <div
+              style="width: 48px; height: 48px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #10b981; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                style="width:24px;height:24px;">
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                </polygon>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+          <!-- Card 1 -->
+          <div style="border: 1px solid #dbe9f2; border-radius: 16px; padding: 20px;">
+            <h3 style="font-size: 1rem; color: #101d40; font-weight: 800; margin-bottom: 12px;">Most Booked Services
+            </h3>
+            <ol id="report-top-services"
+              style="padding-left: 20px; color: var(--ink-700); line-height: 1.8; font-size: 0.95rem;">
+            </ol>
+          </div>
+          <!-- Card 2 -->
+          <div style="border: 1px solid #dbe9f2; border-radius: 16px; padding: 20px;">
+            <h3 style="font-size: 1rem; color: #101d40; font-weight: 800; margin-bottom: 12px;">Top Rated Providers</h3>
+            <ol id="report-top-providers"
+              style="padding-left: 20px; color: var(--ink-700); line-height: 1.8; font-size: 0.95rem;">
+            </ol>
+          </div>
+          <!-- Card 3 -->
+          <div class="report-card">
+            <div class="report-title">Monthly Bookings</div>
+            <div class="spark" aria-label="Monthly bookings sparkline">
+              <span style="height: 28%"></span>
+              <span style="height: 52%"></span>
+              <span style="height: 40%"></span>
+              <span style="height: 70%"></span>
+              <span style="height: 62%"></span>
+              <span style="height: 82%"></span>
+              <span style="height: 58%"></span>
+              <span style="height: 88%"></span>
+              <span style="height: 76%"></span>
+              <span style="height: 92%"></span>
+              <span style="height: 68%"></span>
+              <span style="height: 84%"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Profile -->
+      <section class="widget-card admin-section" id="profile">
+        <div class="sec-head">
+          <h2 class="section-title">Profile</h2>
+          <a href="admin_profile.html" class="btn btn-teal-outline" id="edit-admin-profile">Edit Profile</a>
+        </div>
+        <div class="profile-rows">
+          <div class="p-row"
+            style="display:flex; justify-content:space-between; align-items:center; padding: 12px 16px; border-bottom: 1px solid #f1f5f9;">
+            <strong>Name</strong><span id="prof-name" style="color:var(--ink-700);">Admin User</span>
+          </div>
+          <div class="p-row"
+            style="display:flex; justify-content:space-between; align-items:center; padding: 12px 16px; border-bottom: 1px solid #f1f5f9;">
+            <strong>Email</strong><span id="prof-email" style="color:var(--ink-700);">admin@servnet.com</span>
+          </div>
+          <div class="p-row"
+            style="display:flex; justify-content:space-between; align-items:center; padding: 12px 16px; border-bottom: 1px solid #f1f5f9;">
+            <strong>Phone</strong><span id="prof-phone" style="color:var(--ink-700);">+1 (555) 123-4567</span>
+          </div>
+          <div class="p-row"
+            style="display:flex; justify-content:space-between; align-items:center; padding: 12px 16px; border-bottom: 1px solid #f1f5f9;">
+            <strong>Role</strong><span id="prof-role" class="pill"
+              style="background:var(--brand-100); color:var(--brand-700);">Super Admin</span>
+          </div>
+          <div class="p-row"
+            style="display:flex; justify-content:space-between; align-items:center; padding: 12px 16px; border-bottom: 1px solid #f1f5f9;">
+            <strong>Location</strong><span id="prof-location" style="color:var(--ink-700);">Head Office</span>
+          </div>
+          <div class="p-row" style="display:block; padding: 12px 16px;">
+            <strong style="display:block; margin-bottom:6px;">Bio / Description</strong>
+            <span id="prof-bio" style="color:var(--ink-700); line-height: 1.5; font-size: 0.9rem;">Experienced platform
+              administrator ensuring smooth operations.</span>
+          </div>
+        </div>
+      </section>
+
+
+    </div>
+  </main>
+
+  <!-- Global Modal UI -->
+  <div class="modal-overlay" id="global-modal"
+    style="position: fixed; inset: 0; background: rgba(16, 29, 64, 0.6); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; visibility: hidden; transition: all 0.3s ease;">
+    <div class="modal-card"
+      style="background: white; border-radius: 24px; padding: 40px 32px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 24px 64px -12px rgba(17,41,71,0.2); transform: scale(0.95) translateY(20px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column;">
+      <div id="modal-icon-container"></div>
+      <h3 class="modal-title" id="modal-title"
+        style="font-size: 1.5rem; color: #101d40; margin-bottom: 12px; font-weight: 700;">Title</h3>
+      <p class="modal-message" id="modal-desc"
+        style="font-size: 1rem; color: #475569; line-height: 1.5; margin-bottom: 24px;">Message description.</p>
+      <button class="btn btn-teal-outline" id="modal-close-btn" style="width: 100%; border-radius: 12px;">Close</button>
+    </div>
+  </div>
+
+  <!-- Edit Customer Modal UI -->
+  <div class="modal-overlay" id="edit-customer-modal"
+    style="position: fixed; inset: 0; background: rgba(16, 29, 64, 0.6); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 9998; opacity: 0; visibility: hidden; transition: all 0.3s ease;">
+    <div class="modal-card"
+      style="background: white; border-radius: 24px; padding: 32px; text-align: left; max-width: 500px; width: 90%; transform: scale(0.95) translateY(20px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+      <h3 style="font-size: 1.4rem; color: #101d40; font-weight: 800; margin-bottom: 20px;">Edit Customer</h3>
+      <input type="hidden" id="edit-cust-id">
+      <div style="display: grid; gap: 16px; margin-bottom: 24px;">
+        <div>
+          <label
+            style="font-weight: 700; font-size: 0.9rem; color: var(--ink-700); display: block; margin-bottom: 6px;">Name</label>
+          <input type="text" id="edit-cust-name" class="input-field" style="width: 100%;">
+        </div>
+        <div>
+          <label
+            style="font-weight: 700; font-size: 0.9rem; color: var(--ink-700); display: block; margin-bottom: 6px;">Email</label>
+          <input type="email" id="edit-cust-email" class="input-field" style="width: 100%;">
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div>
+            <label
+              style="font-weight: 700; font-size: 0.9rem; color: var(--ink-700); display: block; margin-bottom: 6px;">Phone</label>
+            <input type="tel" id="edit-cust-phone" class="input-field" style="width: 100%;">
+          </div>
+          <div>
+            <label
+              style="font-weight: 700; font-size: 0.9rem; color: var(--ink-700); display: block; margin-bottom: 6px;">Location</label>
+            <input type="text" id="edit-cust-loc" class="input-field" style="width: 100%;">
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 12px; justify-content: flex-end;">
+        <button class="btn btn-outline" id="cancel-cust-btn">Cancel</button>
+        <button class="btn btn-teal" id="save-cust-btn">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Provider Modal UI -->
+  <div class="modal-overlay" id="edit-provider-modal"
+    style="position: fixed; inset: 0; background: rgba(16, 29, 64, 0.6); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 9998; opacity: 0; visibility: hidden; transition: all 0.3s ease;">
+    <div class="modal-card"
+      style="background: white; border-radius: 24px; padding: 32px; text-align: left; max-width: 500px; width: 90%; transform: scale(0.95) translateY(20px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+      <h3 style="font-size: 1.4rem; color: #101d40; font-weight: 800; margin-bottom: 20px;">Edit Provider Details</h3>
+      <input type="hidden" id="edit-prov-id">
+      <div style="display: grid; gap: 16px; margin-bottom: 24px;">
+        <div>
+          <label
+            style="font-weight: 700; font-size: 0.9rem; color: var(--ink-700); display: block; margin-bottom: 6px;">Name</label>
+          <input type="text" id="edit-prov-name" class="input-field"
+            style="width: 100%; border: 1px solid #dbe9f2; padding: 10px 14px; border-radius: 10px;">
+        </div>
+        <div>
+          <label
+            style="font-weight: 700; font-size: 0.9rem; color: var(--ink-700); display: block; margin-bottom: 6px;">Service
+            Category</label>
+          <input type="text" id="edit-prov-category" class="input-field"
+            style="width: 100%; border: 1px solid #dbe9f2; padding: 10px 14px; border-radius: 10px;">
+        </div>
+        <div>
+          <label
+            style="font-weight: 700; font-size: 0.9rem; color: var(--ink-700); display: block; margin-bottom: 6px;">Location</label>
+          <input type="text" id="edit-prov-loc" class="input-field"
+            style="width: 100%; border: 1px solid #dbe9f2; padding: 10px 14px; border-radius: 10px;">
+        </div>
+      </div>
+      <div style="display: flex; gap: 12px; justify-content: flex-end;">
+        <button class="btn btn-outline" id="cancel-prov-btn">Cancel</button>
+        <button class="btn btn-teal" id="save-prov-btn">Save Changes</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Add/Edit Service Modal UI -->
+  <div class="modal-overlay" id="edit-service-modal"
+    style="position: fixed; inset: 0; background: rgba(16, 29, 64, 0.6); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 9998; opacity: 0; visibility: hidden; transition: all 0.3s ease;">
+    <div class="modal-card"
+      style="background: white; border-radius: 24px; padding: 32px; text-align: left; max-width: 440px; width: 90%; transform: scale(0.95) translateY(20px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+      <h3 style="font-size: 1.4rem; color: #101d40; font-weight: 800; margin-bottom: 20px;" id="service-modal-title">
+        Add/Edit Service</h3>
+      <input type="hidden" id="edit-svc-id">
+      <div style="display: grid; gap: 16px; margin-bottom: 24px;">
+        <div>
+          <label
+            style="font-weight: 700; font-size: 0.9rem; color: var(--ink-700); display: block; margin-bottom: 6px;">Service
+            Name</label>
+          <input type="text" id="edit-svc-name" class="input-field"
+            style="width: 100%; border: 1px solid #dbe9f2; padding: 10px 14px; border-radius: 10px;">
+        </div>
+        <div>
+          <label
+            style="font-weight: 700; font-size: 0.9rem; color: var(--ink-700); display: block; margin-bottom: 6px;">Category</label>
+          <select id="edit-svc-category" class="status-select" style="width: 100%;">
+            <option value="Home">Home</option>
+            <option value="Repair">Repair</option>
+            <option value="Cleaning">Cleaning</option>
+          </select>
+        </div>
+        <div>
+          <label
+            style="font-weight: 700; font-size: 0.9rem; color: var(--ink-700); display: block; margin-bottom: 6px;">Price
+            Range</label>
+          <input type="text" id="edit-svc-price" class="input-field" placeholder="e.g. ₹500 – ₹2000"
+            style="width: 100%; border: 1px solid #dbe9f2; padding: 10px 14px; border-radius: 10px;">
+        </div>
+      </div>
+      <div style="display: flex; gap: 12px; justify-content: flex-end;">
+        <button class="btn btn-outline" id="cancel-svc-btn">Cancel</button>
+        <button class="btn btn-teal" id="save-svc-btn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- View/Edit Booking Modal UI -->
+  <div class="modal-overlay" id="view-booking-modal"
+    style="position: fixed; inset: 0; background: rgba(16, 29, 64, 0.6); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 9998; opacity: 0; visibility: hidden; transition: all 0.3s ease;">
+    <div class="modal-card"
+      style="background: white; border-radius: 24px; padding: 32px; text-align: left; max-width: 500px; width: 90%; transform: scale(0.95) translateY(20px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+      <h3 style="font-size: 1.4rem; color: #101d40; font-weight: 800; margin-bottom: 20px;">Booking Details</h3>
+      <input type="hidden" id="view-bk-id">
+      <div style="display: grid; gap: 12px; margin-bottom: 24px; font-size: 0.95rem; color: var(--ink-700);">
+        <div style="display: flex; justify-content: space-between;"><strong>ID:</strong> <span
+            id="view-bk-id-display"></span></div>
+        <div style="display: flex; justify-content: space-between;"><strong>Customer:</strong> <span
+            id="view-bk-customer"></span></div>
+        <div style="display: flex; justify-content: space-between;"><strong>Provider:</strong> <span
+            id="view-bk-provider"></span></div>
+        <div style="display: flex; justify-content: space-between;"><strong>Service:</strong> <span
+            id="view-bk-service"></span></div>
+        <hr style="border: 0; border-top: 1px solid #dbe9f2; margin: 4px 0;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <strong>Date:</strong>
+          <input type="date" id="view-bk-date" class="input-field"
+            style="border: 1px solid #dbe9f2; padding: 6px 10px; border-radius: 8px;">
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <strong>Time:</strong>
+          <input type="time" id="view-bk-time" class="input-field"
+            style="border: 1px solid #dbe9f2; padding: 6px 10px; border-radius: 8px;">
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <strong>Payment:</strong>
+          <select id="view-bk-payment" class="status-select" style="padding: 6px 10px;">
+            <option value="Paid">Paid</option>
+            <option value="Pending">Pending</option>
+          </select>
+        </div>
+      </div>
+      <div style="display: flex; gap: 12px; justify-content: flex-end;">
+        <button class="btn btn-outline" id="close-bk-btn">Close</button>
+        <button class="btn btn-teal" id="save-bk-btn">Save Reschedule</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function checkRole() {
+      const u = JSON.parse(localStorage.getItem('servnet_user') || 'null');
+      if (!u || u.role !== 'admin') window.location.href = 'login.html';
+    })();
+    function handleLogout() {
+      localStorage.removeItem('servnet_token');
+      localStorage.removeItem('servnet_user');
+      window.location.href = 'index.html';
+    }
+
+    const LS = {
+      services: 'servnet_services'
+    };
+
+    function safeJsonParse(value, fallback) {
+      try { return JSON.parse(value); } catch { return fallback; }
+    }
+
+    function getList(key, fallback) {
+      return safeJsonParse(localStorage.getItem(key) || JSON.stringify(fallback), fallback);
+    }
+
+    function setList(key, list) {
+      localStorage.setItem(key, JSON.stringify(list));
+    }
+
+    function id(prefix) {
+      return (crypto?.randomUUID ? `${prefix}-${crypto.randomUUID()}` : `${prefix}-${Date.now()}-${Math.random()}`);
+    }
+
+    function pill(label, tone) {
+      const cls = tone === 'ok' ? 'pill-ok' : tone === 'danger' ? 'pill-danger' : 'pill-warn';
+      return `<span class="pill ${cls}">${label}</span>`;
+    }
+
+    function renderCustomers(filter = '') {
+      const body = document.getElementById('customers-body');
+      const allUsers = getList('users', []);
+      const customers = allUsers.filter(u => !u.role || u.role === 'customer' || u.role === 'user');
+
+      const f = filter.trim().toLowerCase();
+      const shown = f ? customers.filter(c => `${c.name} ${c.email} ${c.phone} ${c.location || c.address || ''}`.toLowerCase().includes(f)) : customers;
+
+      body.innerHTML = shown.map(c => `
+        <tr data-id="${c.email}">
+          <td><strong>${c.name || 'Unknown'}</strong></td>
+          <td>${c.email}</td>
+          <td>${c.phone || 'N/A'}</td>
+          <td>${c.location || c.address || 'N/A'}</td>
+          <td>${c.blocked ? pill('Blocked', 'danger') : pill('Active', 'ok')}</td>
+          <td class="row-actions">
+            <button class="btn btn-teal-outline small" data-action="edit">Edit</button>
+            <button class="btn btn-outline small" data-action="block">${c.blocked ? 'Unblock' : 'Block'}</button>
+            <button class="btn btn-outline small danger" data-action="delete">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+
+      if (!shown.length) {
+        body.innerHTML = '<tr><td colspan="6" class="empty-state" style="text-align: center;">No valid customers found.</td></tr>';
+      }
+    }
+
+    function renderProviders() {
+      const body = document.getElementById('providers-body');
+      const allUsers = getList('users', []);
+      const providers = allUsers.filter(u => u.role === 'provider');
+
+      const q = (document.getElementById('provider-search')?.value || '').trim().toLowerCase();
+      const city = document.getElementById('provider-city-filter')?.value || '';
+      const svc = document.getElementById('provider-service-filter')?.value || '';
+      const rate = document.getElementById('provider-rating-filter')?.value || '';
+
+      const shown = providers.filter(p => {
+        const matchQ = !q || `${p.name} ${p.serviceCategory || ''} ${p.location || ''}`.toLowerCase().includes(q);
+        const matchC = !city || (p.location || '').includes(city);
+        const matchS = !svc || (p.serviceCategory || '').includes(svc);
+        const matchR = !rate || (p.rating || 5) >= parseFloat(rate);
+        return matchQ && matchC && matchS && matchR;
+      });
+
+      body.innerHTML = shown.map(p => `
+        <tr data-id="${p.email}">
+          <td><strong>${p.name || 'Unknown'}</strong><br><small style="color:var(--ink-400)">${p.email}</small></td>
+          <td>${p.serviceCategory || 'Various'}</td>
+          <td>${p.location || 'N/A'}</td>
+          <td><span class="star">★</span> ${p.rating || '5.0'}</td>
+          <td>${p.verified !== false ? pill('Verified', 'ok') : pill('Pending', 'warn')}</td>
+          <td>${p.active !== false ? pill('Active', 'ok') : pill('Inactive', 'warn')}</td>
+          <td class="row-actions">
+            <button class="btn btn-teal-outline small" data-action="edit">Edit</button>
+            <button class="btn btn-outline small" data-action="toggle-status">${p.active !== false ? 'Deactivate' : 'Activate'}</button>
+            <button class="btn btn-outline small danger" data-action="remove">Remove</button>
+          </td>
+        </tr>
+      `).join('');
+
+      if (!shown.length) {
+        body.innerHTML = '<tr><td colspan="7" class="empty-state" style="text-align: center;">No valid providers found.</td></tr>';
+      }
+    }
+
+    function renderServices() {
+      const body = document.getElementById('services-body');
+
+      let services = getList(LS.services, []);
+
+      // INR price map — migrate stale USD entries or seed fresh defaults
+      const inrDefaults = {
+        'Plumbing': { category: 'Repair', priceRange: '₹300 – ₹1500' },
+        'Cleaning': { category: 'Cleaning', priceRange: '₹500 – ₹2000' },
+        'Electrical Repair': { category: 'Repair', priceRange: '₹300 – ₹2000' },
+        'Appliance Repair': { category: 'Home', priceRange: '₹500 – ₹3000' },
+        'Gardening': { category: 'Home', priceRange: '₹300 – ₹1500' },
+        'Painting': { category: 'Home', priceRange: '₹1500 – ₹20000' },
+        'HVAC': { category: 'Repair', priceRange: '₹500 – ₹3000' },
+        'Security': { category: 'Home', priceRange: '₹2000 – ₹15000' },
+        'Moving': { category: 'Home', priceRange: '₹1500 – ₹10000' },
+        'Handyman': { category: 'Repair', priceRange: '₹300 – ₹1500' },
+        'Smart Home': { category: 'Home', priceRange: '₹2000 – ₹25000' },
+      };
+
+      if (services.length === 0) {
+        // Seed from defaults when localStorage is empty
+        services = [
+          { id: id('s'), name: 'Plumbing', category: 'Repair', priceRange: '₹300 – ₹1500' },
+          { id: id('s'), name: 'Cleaning', category: 'Cleaning', priceRange: '₹500 – ₹2000' },
+          { id: id('s'), name: 'Electrical Repair', category: 'Repair', priceRange: '₹300 – ₹2000' },
+          { id: id('s'), name: 'Appliance Repair', category: 'Home', priceRange: '₹500 – ₹3000' },
+        ];
+        setList(LS.services, services);
+      } else {
+        // Migrate any service still showing a '$' price range
+        let changed = false;
+        services = services.map(s => {
+          if (s.priceRange && s.priceRange.includes('$')) {
+            const inr = inrDefaults[s.name];
+            if (inr) { changed = true; return { ...s, priceRange: inr.priceRange }; }
+          }
+          return s;
+        });
+        if (changed) setList(LS.services, services);
+      }
+
+      const bookings = getList('servnet_bookings', []);
+
+      body.innerHTML = services.map(s => {
+        const count = bookings.filter(b => b.service === s.name || (b.service && b.service.name === s.name)).length;
+        return `
+          <tr data-id="${s.id}">
+            <td><strong>${s.name}</strong></td>
+            <td>${s.category || 'Uncategorized'}</td>
+            <td>${s.priceRange || 'N/A'}</td>
+            <td>${count > 0 ? pill(count + ' Bookings', 'ok') : pill('0 Bookings', 'warn')}</td>
+            <td class="row-actions">
+              <button class="btn btn-teal-outline small" data-action="edit-svc">Edit</button>
+              <button class="btn btn-outline small danger" data-action="remove-svc">Delete</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderBookings() {
+      const q = (document.getElementById('booking-search')?.value || '').trim().toLowerCase();
+      const dt = document.getElementById('booking-date-filter')?.value || '';
+      const st = document.getElementById('booking-status-filter')?.value || '';
+      const sv = document.getElementById('booking-service-filter')?.value || '';
+
+      const body = document.getElementById('bookings-body');
+
+      const bookings = getList('servnet_bookings', []);
+
+      const shown = bookings.filter(b => {
+        const matchQ = !q || `${b.id} ${b.customerName || ''} ${b.provider || ''}`.toLowerCase().includes(q);
+        const matchD = !dt || b.date === dt;
+        const matchSt = !st || b.status === st;
+        const matchSv = !sv || b.service === sv;
+        return matchQ && matchD && matchSt && matchSv;
+      });
+
+      body.innerHTML = shown.map(b => `
+        <tr data-id="${b.id}">
+          <td style="white-space:nowrap;"><strong>${b.date || 'N/A'}</strong><br><span style="font-size:0.85rem;color:var(--ink-500);">${b.time || b.timeSlot || ''}</span></td>
+          <td><strong title="${b.id}">${b.id.length > 8 ? b.id.slice(0, 8) + '...' : b.id}</strong></td>
+          <td>${b.customerName || b.customer || 'Customer'}</td>
+          <td>${b.providerName || b.provider || 'Unassigned'}</td>
+          <td>${b.service || 'Unknown Service'}</td>
+          <td>${(b.paymentStatus === 'Paid' || b.payment === 'Paid') ? pill('Paid', 'ok') : pill(b.paymentStatus || b.payment || 'Pending', 'warn')}</td>
+          <td>
+            <select class="status-select" data-action="status" style="padding: 6px 10px; font-size:0.85rem;">
+              <option ${b.status === 'Pending' ? 'selected' : ''}>Pending</option>
+              <option ${b.status === 'Accepted' || b.status === 'Confirmed' ? 'selected' : ''}>Accepted</option>
+              <option ${b.status === 'Completed' ? 'selected' : ''}>Completed</option>
+              <option ${b.status === 'Rejected' || b.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+            </select>
+          </td>
+          <td class="row-actions">
+            <button class="btn btn-teal-outline small" data-action="view-bk">Details / Reschedule</button>
+            ${b.status !== 'Cancelled' && b.status !== 'Rejected' ? `<button class="btn btn-outline small danger" data-action="cancel-bk">Cancel</button>` : ''}
+          </td>
+        </tr>
+      `).join('');
+
+      if (!shown.length) body.innerHTML = '<tr><td colspan="8" class="empty-state" style="text-align:center;">No bookings found in live database.</td></tr>';
+    }
+
+    function renderReviews() {
+      const wrap = document.getElementById('reviews-list');
+      const reviews = getList('servnet_reviews', []);
+
+      const provSelect = document.getElementById('review-provider-filter');
+      if (provSelect && provSelect.options.length <= 1) {
+        const uniqueProvs = [...new Set(reviews.map(r => r.providerName).filter(Boolean))];
+        provSelect.innerHTML = '<option value="">All Providers</option>' + uniqueProvs.map(p => `
+          <option value="${p}">${p}</option>
+        `).join('');
+      }
+
+      const dFilter = document.getElementById('review-date-filter')?.value || '';
+      const pFilter = document.getElementById('review-provider-filter')?.value || '';
+      const rFilter = document.getElementById('review-rating-filter')?.value || '';
+
+      const shown = reviews.filter(r => {
+        // Simple regex to parse '21 Mar 2026' to YYYY-MM-DD for dFilter if needed, but since dates are localized, we skip exact date filtering if mismatched format, or keep simple string includes
+        if (dFilter && !r.date?.includes(dFilter)) return false;
+        if (pFilter && r.providerName !== pFilter) return false;
+        if (rFilter && (r.rating || 5) < parseInt(rFilter)) return false;
+        return true;
+      });
+
+      wrap.innerHTML = shown.map(r => `
+        <div class="review-item admin-review" data-id="${r.id || r.date + r.customerName}" style="${r.hidden ? 'opacity: 0.5;' : ''} ${r.flagged ? 'border: 1px solid #ef4444; background: #fef2f2;' : ''}">
+          <div style="flex: 1;">
+            <div class="review-stars">
+              <span class="star">★</span> ${r.rating || 5}
+              <span style="font-size: 0.8rem; color: var(--ink-500); margin-left: 8px;">${r.providerName || 'Unknown'} • ${r.date || ''}</span>
+            </div>
+            <div class="review-text" style="margin-top: 4px;">${r.comment || r.text || ''}</div>
+            <div style="font-size: 0.8rem; color: var(--ink-500); margin-top: 4px;">By: ${r.customerName || 'Customer'}</div>
+            ${r.flagged ? '<div style="font-size: 0.8rem; color: #ef4444; font-weight: bold; margin-top: 4px;">⚠️ Flagged as Fake/Inappropriate</div>' : ''}
+          </div>
+          <div class="review-actions">
+            <button class="btn btn-outline small" data-action="toggle-hide">${r.hidden ? 'Unhide' : 'Hide'}</button>
+            <button class="btn btn-outline small" data-action="toggle-flag">${r.flagged ? 'Unflag' : 'Flag Fake'}</button>
+            <button class="btn btn-outline small danger" data-action="remove-review">Delete</button>
+          </div>
+        </div>
+      `).join('');
+      if (!shown.length) {
+        wrap.innerHTML = '<div class="empty-state">No reviews match the filters.</div>';
+      }
+    }
+
+    function updateStats() {
+      const allUsers = getList('users', []);
+      const customers = allUsers.filter(u => !u.role || u.role === 'customer' || u.role === 'user');
+      const providers = allUsers.filter(u => u.role === 'provider');
+      const bookings = getList('servnet_bookings', []);
+
+      const completed = bookings.filter(b => b.status === 'Completed').length;
+      const pending = bookings.filter(b => b.status === 'Pending').length;
+
+      document.getElementById('stat-customers').textContent = String(customers.length || 0);
+      document.getElementById('stat-providers').textContent = String(providers.length || 0);
+      document.getElementById('stat-bookings').textContent = String(bookings.length || 0);
+      document.getElementById('stat-completed').textContent = String(completed || 0);
+      document.getElementById('stat-pending').textContent = String(pending || 0);
+    }
+
+    function updateReports() {
+      const bookings = getList('servnet_bookings', []);
+      const allUsers = getList('users', []);
+      const providers = allUsers.filter(u => u.role === 'provider');
+
+      const paidBookings = bookings.filter(b => b.paymentStatus === 'Paid');
+      const totalRevenue = paidBookings.reduce((sum, b) => {
+        const costStr = b.totalCost || b.price || '0';
+        const val = parseInt(String(costStr).replace(/[^0-9]/g, '')) || 0;
+        return sum + val;
+      }, 0);
+      document.getElementById('report-revenue').textContent = '₹' + totalRevenue;
+
+      const avgSpan = document.getElementById('report-avg-rating');
+      if (providers.length) {
+        const avg = providers.reduce((acc, p) => acc + (parseFloat(p.rating) || 5.0), 0) / providers.length;
+        avgSpan.textContent = avg.toFixed(1);
+      } else {
+        avgSpan.textContent = 'N/A';
+      }
+
+      const svcCounts = {};
+      bookings.forEach(b => {
+        const sName = b.service || b.service?.name;
+        if (sName) {
+          svcCounts[sName] = (svcCounts[sName] || 0) + 1;
+        }
+      });
+      const topSvcs = Object.entries(svcCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
+
+      const svcsEl = document.getElementById('report-top-services');
+      if (topSvcs.length) {
+        svcsEl.innerHTML = topSvcs.map(s => `<li>${s[0]} <span style="color:var(--ink-400); font-size:0.85rem">(${s[1]} bookings)</span></li>`).join('');
+      } else {
+        svcsEl.innerHTML = '<li style="list-style:none; color:var(--ink-400);">No bookings yet.</li>';
+      }
+
+      const topProv = [...providers].sort((a, b) => (b.rating || 5) - (a.rating || 5)).slice(0, 5);
+      const provEl = document.getElementById('report-top-providers');
+      if (topProv.length) {
+        provEl.innerHTML = topProv.map(p => `<li>${p.name || 'Provider'} &mdash; <span class="star">★</span> ${p.rating || '5.0'}</li>`).join('');
+      } else {
+        provEl.innerHTML = '<li style="list-style:none; color:var(--ink-400);">No providers yet.</li>';
+      }
+    }
+
+    function refreshAll() {
+      renderCustomers(document.getElementById('customer-search').value);
+      renderProviders();
+      renderServices();
+      renderBookings();
+      renderReviews();
+      updateStats();
+      updateReports();
+      renderLogs();
+    }
+
+    const sysLogs = [
+      { time: '2 hours ago', user: 'System', action: 'New Booking', detail: 'Alice requested Plumbing', color: 'var(--brand-600)' },
+      { time: 'Yesterday', user: 'Admin User', action: 'Flagged Review', detail: 'Flagged review #R841 as fake', color: '#ef4444' },
+      { time: 'Yesterday', user: 'David Parker', action: 'Provider Verification', detail: 'Uploaded ID missing documents', color: '#f59e0b' }
+    ];
+
+    function renderLogs() {
+      const body = document.getElementById('logs-body');
+      if (!body) return;
+      body.innerHTML = sysLogs.map(l => `
+        <tr>
+          <td style="color:var(--ink-500); font-size:0.85rem;">${l.time}</td>
+          <td><span class="pill" style="background:#f1f5f9; color:#475569;">${l.user}</span></td>
+          <td><span style="font-weight:600; color:${l.color}">${l.action}</span></td>
+          <td style="color:var(--ink-600)">${l.detail}</td>
+        </tr>
+      `).join('');
+    }
+
+    document.getElementById('customers-body').addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      const row = e.target.closest('tr');
+      const action = btn.getAttribute('data-action');
+      const cid = row?.getAttribute('data-id');
+      if (!cid) return;
+      const list = getList('users', []);
+      const idx = list.findIndex(x => x.email === cid);
+      if (idx < 0) return;
+
+      if (action === 'edit') {
+        alert('Edit customer currently open in modal...');
+        return;
+      }
+      if (action === 'block') {
+        list[idx].blocked = !list[idx].blocked;
+        setList('users', list);
+        refreshAll();
+        return;
+      }
+      if (action === 'delete') {
+        if (confirm('Are you sure you want to delete this customer?')) {
+          setList('users', list.filter(x => x.email !== cid));
+          refreshAll();
+        }
+      }
+    });
+
+    document.getElementById('providers-body').addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      const row = e.target.closest('tr');
+      const action = btn.getAttribute('data-action');
+      const pid = row?.getAttribute('data-id');
+      if (!pid) return;
+      const list = getList('users', []);
+      const idx = list.findIndex(x => x.email === pid);
+      if (idx < 0) return;
+
+      if (action === 'edit') {
+        const p = list[idx];
+        document.getElementById('edit-prov-id').value = p.email;
+        document.getElementById('edit-prov-name').value = p.name || '';
+        document.getElementById('edit-prov-category').value = p.serviceCategory || '';
+        document.getElementById('edit-prov-loc').value = p.location || '';
+        const modal = document.getElementById('edit-provider-modal');
+        modal.style.opacity = '1';
+        modal.style.visibility = 'visible';
+        modal.querySelector('.modal-card').style.transform = 'scale(1) translateY(0)';
+        return;
+      }
+      if (action === 'toggle-status') {
+        list[idx].active = list[idx].active === false ? true : false;
+        setList('users', list);
+        refreshAll();
+        return;
+      }
+      if (action === 'remove') {
+        if (confirm('Are you sure you want to remove this provider?')) {
+          setList('users', list.filter(x => x.email !== pid));
+          refreshAll();
+        }
+      }
+    });
+
+    document.getElementById('add-service-btn').addEventListener('click', () => {
+      document.getElementById('service-modal-title').textContent = 'Add New Service';
+      document.getElementById('edit-svc-id').value = '';
+      document.getElementById('edit-svc-name').value = '';
+      document.getElementById('edit-svc-price').value = '';
+      document.getElementById('edit-svc-category').value = 'Home';
+      const modal = document.getElementById('edit-service-modal');
+      modal.style.opacity = '1';
+      modal.style.visibility = 'visible';
+      modal.querySelector('.modal-card').style.transform = 'scale(1) translateY(0)';
+    });
+
+    document.getElementById('services-body').addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      const row = e.target.closest('tr');
+      const action = btn.getAttribute('data-action');
+      const sid = row?.getAttribute('data-id');
+      if (!sid) return;
+      const list = getList(LS.services, []);
+      const idx = list.findIndex(s => s.id === sid);
+      if (idx < 0) return;
+
+      if (action === 'remove-svc') {
+        setList(LS.services, list.filter(s => s.id !== sid));
+        renderServices();
+      } else if (action === 'edit-svc') {
+        document.getElementById('service-modal-title').textContent = 'Edit Service';
+        document.getElementById('edit-svc-id').value = list[idx].id;
+        document.getElementById('edit-svc-name').value = list[idx].name;
+        document.getElementById('edit-svc-price').value = list[idx].priceRange || '';
+        document.getElementById('edit-svc-category').value = list[idx].category || 'Home';
+        const modal = document.getElementById('edit-service-modal');
+        modal.style.opacity = '1';
+        modal.style.visibility = 'visible';
+        modal.querySelector('.modal-card').style.transform = 'scale(1) translateY(0)';
+      }
+    });
+
+    document.getElementById('cancel-svc-btn')?.addEventListener('click', () => {
+      const modal = document.getElementById('edit-service-modal');
+      modal.style.opacity = '0';
+      modal.style.visibility = 'hidden';
+      modal.querySelector('.modal-card').style.transform = 'scale(0.95) translateY(20px)';
+    });
+
+    document.getElementById('save-svc-btn')?.addEventListener('click', async () => {
+      const idval = document.getElementById('edit-svc-id').value;
+      const name = document.getElementById('edit-svc-name').value.trim();
+      const category = document.getElementById('edit-svc-category').value || 'Home';
+      const priceRange = document.getElementById('edit-svc-price').value || '₹500 – ₹1500';
+      if (!name) return;
+
+      if (idval) {
+        alert("Editing services via the API is currently not supported in this version. Adding works!");
+        document.getElementById('cancel-svc-btn').click();
+        return;
+      }
+
+      const btn = document.getElementById('save-svc-btn');
+      btn.textContent = 'Saving...';
+      btn.disabled = true;
+
+      try {
+        const token = localStorage.getItem('servnet_token');
+        const res = await fetch('http://localhost:5000/api/services', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({ name, category, priceRange })
+        });
+
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.message || 'Failed to add service');
+        }
+
+        document.getElementById('cancel-svc-btn').click();
+        renderServices();
+      } catch (e) {
+        console.error('API Save Error:', e);
+        alert(e.message);
+      } finally {
+        btn.textContent = 'Save Service';
+        btn.disabled = false;
+      }
+    });
+
+    document.getElementById('bookings-body').addEventListener('change', (e) => {
+      const sel = e.target.closest('select.status-select');
+      if (!sel) return;
+      const row = e.target.closest('tr');
+      const bid = row?.getAttribute('data-id');
+      if (!bid) return;
+      const list = getList('servnet_bookings', []);
+      const idx = list.findIndex(b => b.id === bid);
+      if (idx < 0) return;
+      list[idx].status = sel.value;
+      setList('servnet_bookings', list);
+      renderBookings();
+      updateStats();
+    });
+
+    document.getElementById('bookings-body').addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      const row = e.target.closest('tr');
+      const bid = row?.getAttribute('data-id');
+      if (!bid) return;
+
+      const list = getList('servnet_bookings', []);
+      const idx = list.findIndex(b => b.id === bid);
+      if (idx < 0) return;
+
+      const action = btn.getAttribute('data-action');
+      if (action === 'cancel-bk') {
+        list[idx].status = 'Cancelled';
+        setList('servnet_bookings', list);
+        renderBookings();
+        updateStats();
+      } else if (action === 'view-bk') {
+        const b = list[idx];
+        document.getElementById('view-bk-id').value = b.id;
+        document.getElementById('view-bk-id-display').textContent = b.id;
+        document.getElementById('view-bk-customer').textContent = b.customerName || b.customer || 'Customer';
+        document.getElementById('view-bk-provider').textContent = b.providerName || b.provider || 'Unassigned';
+        document.getElementById('view-bk-service').textContent = b.service || 'Unknown Service';
+        document.getElementById('view-bk-date').value = b.date || '';
+        document.getElementById('view-bk-time').value = b.time || b.timeSlot || '';
+        document.getElementById('view-bk-payment').value = b.paymentStatus || b.payment || 'Pending';
+
+        const modal = document.getElementById('view-booking-modal');
+        modal.style.opacity = '1';
+        modal.style.visibility = 'visible';
+        modal.querySelector('.modal-card').style.transform = 'scale(1) translateY(0)';
+      }
+    });
+
+    document.getElementById('close-bk-btn')?.addEventListener('click', () => {
+      const modal = document.getElementById('view-booking-modal');
+      modal.style.opacity = '0';
+      modal.style.visibility = 'hidden';
+      modal.querySelector('.modal-card').style.transform = 'scale(0.95) translateY(20px)';
+    });
+
+    document.getElementById('save-bk-btn')?.addEventListener('click', () => {
+      const bid = document.getElementById('view-bk-id').value;
+      const list = getList('servnet_bookings', []);
+      const idx = list.findIndex(b => b.id === bid);
+      if (idx > -1) {
+        list[idx].date = document.getElementById('view-bk-date').value;
+        list[idx].time = document.getElementById('view-bk-time').value;
+        list[idx].paymentStatus = document.getElementById('view-bk-payment').value;
+        list[idx].payment = document.getElementById('view-bk-payment').value; // Sync both keys
+        setList('servnet_bookings', list);
+        renderBookings();
+      }
+      document.getElementById('close-bk-btn').click();
+    });
+
+    document.getElementById('add-review-btn').addEventListener('click', () => {
+      const list = getList('servnet_reviews', []);
+      list.unshift({
+        id: id('r'),
+        rating: 5,
+        comment: '“Demo review added by admin”',
+        providerName: 'Demo Provider',
+        customerName: 'Admin',
+        date: new Date().toISOString().split('T')[0]
+      });
+      setList('servnet_reviews', list);
+      renderReviews();
+    });
+
+    document.getElementById('reviews-list').addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      const item = e.target.closest('.review-item');
+      const rid = item?.getAttribute('data-id');
+      if (!rid) return;
+
+      const list = getList('servnet_reviews', []);
+      const idx = list.findIndex(r => r.id === rid || r.date + r.customerName === rid);
+      if (idx < 0) return;
+
+      const act = btn.getAttribute('data-action');
+      if (act === 'remove-review') {
+        list.splice(idx, 1);
+      } else if (act === 'toggle-hide') {
+        list[idx].hidden = !list[idx].hidden;
+      } else if (act === 'toggle-flag') {
+        list[idx].flagged = !list[idx].flagged;
+      }
+      setList('servnet_reviews', list);
+      renderReviews();
+    });
+
+
+    document.getElementById('notif-btn')?.addEventListener('click', (e) => {
+      const drop = document.getElementById('notif-dropdown');
+      drop.style.display = drop.style.display === 'none' ? 'block' : 'none';
+      e.stopPropagation();
+    });
+
+    document.addEventListener('click', (e) => {
+      const drop = document.getElementById('notif-dropdown');
+      if (drop && drop.style.display === 'block' && (!e.target.closest('#notif-dropdown') && !e.target.closest('#notif-btn'))) {
+        drop.style.display = 'none';
+      }
+    });
+
+    document.getElementById('cancel-prov-btn')?.addEventListener('click', () => {
+      const modal = document.getElementById('edit-provider-modal');
+      modal.style.opacity = '0';
+      modal.style.visibility = 'hidden';
+      modal.querySelector('.modal-card').style.transform = 'scale(0.95) translateY(20px)';
+    });
+
+    document.getElementById('save-prov-btn')?.addEventListener('click', () => {
+      const pid = document.getElementById('edit-prov-id').value;
+      const list = getList(LS.providers, []);
+      const idx = list.findIndex(x => x.id === pid);
+      if (idx > -1) {
+        list[idx].name = document.getElementById('edit-prov-name').value;
+        list[idx].category = document.getElementById('edit-prov-category').value;
+        list[idx].location = document.getElementById('edit-prov-loc').value;
+        setList(LS.providers, list);
+        refreshAll();
+      }
+      document.getElementById('cancel-prov-btn').click();
+    });
+
+    function updateDynamicUsername() {
+      const userJSON = localStorage.getItem('servnet_user');
+      if (userJSON) {
+        try {
+          const user = JSON.parse(userJSON);
+          if (user.name) {
+            // Update hero welcome
+            const welcomeMsg = document.getElementById('welcome-message');
+            if (welcomeMsg) welcomeMsg.textContent = `Welcome back, ${user.name} 👋`;
+
+            // Update nav name
+            const navName = document.getElementById('nav-admin-name');
+            if (navName) navName.textContent = user.name;
+
+            // Update profile section
+            const profName = document.getElementById('prof-name');
+            if (profName) profName.textContent = user.name;
+          }
+          if (user.email) {
+            const profEmail = document.getElementById('prof-email');
+            if (profEmail) profEmail.textContent = user.email;
+          }
+          if (user.phone) {
+            const profPhone = document.getElementById('prof-phone');
+            if (profPhone) profPhone.textContent = user.phone;
+          }
+          if (user.location) {
+            const profLoc = document.getElementById('prof-location');
+            if (profLoc) profLoc.textContent = user.location;
+          }
+          if (user.bio) {
+            const profBio = document.getElementById('prof-bio');
+            if (profBio) profBio.textContent = user.bio;
+          }
+          if (user.role) {
+            const profRole = document.getElementById('prof-role');
+            if (profRole) profRole.textContent = user.role;
+            const navRole = document.getElementById('nav-admin-role');
+            if (navRole) navRole.textContent = user.role;
+          }
+        } catch (e) {
+          console.error('Error parsing user data:', e);
+        }
+      }
+    }
+
+    updateDynamicUsername();
+    refreshAll();
+
+    window.handleLogout = function () {
+      localStorage.removeItem('servnet_token');
+      localStorage.removeItem('servnet_user');
+      window.location.href = 'index.html';
+    };
+
+    const globalNotifBtn = document.getElementById('notif-btn');
+    const globalNotifPanel = document.getElementById('notif-panel');
+    if (globalNotifBtn && globalNotifPanel) {
+      globalNotifBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        globalNotifPanel.style.display = globalNotifPanel.style.display === 'none' || globalNotifPanel.style.display === '' ? 'block' : 'none';
+      });
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('#notif-wrapper')) {
+          globalNotifPanel.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>

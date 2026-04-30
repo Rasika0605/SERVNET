@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ServNet | Profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="profile.css" />
+</head>
+
+<body class="dash-v2-body">
+  <header class="topbar dash-v2-topbar">
+    <div class="container nav-wrap dash-v2-nav">
+      <a class="brand" href="customer.html">
+        <span class="brand-mark">S</span><span style="letter-spacing: 0.05em; font-weight: 800;">SERVNET</span>
+      </a>
+
+      <nav class="nav-links dash-v2-links">
+        <a href="customer.html">Discover Services</a>
+        <a href="messaging.html">Messaging</a>
+        <a href="profile.html" class="active">Profile</a>
+      </nav>
+
+      <div class="user-menu dash-v2-user" style="position: relative; gap: 16px; display: flex; align-items: center;">
+        
+        <a href="profile.html" style="text-decoration: none; color: var(--ink-700); font-weight: 600; font-size: 0.95rem;">Profile</a>
+
+        <!-- Notification Dropdown Wrapper -->
+        <div class="dropdown-wrapper" id="notif-wrapper">
+          <button class="icon-btn" aria-label="Notifications" id="notif-btn" style="position: relative; background: none; border: none; cursor: pointer; color: var(--ink-700); padding: 4px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="notif-badge-icon" style="position: absolute; top: 0px; right: 0px; background: #ef4444; color: white; font-size: 0.65rem; font-weight: bold; width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">4</span>
+          </button>
+          
+          <div class="dropdown-panel" id="notif-panel" style="display: none; position: absolute; top: 120%; right: 0; width: 320px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 1000;">
+            <div class="notif-panel-header" style="padding: 16px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+              <h3 style="margin: 0; font-size: 1rem; color: var(--ink-700);">Notifications</h3>
+              <div style="display:flex; gap: 12px;">
+                <button class="text-btn" onclick="document.querySelector('.notif-badge-icon').style.display='none'; document.querySelectorAll('.unread-dot').forEach(el=>el.style.display='none');" style="font-size: 0.8rem; color: var(--brand-500); cursor: pointer; border: none; background: none; padding: 0;">Mark as read</button>
+                <button class="text-btn" onclick="document.getElementById('notif-list-items').innerHTML='<div style=\'padding:20px;text-align:center;color:#64748b;\'>No notifications</div>'; document.querySelector('.notif-badge-icon').style.display='none';" style="font-size: 0.8rem; color: #ef4444; cursor: pointer; border: none; background: none; padding: 0;">Clear all</button>
+              </div>
+            </div>
+            <div class="notif-list" id="notif-list-items" style="max-height: 350px; overflow-y: auto;">
+              <a href="#" class="notif-item unread" style="display: flex; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; text-decoration: none; color: inherit; align-items: flex-start; gap: 12px; position: relative;">
+                <div class="notif-icon" style="background: #dcfce7; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; font-size: 14px;">✅</div>
+                <div class="notif-content" style="flex: 1;">
+                  <h4 style="margin: 0; font-size: 0.9rem; color: var(--ink-700);">Booking Accepted</h4>
+                  <p style="margin: 4px 0 0; font-size: 0.8rem; color: #475569;">Your booking is accepted.</p>
+                </div>
+                <div class="unread-dot" style="width: 8px; height: 8px; background: var(--brand-500); border-radius: 50%; margin-top: 6px;"></div>
+              </a>
+              <a href="#" class="notif-item unread" style="display: flex; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; text-decoration: none; color: inherit; align-items: flex-start; gap: 12px; position: relative;">
+                <div class="notif-icon" style="background: #fee2e2; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; font-size: 14px;">❌</div>
+                <div class="notif-content" style="flex: 1;">
+                  <h4 style="margin: 0; font-size: 0.9rem; color: var(--ink-700);">Booking Rejected</h4>
+                  <p style="margin: 4px 0 0; font-size: 0.8rem; color: #475569;">Your request is rejected.</p>
+                </div>
+                <div class="unread-dot" style="width: 8px; height: 8px; background: var(--brand-500); border-radius: 50%; margin-top: 6px;"></div>
+              </a>
+              <a href="#" class="notif-item unread" style="display: flex; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; text-decoration: none; color: inherit; align-items: flex-start; gap: 12px; position: relative;">
+                <div class="notif-icon" style="background: #fef3c7; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; font-size: 14px;">⭐</div>
+                <div class="notif-content" style="flex: 1;">
+                  <h4 style="margin: 0; font-size: 0.9rem; color: var(--ink-700);">New Review</h4>
+                  <p style="margin: 4px 0 0; font-size: 0.8rem; color: #475569;">New review received.</p>
+                </div>
+                <div class="unread-dot" style="width: 8px; height: 8px; background: var(--brand-500); border-radius: 50%; margin-top: 6px;"></div>
+              </a>
+              <a href="#" class="notif-item unread" style="display: flex; padding: 12px 16px; text-decoration: none; color: inherit; align-items: flex-start; gap: 12px; position: relative;">
+                <div class="notif-icon" style="background: #dbeafe; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; font-size: 14px;">📅</div>
+                <div class="notif-content" style="flex: 1;">
+                  <h4 style="margin: 0; font-size: 0.9rem; color: var(--ink-700);">Upcoming Service</h4>
+                  <p style="margin: 4px 0 0; font-size: 0.8rem; color: #475569;">Upcoming service reminder.</p>
+                </div>
+                <div class="unread-dot" style="width: 8px; height: 8px; background: var(--brand-500); border-radius: 50%; margin-top: 6px;"></div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Logout Button -->
+        <a href="#" onclick="handleLogout()" title="Logout" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; color: #ef4444; background: #fef2f2; text-decoration: none; transition: background 0.2s;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </a>
+
+        <!-- Avatar -->
+        <a href="profile.html">
+          <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=100&q=80" alt="JD" class="user-avatar-img" style="cursor: pointer; width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+        </a>
+
+      </div>
+    </div>
+  </header>
+
+  <main class="dash-v2-main">
+    <div class="container dash-v2-grid">
+      <section class="profile-grid">
+        <!-- Profile info -->
+        <div class="profile-card">
+          <div class="profile-header-large">
+            <div class="avatar-large" id="profile-avatar">J</div>
+            <div>
+              <h3 id="profile-name">John Doe</h3>
+              <p>Customer • Mumbai, India</p>
+            </div>
+          </div>
+
+          <div class="profile-details">
+            <div class="p-row">
+              <strong>Full name</strong>
+              <span><input id="field-name" type="text" value="John Doe" readonly /></span>
+            </div>
+            <div class="p-row">
+              <strong>Email</strong>
+              <span><input id="field-email" type="email" value="john@example.com" readonly /></span>
+            </div>
+            <div class="p-row">
+              <strong>Phone</strong>
+              <span><input id="field-phone" type="tel" value="9876543210" readonly /></span>
+            </div>
+            <div class="p-row">
+              <strong>Address</strong>
+              <span><input id="field-address" type="text" value="Mumbai, India" readonly /></span>
+            </div>
+            <div class="p-row">
+              <strong>Account type</strong>
+              <span>Customer</span>
+            </div>
+          </div>
+
+          <div id="profile-actions" style="display: flex; gap: 12px; margin-top: 16px;">
+            <button class="btn btn-outline-sm" type="button" id="edit-profile-btn">Edit Profile</button>
+            <button class="btn btn-teal-sm" type="button" id="save-profile-btn" style="display: none;">Save
+              Changes</button>
+          </div>
+        </div>
+
+        <!-- Security + stats -->
+        <div class="profile-card">
+          <h3 class="section-title">Change Password</h3>
+          <div class="profile-form">
+            <div class="form-group">
+              <label>Current Password</label>
+              <input type="password" id="pwd-current" placeholder="Enter current password" />
+            </div>
+            <div class="form-group">
+              <label>New Password</label>
+              <input type="password" id="pwd-new" placeholder="Enter new password" />
+            </div>
+            <div class="form-group">
+              <label>Confirm New Password</label>
+              <input type="password" id="pwd-confirm" placeholder="Confirm new password" />
+            </div>
+            <button class="btn btn-outline" type="button" id="update-password-btn">Update Password</button>
+          </div>
+        </div>
+
+
+        <!-- Reviews + settings -->
+        <div class="profile-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+              <h3 class="section-title" style="margin-bottom: 0;">My Reviews</h3>
+              <button class="btn btn-teal-sm" id="open-review-modal-btn">+ Add Review</button>
+            </div>
+            <div class="review-list" id="review-list-container">
+              <!-- Reviews will be loaded here -->
+              <p class="text-muted" style="font-size: 0.9rem;">No reviews yet.</p>
+            </div>
+          </div>
+
+        <div class="profile-card" style="text-align: center; padding: 32px 24px;">
+          <h3 class="section-title" style="margin-bottom: 8px;">Session Management</h3>
+          <p class="text-muted" style="margin-bottom: 24px; font-size: 0.9rem;">You are currently logged in. Logging out will end your session but your data remains secure.</p>
+          <button class="btn btn-danger-outline" type="button" id="logout-btn" style="width: 100%; max-width: 300px; display: inline-flex; justify-content: center; align-items: center; gap: 8px;">
+            <span style="font-size: 1.2rem;">🚪</span> Logout of current session
+          </button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Add Review Modal -->
+  <div id="review-modal" class="modal-overlay" style="z-index: 10000;">
+    <div class="modal-card" style="width: 100%; max-width: 450px; padding: 32px;">
+      <h3 class="section-title">Add a Review</h3>
+      <div class="profile-form">
+        <div class="form-group">
+          <label>Select Service Provider</label>
+          <select id="review-provider" class="form-control" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ddd; margin-bottom: 16px;">
+            <option value="David Parker">David Parker (Plumbing)</option>
+            <option value="Emma Jenkins">Emma Jenkins (Cleaning)</option>
+            <option value="Daniel Miller">Daniel Miller (Electrical)</option>
+            <option value="Michael Thompson">Michael Thompson (HVAC)</option>
+            <option value="Sarah Connor">Sarah Connor (Plumbing)</option>
+            <option value="Olivia Davis">Olivia Davis (Painting)</option>
+            <option value="David Chen">David Chen (Carpentry)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Select Service</label>
+          <select id="review-service" class="form-control" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ddd; margin-bottom: 16px;">
+            <option value="Plumbing">Plumbing</option>
+            <option value="Cleaning">Cleaning</option>
+            <option value="Electrical">Electrical</option>
+            <option value="Painting">Painting</option>
+            <option value="Carpentry">Carpentry</option>
+            <option value="HVAC">HVAC</option>
+            <option value="Gardening">Gardening</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Rating (1-5 Stars)</label>
+          <select id="review-rating" class="form-control" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ddd;">
+            <option value="5">★★★★★ (5/5)</option>
+            <option value="4">★★★★☆ (4/5)</option>
+            <option value="3">★★★☆☆ (3/5)</option>
+            <option value="2">★★☆☆☆ (2/5)</option>
+            <option value="1">★☆☆☆☆ (1/5)</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-top: 16px;">
+          <label>Description</label>
+          <textarea id="review-comment" placeholder="Write your experience..." style="width: 100%; height: 100px; padding: 10px; border-radius: 6px; border: 1px solid #ddd; font-family: inherit;"></textarea>
+        </div>
+        <div style="display: flex; gap: 12px; margin-top: 24px;">
+          <button class="btn btn-teal-sm" id="submit-review-btn" style="flex: 1;">Submit Review</button>
+          <button class="btn btn-outline-sm" id="close-review-modal-btn" style="flex: 1;">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- Data Repair & Sync ---
+    (function syncStorage() {
+      let users = JSON.parse(localStorage.getItem('users') || '[]');
+      let oldUsers = JSON.parse(localStorage.getItem('users_list') || '[]');
+      
+      // Migrate old users_list to users if users is empty
+      if (users.length === 0 && oldUsers.length > 0) {
+        users = oldUsers;
+        localStorage.setItem('users', JSON.stringify(users));
+        localStorage.removeItem('users_list');
+      }
+
+      const session = JSON.parse(localStorage.getItem('servnet_user'));
+      if (session && session.email) {
+        const emailLower = session.email.toLowerCase();
+        const exists = users.some(u => u.email.toLowerCase() === emailLower);
+        
+        if (!exists) {
+          // Force sync session user into the users list if missing
+          users.push({
+            name: session.name || 'User',
+            email: emailLower,
+            role: session.role || 'customer',
+            password: 'migrated_user', // Placeholder
+            reviews: []
+          });
+          localStorage.setItem('users', JSON.stringify(users));
+          console.log('Session user synchronized to global users list.');
+        }
+      }
+    })();
+    // --------------------------
+
+    const userSession = JSON.parse(localStorage.getItem('servnet_user'));
+    if (!userSession) {
+      window.location.href = 'login.html';
+    } else if (userSession.role === 'provider') {
+      window.location.href = 'provider.html#profile';
+    } else if (userSession.role === 'admin') {
+      window.location.href = 'admin_profile.html';
+    }
+
+    function loadProfile() {
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const currentUser = users.find(u => u.email.toLowerCase() === userSession.email.toLowerCase());
+
+      if (currentUser) {
+        document.getElementById('field-name').value = currentUser.name || '';
+        document.getElementById('field-email').value = currentUser.email || '';
+        document.getElementById('field-phone').value = currentUser.phone || '';
+        document.getElementById('field-address').value = currentUser.address || '';
+
+        document.getElementById('profile-name').textContent = currentUser.name || 'User';
+        document.getElementById('profile-avatar').textContent = (currentUser.name || 'U').charAt(0).toUpperCase();
+
+        renderReviews(currentUser.reviews || []);
+      }
+    }
+
+    function renderReviews(reviews) {
+      const container = document.getElementById('review-list-container');
+      if (reviews.length === 0) {
+        container.innerHTML = '<p class="text-muted" style="font-size: 0.9rem;">No reviews yet.</p>';
+        return;
+      }
+
+      container.innerHTML = reviews.map((rev, index) => `
+        <div class="review-item" style="position: relative; margin-bottom: 24px; border-bottom: 1px solid #eee; padding-bottom: 20px;">
+          <div class="review-service" style="font-weight: 800; color: #0d9488; font-size: 1rem; margin-bottom: 8px;">
+            Service: ${rev.service || 'N/A'}
+          </div>
+          <div class="review-stars" style="color: #f59e0b; font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+            <span>⭐ Rating: ${rev.rating}</span>
+            <span style="font-size: 0.9rem; opacity: 0.8;">
+              ${'★'.repeat(parseInt(rev.rating))}${'☆'.repeat(5 - parseInt(rev.rating))}
+            </span>
+          </div>
+          <div class="review-text" style="font-size: 1.1rem; color: #1e293b; line-height: 1.5;">
+            <strong>Description:</strong> ${rev.comment}
+          </div>
+          <div class="review-date" style="color: #94a3b8; font-size: 0.8rem; margin-top: 12px;">Posted on ${rev.date || ''}</div>
+          <button class="delete-review-btn" data-index="${index}" style="position: absolute; right: 0; top: 0; background: #fff5f5; border: 1px solid #fee2e2; color: #ef4444; cursor: pointer; font-size: 1rem; padding: 6px; border-radius: 8px; transition: all 0.2s;" title="Delete Review">🗑</button>
+        </div>
+      `).join('');
+
+      // Add delete listeners
+      document.querySelectorAll('.delete-review-btn').forEach(btn => {
+        btn.onclick = (e) => {
+          const idx = btn.getAttribute('data-index');
+          deleteReview(idx);
+        };
+      });
+    }
+
+    function deleteReview(index) {
+      if (!confirm('Are you sure you want to delete this review?')) return;
+      
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const userIndex = users.findIndex(u => u.email.toLowerCase() === userSession.email.toLowerCase());
+      
+      if (userIndex !== -1) {
+        if (!users[userIndex].reviews) users[userIndex].reviews = [];
+        users[userIndex].reviews.splice(index, 1);
+        localStorage.setItem('users', JSON.stringify(users));
+        loadProfile();
+      }
+    }
+
+    // Modal logic
+    const reviewModal = document.getElementById('review-modal');
+    const openReviewModalBtn = document.getElementById('open-review-modal-btn');
+    const closeReviewModalBtn = document.getElementById('close-review-modal-btn');
+    const submitReviewBtn = document.getElementById('submit-review-btn');
+
+    openReviewModalBtn.addEventListener('click', () => {
+      reviewModal.classList.add('active');
+    });
+
+    closeReviewModalBtn.addEventListener('click', () => {
+      reviewModal.classList.remove('active');
+      document.getElementById('review-comment').value = '';
+    });
+
+    submitReviewBtn.addEventListener('click', () => {
+      const service = document.getElementById('review-service').value;
+      const providerName = document.getElementById('review-provider').value;
+      const rating = document.getElementById('review-rating').value;
+      const commentInput = document.getElementById('review-comment');
+      const comment = commentInput.value.trim();
+
+      if (!comment) {
+        alert('Please enter a description.');
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const userIndex = users.findIndex(u => u.email.toLowerCase() === userSession.email.toLowerCase());
+
+      if (userIndex !== -1) {
+        if (!users[userIndex].reviews) users[userIndex].reviews = [];
+        
+        const newReview = {
+          service,
+          providerName,
+          customerName: users[userIndex].name || userSession.name || 'Customer',
+          rating: parseInt(rating),
+          comment,
+          date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+        };
+
+        users[userIndex].reviews.unshift(newReview);
+        localStorage.setItem('users', JSON.stringify(users));
+
+        // Also save to global servnet_reviews so provider dashboard can read it
+        const globalReviews = JSON.parse(localStorage.getItem('servnet_reviews') || '[]');
+        globalReviews.unshift(newReview);
+        localStorage.setItem('servnet_reviews', JSON.stringify(globalReviews));
+        
+        // Instant UI Update
+        commentInput.value = '';
+        reviewModal.classList.remove('active');
+        loadProfile();
+        
+        // Scroll to the review list
+        document.getElementById('review-list-container').scrollIntoView({ behavior: 'smooth' });
+      } else {
+        alert('User session error. Please login again.');
+      }
+    });
+
+    const editBtn = document.getElementById('edit-profile-btn');
+    const saveBtn = document.getElementById('save-profile-btn');
+    const inputs = ['field-name', 'field-email', 'field-phone', 'field-address'];
+
+    editBtn.addEventListener('click', () => {
+      inputs.forEach(id => document.getElementById(id).removeAttribute('readonly'));
+      editBtn.style.display = 'none';
+      saveBtn.style.display = 'inline-block';
+    });
+
+    saveBtn.addEventListener('click', () => {
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const userIndex = users.findIndex(u => u.email.toLowerCase() === userSession.email.toLowerCase());
+
+      if (userIndex !== -1) {
+        const updatedName = document.getElementById('field-name').value.trim();
+        const updatedEmail = document.getElementById('field-email').value.trim().toLowerCase();
+        const updatedPhone = document.getElementById('field-phone').value.trim();
+        const updatedAddress = document.getElementById('field-address').value.trim();
+
+        if (!updatedName || !updatedEmail) {
+          alert('Name and Email cannot be empty.');
+          return;
+        }
+
+        // Email duplication check if email is changed
+        if (updatedEmail !== userSession.email.toLowerCase()) {
+          const emailExists = users.some(u => u.email.toLowerCase() === updatedEmail);
+          if (emailExists) {
+            alert('This email is already registered to another account.');
+            return;
+          }
+        }
+
+        // Update persistent list
+        users[userIndex].name = updatedName;
+        users[userIndex].email = updatedEmail;
+        users[userIndex].phone = updatedPhone;
+        users[userIndex].address = updatedAddress;
+        users[userIndex].location = updatedAddress; // Ensure consistency
+        localStorage.setItem('users', JSON.stringify(users));
+
+        // Update session
+        const updatedSession = { ...userSession, name: updatedName, email: updatedEmail, phone: updatedPhone, address: updatedAddress };
+        localStorage.setItem('servnet_user', JSON.stringify(updatedSession));
+
+        // Synchronize userSession variable for next actions without reload
+        Object.assign(userSession, updatedSession);
+
+        // Toggle back
+        inputs.forEach(id => document.getElementById(id).setAttribute('readonly', true));
+        editBtn.style.display = 'inline-block';
+        saveBtn.style.display = 'none';
+
+        loadProfile();
+        alert('Profile updated successfully!');
+      }
+    });
+
+    document.getElementById('update-password-btn').addEventListener('click', () => {
+      const currentPwd = document.getElementById('pwd-current').value;
+      const newPwd = document.getElementById('pwd-new').value;
+      const confirmPwd = document.getElementById('pwd-confirm').value;
+
+      if (!currentPwd || !newPwd || !confirmPwd) {
+        alert('All password fields are required.');
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const userIndex = users.findIndex(u => u.email.toLowerCase() === userSession.email.toLowerCase());
+
+      if (userIndex !== -1) {
+        if (users[userIndex].password !== currentPwd) {
+          alert('Current password is incorrect.');
+          return;
+        }
+
+        if (newPwd !== confirmPwd) {
+          alert('New passwords do not match.');
+          return;
+        }
+
+        if (newPwd.length < 4) {
+          alert('New password must be at least 4 characters long.');
+          return;
+        }
+
+        // Update password
+        users[userIndex].password = newPwd;
+        localStorage.setItem('users', JSON.stringify(users));
+
+        alert('Password updated successfully! You can use your new password next time you login.');
+
+        // Clear fields
+        document.getElementById('pwd-current').value = '';
+        document.getElementById('pwd-new').value = '';
+        document.getElementById('pwd-confirm').value = '';
+      }
+    });
+
+    window.handleLogout = function() {
+      localStorage.removeItem('servnet_token');
+      localStorage.removeItem('servnet_user');
+      window.location.href = 'index.html';
+    };
+
+    const logoutBtnEl = document.getElementById('logout-btn');
+    if (logoutBtnEl) {
+      logoutBtnEl.addEventListener('click', handleLogout);
+    }
+
+    const globalNotifBtn = document.getElementById('notif-btn');
+    const globalNotifPanel = document.getElementById('notif-panel');
+    if (globalNotifBtn && globalNotifPanel) {
+      globalNotifBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        globalNotifPanel.style.display = globalNotifPanel.style.display === 'none' || globalNotifPanel.style.display === '' ? 'block' : 'none';
+      });
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('#notif-wrapper')) {
+          globalNotifPanel.style.display = 'none';
+        }
+      });
+    }
+
+    // Auto-open review modal if coming from 'Rate Service'
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('action') === 'rate') {
+        const prefillProvider = urlParams.get('providerName');
+        const prefillService = urlParams.get('service');
+        
+        if (prefillProvider) {
+          const providerSelect = document.getElementById('review-provider');
+          let found = false;
+          for (let i = 0; i < providerSelect.options.length; i++) {
+            if (providerSelect.options[i].value.toLowerCase() === prefillProvider.toLowerCase()) {
+              providerSelect.selectedIndex = i;
+              found = true;
+              break;
+            }
+          }
+          if (!found) {
+            const opt = document.createElement('option');
+            opt.value = prefillProvider;
+            opt.textContent = prefillProvider;
+            providerSelect.appendChild(opt);
+            providerSelect.value = prefillProvider;
+          }
+        }
+
+        if (prefillService) {
+          const serviceSelect = document.getElementById('review-service');
+          for (let i = 0; i < serviceSelect.options.length; i++) {
+            if (serviceSelect.options[i].value.toLowerCase() === prefillService.toLowerCase()) {
+              serviceSelect.selectedIndex = i;
+              break;
+            }
+          }
+        }
+
+        reviewModal.classList.add('active');
+        // Clean URL after opening modal
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    });
+
+    loadProfile();
+  </script>
+</body>
+
+</html>

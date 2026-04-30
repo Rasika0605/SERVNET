@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ServNet | Plumbing Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="plumbing.css" />
+</head>
+<body class="dash-v2-body">
+  <header class="topbar dash-v2-topbar">
+    <div class="container nav-wrap dash-v2-nav">
+      <a class="brand" href="customer.html">
+        <span class="brand-mark">S</span><span style="letter-spacing: 0.05em; font-weight: 800;">SERVNET</span>
+      </a>
+
+      <nav class="nav-links dash-v2-links">
+        <a href="customer.html" class="active">Discover Services</a>
+        <a href="customer.html#messages">Messaging</a>
+        <a href="customer.html#profile">Profile</a>
+      </nav>
+
+      <div class="user-menu dash-v2-user">
+        <a class="btn btn-outline small" href="customer.html" style="border-radius: 999px;">Back</a>
+        <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=100&q=80" alt="JD" class="user-avatar-img">
+      </div>
+    </div>
+  </header>
+
+  <section class="plumbing-hero">
+    <div class="container plumbing-hero-inner">
+      <div class="plumbing-hero-text">
+        <h1>Plumbing Services</h1>
+        <p>Find trusted plumbers for installation, repair, and maintenance.</p>
+      </div>
+      <div class="plumbing-hero-badge" aria-hidden="true">
+        <div class="mini-badge">
+          <div class="mini-title">Avg. response</div>
+          <div class="mini-value">~25 min</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="dash-v2-main">
+    <div class="container dash-v2-grid plumbing-grid">
+      <div class="plumbing-layout">
+        <div class="plumbing-left">
+          <section class="widget-card">
+            <div class="sec-head">
+              <h2 class="section-title">Available Plumbers</h2>
+              <div class="results-note"><span id="results-count">0</span> results</div>
+            </div>
+
+            <div class="filters">
+              <div class="filter">
+                <label for="q">Search plumber</label>
+                <input id="q" class="table-search" type="text" placeholder="Search by name or specialization..." />
+              </div>
+              <div class="filter">
+                <label for="rating">Min rating</label>
+                <select id="rating" class="status-select">
+                  <option value="0">Any</option>
+                  <option value="4.0">4.0+</option>
+                  <option value="4.5">4.5+</option>
+                  <option value="4.8">4.8+</option>
+                </select>
+              </div>
+              <div class="filter">
+                <label for="price">Max starting cost</label>
+                <select id="price" class="status-select">
+                  <option value="9999">Any</option>
+                  <option value="300">≤ ₹300</option>
+                  <option value="500">≤ ₹500</option>
+                  <option value="800">≤ ₹800</option>
+                </select>
+              </div>
+              <div class="filter">
+                <label for="location">Location</label>
+                <select id="location" class="status-select">
+                  <option value="">All</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="provider-cards" id="plumber-list"></div>
+            <div class="empty-state" id="plumber-empty" style="display:none;">No plumbers found. Try changing filters.</div>
+          </section>
+
+          <section class="widget-card mt-16">
+            <h2 class="section-title">Customer Reviews</h2>
+            <div class="review-list">
+              <div class="review-item">
+                <div class="review-stars"><span class="star">★</span> 5</div>
+                <div class="review-text">“Quick and professional service.”</div>
+              </div>
+              <div class="review-item">
+                <div class="review-stars"><span class="star">★</span> 4</div>
+                <div class="review-text">“Good work and reasonable price.”</div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <aside class="plumbing-right">
+          <section class="widget-card sticky" id="details-card">
+            <h2 class="section-title">Service Details</h2>
+            <div class="details-empty" id="details-empty">
+              Click a plumber card to view profile details.
+            </div>
+
+            <div class="details" id="details" style="display:none;">
+              <div class="details-head">
+                <img id="d-photo" class="details-photo" alt="Provider" />
+                <div>
+                  <div class="details-name" id="d-name">—</div>
+                  <div class="details-sub" id="d-spec">—</div>
+                  <div class="details-meta">
+                    <span><span class="star">★</span> <span id="d-rating">—</span></span>
+                    <span>•</span>
+                    <span id="d-loc">—</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="details-grid">
+                <div class="kpi">
+                  <div class="kpi-label">Experience</div>
+                  <div class="kpi-value" id="d-exp">—</div>
+                </div>
+                <div class="kpi">
+                  <div class="kpi-label">Starting</div>
+                  <div class="kpi-value" id="d-price">—</div>
+                </div>
+              </div>
+
+              <div class="details-block">
+                <div class="block-title">Services offered</div>
+                <div class="service-chips" id="d-services"></div>
+              </div>
+
+              <div class="details-block">
+                <div class="block-title">Available time slots</div>
+                <div class="slots" id="d-slots"></div>
+              </div>
+
+              <div class="details-actions">
+                <a class="btn btn-primary" id="book-service-btn" href="booking.html?service=Plumber">Book Service</a>
+              </div>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const plumbers = [
+      {
+        id: 'p1',
+        name: 'David Parker',
+        specialization: 'Pipe Repair / Leak Fixing / Installation',
+        rating: 4.9,
+        location: 'Vasai',
+        startingCost: 350,
+        experienceYears: 5,
+        photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
+        services: ['Pipe repair', 'Drainage cleaning', 'Installation', 'Leak fixing'],
+        slots: ['Morning (8-12)', 'Afternoon (12-4)', 'Evening (4-8)']
+      },
+      {
+        id: 'p2',
+        name: 'Aarav Mehta',
+        specialization: 'Drainage Cleaning / Bathroom Fittings',
+        rating: 4.7,
+        location: 'Mumbai',
+        startingCost: 450,
+        experienceYears: 7,
+        photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80',
+        services: ['Drainage cleaning', 'Bathroom fittings', 'Tap replacement'],
+        slots: ['Morning (8-12)', 'Evening (4-8)']
+      },
+      {
+        id: 'p3',
+        name: 'Neha Sharma',
+        specialization: 'Kitchen Sink / Water Heater / Installation',
+        rating: 4.5,
+        location: 'Thane',
+        startingCost: 300,
+        experienceYears: 4,
+        photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80',
+        services: ['Sink repair', 'Water heater install', 'Installation'],
+        slots: ['Afternoon (12-4)', 'Evening (4-8)']
+      },
+      {
+        id: 'p4',
+        name: 'Rohit Patil',
+        specialization: 'Leak Fixing / Pipeline Maintenance',
+        rating: 4.2,
+        location: 'Vasai',
+        startingCost: 550,
+        experienceYears: 9,
+        photo: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=200&q=80',
+        services: ['Leak fixing', 'Pipeline maintenance', 'Pressure issues'],
+        slots: ['Morning (8-12)', 'Afternoon (12-4)']
+      }
+    ];
+
+    const els = {
+      q: document.getElementById('q'),
+      rating: document.getElementById('rating'),
+      price: document.getElementById('price'),
+      location: document.getElementById('location'),
+      list: document.getElementById('plumber-list'),
+      empty: document.getElementById('plumber-empty'),
+      count: document.getElementById('results-count'),
+      detailsEmpty: document.getElementById('details-empty'),
+      details: document.getElementById('details'),
+      dPhoto: document.getElementById('d-photo'),
+      dName: document.getElementById('d-name'),
+      dSpec: document.getElementById('d-spec'),
+      dRating: document.getElementById('d-rating'),
+      dLoc: document.getElementById('d-loc'),
+      dExp: document.getElementById('d-exp'),
+      dPrice: document.getElementById('d-price'),
+      dServices: document.getElementById('d-services'),
+      dSlots: document.getElementById('d-slots'),
+      bookBtn: document.getElementById('book-service-btn'),
+    };
+
+    function normalize(s) {
+      return String(s || '').toLowerCase().trim();
+    }
+
+    function inr(n) {
+      return `₹${Number(n).toLocaleString('en-IN')}`;
+    }
+
+    function renderLocations() {
+      const locs = Array.from(new Set(plumbers.map(p => p.location))).sort();
+      locs.forEach((loc) => {
+        const opt = document.createElement('option');
+        opt.value = loc;
+        opt.textContent = loc;
+        els.location.appendChild(opt);
+      });
+    }
+
+    function getFiltered() {
+      const term = normalize(els.q.value);
+      const minRating = Number(els.rating.value || 0);
+      const maxPrice = Number(els.price.value || 9999);
+      const loc = els.location.value;
+
+      return plumbers.filter((p) => {
+        const hay = normalize(`${p.name} ${p.specialization} ${p.location}`);
+        const okTerm = !term || hay.includes(term);
+        const okRating = p.rating >= minRating;
+        const okPrice = p.startingCost <= maxPrice;
+        const okLoc = !loc || p.location === loc;
+        return okTerm && okRating && okPrice && okLoc;
+      });
+    }
+
+    function renderList() {
+      const list = getFiltered();
+      els.count.textContent = String(list.length);
+
+      els.list.innerHTML = list.map((p) => `
+        <div class="plumber-card" data-id="${p.id}">
+          <img class="plumber-photo" src="${p.photo}" alt="${p.name}" />
+          <div class="plumber-main">
+            <div class="plumber-name">${p.name}</div>
+            <div class="plumber-spec">${p.specialization}</div>
+            <div class="plumber-meta">
+              <span><span class="star">★</span> ${p.rating.toFixed(1)} / 5</span>
+              <span>•</span>
+              <span>${p.location}</span>
+              <span>•</span>
+              <span>Starting ${inr(p.startingCost)}</span>
+            </div>
+          </div>
+          <div class="plumber-actions">
+            <a class="btn btn-teal-sm" href="booking.html?service=Plumber">Book Now</a>
+            <button class="btn btn-outline small" type="button" data-action="view">View</button>
+          </div>
+        </div>
+      `).join('');
+
+      els.empty.style.display = list.length ? 'none' : 'block';
+    }
+
+    function showDetails(p) {
+      els.detailsEmpty.style.display = 'none';
+      els.details.style.display = 'block';
+
+      els.dPhoto.src = p.photo;
+      els.dPhoto.alt = p.name;
+      els.dName.textContent = p.name;
+      els.dSpec.textContent = p.specialization;
+      els.dRating.textContent = p.rating.toFixed(1);
+      els.dLoc.textContent = p.location;
+      els.dExp.textContent = `${p.experienceYears} years`;
+      els.dPrice.textContent = inr(p.startingCost);
+
+      els.dServices.innerHTML = p.services.map(s => `<span class="chip">${s}</span>`).join('');
+      els.dSlots.innerHTML = p.slots.map(s => `<span class="slot">${s}</span>`).join('');
+
+      const url = new URL('booking.html', window.location.href);
+      url.searchParams.set('service', 'Plumber');
+      url.searchParams.set('provider', p.name);
+      els.bookBtn.href = url.pathname + url.search;
+    }
+
+    function wire() {
+      [els.q, els.rating, els.price, els.location].forEach((el) => el.addEventListener('input', renderList));
+      [els.rating, els.price, els.location].forEach((el) => el.addEventListener('change', renderList));
+
+      els.list.addEventListener('click', (e) => {
+        const row = e.target.closest('.plumber-card');
+        if (!row) return;
+        const pid = row.getAttribute('data-id');
+        const p = plumbers.find(x => x.id === pid);
+        if (!p) return;
+
+        const view = e.target.closest('button[data-action="view"]');
+        const clickCard = e.target.closest('.plumber-main') || e.target.closest('.plumber-photo');
+        if (view || clickCard) {
+          showDetails(p);
+        }
+      });
+    }
+
+    renderLocations();
+    renderList();
+    wire();
+    showDetails(plumbers[0]);
+
+    // Intercept "Book Now" clicks to enforce customer login
+    document.addEventListener('click', function(e) {
+      const link = e.target.closest('a[href^="booking.html"]');
+      if (link) {
+        if (!localStorage.getItem('servnet_token') || !localStorage.getItem('servnet_user')) {
+          e.preventDefault();
+          window.location.href = 'login.html?role=customer&redirect=' + encodeURIComponent(link.getAttribute('href'));
+        }
+      }
+    });
+  </script>
+</body>
+</html>
+

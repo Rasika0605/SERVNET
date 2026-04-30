@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ServNet | Book a Service</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Advanced Booking UI Styles */
+    .date-selection-container {
+      margin-top: 20px;
+    }
+
+    .quick-dates {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .date-chip {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      padding: 10px 18px;
+      border-radius: 99px;
+      font-weight: 700;
+      color: var(--ink-700);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.85rem;
+    }
+
+    .date-chip:hover {
+      background: #eef4f9;
+      border-color: var(--brand-500);
+    }
+
+    .date-chip.active {
+      background: var(--brand-600);
+      color: white;
+      border-color: var(--brand-600);
+      box-shadow: 0 4px 12px rgba(18, 70, 62, 0.2);
+    }
+
+    .custom-calendar {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 16px;
+      width: 320px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 1000;
+      display: none;
+      margin-top: 8px;
+    }
+
+    .custom-calendar.active {
+      display: block;
+      animation: slideDown 0.2s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .calendar-wrapper {
+      position: relative;
+      max-width: 320px;
+    }
+
+    .date-input-box {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      background: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
+    }
+
+    .date-input-box:hover {
+      border-color: var(--brand-500);
+      background: #f8fafc;
+    }
+
+    .date-input-box .icon {
+      color: var(--brand-600);
+      font-size: 1.1rem;
+    }
+
+    .cal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .cal-header h4 {
+      font-weight: 800;
+      color: var(--ink-950);
+      margin: 0;
+    }
+
+    .cal-nav {
+      background: none;
+      border: 1px solid #e2e8f0;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--ink-700);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .cal-nav:hover {
+      background: #f8fafc;
+      border-color: var(--brand-500);
+    }
+
+    .cal-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--ink-400);
+      margin-bottom: 10px;
+    }
+
+    .cal-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+
+    .cal-day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--ink-800);
+    }
+
+    .cal-day:hover:not(.disabled) {
+      background: #f1f5f9;
+    }
+
+    .cal-day.today {
+      color: var(--brand-600);
+      font-weight: 800;
+      border: 1px solid var(--brand-200);
+    }
+
+    .cal-day.active {
+      background: var(--brand-600) !important;
+      color: white !important;
+      font-weight: 800;
+      box-shadow: 0 4px 12px rgba(18, 70, 62, 0.2);
+    }
+
+    .cal-day.disabled {
+      color: #cbd5e1;
+      cursor: not-allowed;
+      opacity: 0.4;
+    }
+
+    .cal-day.empty {
+      cursor: default;
+    }
+
+    .radio-card.small {
+      padding: 12px;
+      font-size: 0.85rem;
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    .radio-card.small input {
+      display: none;
+    }
+
+    #emergency-box-container.highlight {
+      border: 2px solid #d93025;
+      background: #fff5f5;
+      border-radius: 12px;
+      padding: 16px;
+      transition: all 0.3s;
+    }
+
+    /* Payment Enhancements */
+    #payment-details-container {
+      margin-top: 24px;
+      padding: 20px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      display: none;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(5px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .upi-box {
+      background: white;
+      padding: 16px;
+      border-radius: 10px;
+      border: 1px dashed var(--brand-500);
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .upi-id {
+      font-weight: 800;
+      color: var(--brand-700);
+      font-family: monospace;
+      font-size: 1.1rem;
+    }
+
+    .wallet-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .wallet-btn {
+      padding: 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      background: white;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .wallet-btn img {
+      height: 24px;
+      object-fit: contain;
+    }
+
+    .wallet-btn:hover {
+      border-color: var(--brand-500);
+      background: #f0f7f6;
+      transform: translateY(-2px);
+    }
+
+    .wallet-btn.active {
+      border-color: var(--brand-600);
+      background: #e6f2f0;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .payment-status {
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 12px;
+      display: none;
+      text-align: center;
+    }
+
+    .payment-status.verifying {
+      background: #fffbeb;
+      color: #92400e;
+      border: 1px solid #fde68a;
+      display: block;
+    }
+
+    .payment-status.success {
+      background: #f0fdf4;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+      display: block;
+    }
+
+    .btn-copy {
+      background: var(--brand-500);
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-copy:hover {
+      background: var(--brand-600);
+    }
+
+    .payment-grid label {
+      height: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html"><span class="brand-mark">S</span><span>ServNet</span></a>
+      <nav class="nav-links">
+        <a href="index.html#home">Home</a>
+        <a href="index.html#services">Services</a>
+        <a href="index.html#about">About Us</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+      <div class="actions">
+        <a class="btn btn-primary" href="role.html">Login / Register</a>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding-top: 30px; padding-bottom: 60px;">
+    <div class="container booking-container">
+
+      <!-- Left Column: Forms -->
+      <div class="booking-main">
+
+        <!-- Service Info Card -->
+        <section class="booking-card">
+          <div style="display: flex; gap: 20px; align-items: flex-start;">
+            <div id="service-icon" class="service-icon" style="margin: 0; transform: scale(1.2);">🔧</div>
+            <div>
+              <h2 id="service-title" style="font-size: 1.5rem; margin-bottom: 8px;">Plumber</h2>
+              <p id="service-desc" style="color: var(--ink-500); margin-bottom: 12px; max-width: 500px;">Professional
+                plumbing services for repairs, installations, and maintenance</p>
+              <div
+                style="display: inline-block; background: #e6f7f2; color: #07ab7f; padding: 6px 12px; border-radius: 99px; font-weight: 700; font-size: 0.9rem;">
+                Estimated Price: <span id="service-price" style="font-weight: 500;">₹300 – ₹1500 per visit </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Customer Information -->
+        <section class="booking-card">
+          <div class="card-header">
+            <span class="card-icon" style="color: #0d8d5d;">👤</span>
+            <h3>Customer Information</h3>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Full Name *</label>
+              <input type="text" id="cust-name" placeholder="John Doe" />
+            </div>
+            <div class="form-group">
+              <label>Phone Number *</label>
+              <div class="input-with-icon">
+                <span class="input-icon">📞</span>
+                <input type="tel" id="cust-phone" placeholder="+1 (555) 123-4567" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Email Address *</label>
+              <div class="input-with-icon">
+                <span class="input-icon">✉️</span>
+                <input type="email" placeholder="john@example.com" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>City *</label>
+              <input type="text" id="cust-city" placeholder="e.g. Springfield" />
+            </div>
+            <div class="form-group">
+              <label>Pin Code *</label>
+              <input type="text" id="cust-pincode" placeholder="12345" />
+            </div>
+            <div class="form-group full-width">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <label style="margin-bottom: 0;">Address / Location *</label>
+                <button type="button" id="detect-location-btn"
+                  style="background: #e6f7f2; color: #07ab7f; border: none; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                  <span>📍</span> Use Current Location
+                </button>
+              </div>
+              <div class="input-with-icon">
+                <span class="input-icon">🏠</span>
+                <input type="text" id="cust-address" placeholder="123 Main St, Springfield" />
+              </div>
+              <div id="location-status" style="font-size: 0.75rem; margin-top: 4px; display: none;"></div>
+            </div>
+            <div class="form-group full-width">
+              <label>Landmark (Optional)</label>
+              <div class="input-with-icon">
+                <span class="input-icon">🏢</span>
+                <input type="text" id="cust-landmark" placeholder="Near City Mall, Opposite Park, etc." />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Service Requirements -->
+        <section class="booking-card">
+          <div class="card-header">
+            <span class="card-icon" style="color: #0d8d5d;">📄</span>
+            <h3>Service Requirements</h3>
+          </div>
+          <div class="form-group">
+            <label>Problem Description *</label>
+            <textarea placeholder="Example: Kitchen sink leakage under the cabinet" rows="3"></textarea>
+          </div>
+        </section>
+
+        <!-- Date & Time Selection -->
+        <section class="booking-card">
+          <div class="card-header">
+            <span class="card-icon" style="color: #0d8d5d;">📅</span>
+            <h3>Date & Time Selection</h3>
+          </div>
+
+          <div class="date-selection-container">
+            <label>Preferred Service Date *</label>
+            <div class="quick-dates">
+              <button type="button" class="date-chip" data-date="today">Today</button>
+              <button type="button" class="date-chip" data-date="tomorrow">Tomorrow</button>
+            </div>
+
+            <div class="calendar-wrapper">
+              <div class="date-input-box" id="date-box-trigger">
+                <span id="selected-date-text">Select Date</span>
+                <span class="icon">📅</span>
+              </div>
+
+              <div class="custom-calendar" id="calendar-container">
+                <div class="cal-header">
+                  <button type="button" id="prev-month" class="cal-nav">❮</button>
+                  <h4 id="cal-month-year">March 2026</h4>
+                  <button type="button" id="next-month" class="cal-nav">❯</button>
+                </div>
+                <div class="cal-weekdays">
+                  <div>Su</div>
+                  <div>Mo</div>
+                  <div>Tu</div>
+                  <div>We</div>
+                  <div>Th</div>
+                  <div>Fr</div>
+                  <div>Sa</div>
+                </div>
+                <div class="cal-days" id="calendar-days">
+                  <!-- Days injected by JS -->
+                </div>
+              </div>
+            </div>
+            <input type="hidden" id="booking-date" value="" />
+          </div>
+
+          <div class="form-group" style="margin-top: 32px;">
+            <label>Preferred Time Slot *</label>
+            <div class="radio-grid" id="time-slot-group">
+              <label class="radio-card active">
+                <input type="radio" name="timeslot" value="Morning (8 AM - 12 PM)" checked />
+                <span class="rc-icon">🌅</span>
+                <span class="rc-title">Morning</span>
+                <span class="rc-desc">8 AM - 12 PM</span>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="timeslot" value="Afternoon (12 PM - 4 PM)" />
+                <span class="rc-icon">☀️</span>
+                <span class="rc-title">Afternoon</span>
+                <span class="rc-desc">12 PM - 4 PM</span>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="timeslot" value="Evening (4 PM - 8 PM)" />
+                <span class="rc-icon">🌇</span>
+                <span class="rc-title">Evening</span>
+                <span class="rc-desc">4 PM - 8 PM</span>
+              </label>
+              <label class="radio-card" id="custom-time-card">
+                <input type="radio" name="timeslot" value="Custom" />
+                <span class="rc-icon">⏱️</span>
+                <span class="rc-title">Custom</span>
+                <span class="rc-desc">Choose Specific</span>
+                <input type="time" id="custom-time-picker"
+                  style="display:none; margin-top:8px; border:1px solid #ddd; border-radius:4px; padding:2px 4px; font-size:0.8rem; width:80px;" />
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- Additional Options -->
+        <section class="booking-card">
+          <div class="card-header">
+            <span class="card-icon" style="color: #0d8d5d;">ⓘ</span>
+            <h3>Additional Options</h3>
+          </div>
+          <div class="form-group">
+            <label>Upload Image of the Problem (Optional)</label>
+            <div style="display: flex; align-items: center; gap: 15px; margin-top: 10px;">
+              <input type="file" id="problem-image-input" style="display: none;" accept="image/*">
+              <button class="btn-upload" type="button" onclick="document.getElementById('problem-image-input').click()"
+                style="margin: 0; min-width: 140px;">↑ Choose File</button>
+              <div id="image-preview-container"
+                style="display: none; position: relative; width: 60px; height: 60px; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; background: #f8fafc;">
+                <img id="image-preview" src="" alt="Preview" style="width: 100%; height: 100%; object-fit: cover;">
+                <button type="button" id="remove-image-btn"
+                  style="position: absolute; top: 0; right: 0; background: rgba(0,0,0,0.5); color: white; border: none; width: 18px; height: 18px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;">✕</button>
+              </div>
+            </div>
+            <div id="file-name-display"
+              style="font-size: 0.85rem; color: var(--ink-500); margin-top: 6px; font-weight: 600;"></div>
+          </div>
+          <div class="emergency-box" id="emergency-box-container">
+            <label class="checkbox-label" style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+              <input type="checkbox" id="emergency-checkbox"
+                style="width: 18px; height: 18px; accent-color: #d93025;" />
+              <div style="flex: 1;">
+                <div style="font-weight: 700; color: #d93025;">🚨 Emergency Service (+ ₹500)</div>
+                <div style="font-size: 0.85rem; color: #d93025;">Request immediate assistance (within 1-2 hours)</div>
+              </div>
+            </label>
+            <div id="emergency-time-select"
+              style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #feb2b2;">
+              <label
+                style="font-size: 0.85rem; font-weight: 700; color: #d93025; display: block; margin-bottom: 8px;">Select
+                Emergency Time:</label>
+              <div class="radio-grid" style="grid-template-columns: 1fr 1fr;">
+                <label class="radio-card small">
+                  <input type="radio" name="emergency-time" value="Within 1 Hour" checked />
+                  <span class="rc-title">Within 1 Hour</span>
+                  <span class="rc-desc" style="font-size: 0.7rem;">+ ₹800</span>
+                </label>
+                <label class="radio-card small">
+                  <input type="radio" name="emergency-time" value="Within 2 Hours" />
+                  <span class="rc-title">Within 2 Hours</span>
+                  <span class="rc-desc" style="font-size: 0.7rem;">+ ₹500</span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top: 20px;">
+            <label>Special Instructions</label>
+            <textarea placeholder="Any specific requirements or instructions for the service provider..."
+              rows="2"></textarea>
+          </div>
+        </section>
+
+        <!-- Payment Option -->
+        <section class="booking-card">
+          <div class="card-header">
+            <span class="card-icon" style="color: #0d8d5d;">💳</span>
+            <h3>Payment Option</h3>
+          </div>
+          <div class="radio-grid payment-grid" id="payment-group">
+            <label class="radio-card active"
+              style="flex-direction: row; justify-content: flex-start; gap: 10px; padding: 12px 16px;">
+              <input type="radio" name="payment" value="Cash on Service" checked />
+              <span class="rc-icon" style="margin: 0; font-size: 1.2rem;">💵</span>
+              <span class="rc-title" style="font-size: 0.9rem;">Cash on Service</span>
+            </label>
+            <label class="radio-card"
+              style="flex-direction: row; justify-content: flex-start; gap: 10px; padding: 12px 16px;">
+              <input type="radio" name="payment" value="Online Payment" />
+              <span class="rc-icon" style="margin: 0; font-size: 1.2rem;">💳</span>
+              <span class="rc-title" style="font-size: 0.9rem;">Online Payment</span>
+            </label>
+            <label class="radio-card"
+              style="flex-direction: row; justify-content: flex-start; gap: 10px; padding: 12px 16px;">
+              <input type="radio" name="payment" value="UPI / Card" />
+              <span class="rc-icon" style="margin: 0; font-size: 1.2rem;">📱</span>
+              <span class="rc-title" style="font-size: 0.9rem;">UPI / Mobile</span>
+            </label>
+          </div>
+
+          <!-- Dynamic Payment Details -->
+          <div id="payment-details-container">
+            <div id="upi-section">
+              <label style="font-size: 0.9rem; margin-bottom: 12px; display: block;">Pay via UPI ID</label>
+              <div class="upi-box">
+                <span class="upi-id" id="upi-val">servnet@upi</span>
+                <button type="button" class="btn-copy" id="copy-upi-btn">Copy</button>
+              </div>
+
+              <div class="wallet-grid">
+                <button type="button" class="wallet-btn" data-wallet="GPay">
+                  <img src="https://img.icons8.com/color/48/google-pay.png" alt="GPay">
+                  <span>GPay</span>
+                </button>
+                <button type="button" class="wallet-btn" data-wallet="PhonePe">
+                  <img src="https://img.icons8.com/color/48/phonepe.png" alt="PhonePe">
+                  <span>PhonePe</span>
+                </button>
+                <button type="button" class="wallet-btn" data-wallet="Paytm">
+                  <img src="https://img.icons8.com/color/48/paytm.png" alt="Paytm">
+                  <span>Paytm</span>
+                </button>
+              </div>
+
+              <div class="form-group">
+                <label style="font-size: 0.85rem;">Upload Payment Screenshot</label>
+                <input type="file" id="payment-screenshot" style="display: none;" accept="image/*">
+                <button class="btn-upload" type="button"
+                  style="width: 100%; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px;"
+                  onclick="document.getElementById('payment-screenshot').click()">
+                  ↑ Select Screenshot
+                </button>
+                <div id="screenshot-name" style="font-size: 0.75rem; color: var(--ink-500); margin-top: 4px;"></div>
+              </div>
+
+              <button type="button" id="i-have-paid-btn" class="btn btn-primary"
+                style="width: 100%; margin-top: 20px; background: var(--brand-500);">
+                I Have Paid
+              </button>
+
+              <div id="payment-status-msg" class="payment-status"></div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Right Column: Sidebar -->
+      <div class="booking-sidebar">
+        <div class="summary-card">
+          <h3 style="margin-bottom: 24px; font-size: 1.25rem;">Booking Summary</h3>
+
+          <div class="summary-row">
+            <span class="s-label">Service</span>
+            <span class="s-value" id="sum-service" style="font-weight: 700;">Plumber</span>
+          </div>
+          <div class="summary-row">
+            <span class="s-label">Date</span>
+            <span class="s-value" id="sum-date">Mar 15, 2026</span>
+          </div>
+          <div class="summary-row">
+            <span class="s-label">Time Slot</span>
+            <span class="s-value" id="sum-time">Morning</span>
+          </div>
+          <div class="summary-row">
+            <span class="s-label">Payment</span>
+            <span class="s-value" id="sum-payment">Cash On Service</span>
+          </div>
+
+          <hr class="summary-divider" />
+
+          <div class="summary-row" id="sum-emergency-row" style="display: none; margin-bottom: 12px;">
+            <span class="s-label" style="color: #d93025; font-weight: 700;">🚨 Emergency Fee</span>
+            <span class="s-value" style="color: #d93025; font-weight: 800;">+₹30</span>
+          </div>
+
+          <div class="summary-row" style="margin-bottom: 24px;">
+            <span class="s-label">Estimated Cost</span>
+            <span class="s-value" id="sum-price" style="color: #07ab7f; font-weight: 700; font-size: 1.1rem;">₹500 –
+              ₹1500</span>
+          </div>
+
+          <button id="confirm-booking-btn" class="btn btn-primary"
+            style="width: 100%; font-size: 1rem; padding: 14px; border-radius: 12px; margin-bottom: 16px;">
+            <span style="margin-right: 8px;">✔️</span> Confirm Booking
+          </button>
+
+          <p
+            style="font-size: 0.75rem; text-align: center; color: var(--ink-500); max-width: 220px; margin: 0 auto; line-height: 1.4;">
+            By confirming, you agree to our Terms & Conditions
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Success Modal Overlay -->
+  <div class="modal-overlay" id="successModal">
+    <div class="modal-card">
+      <div class="modal-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+          stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <h2 class="modal-title">Booking Confirmed!</h2>
+      <p class="modal-message">
+        Your <span id="modal-serviceName" style="color: var(--brand-700);">Service</span> has been scheduled
+        successfully for <br />
+        <span id="modal-date">Date</span> at <span id="modal-time">Time</span>.<br /><br />
+        <span style="font-size: 1.1rem; color: var(--ink-950);">Estimated Total: <span id="modal-price"
+            style="color: #0d8d5d; font-weight: 800;">$0</span></span>
+      </p>
+      <button class="btn btn-primary" style="width: 100%; padding: 16px; border-radius: 12px; font-size: 1.05rem;"
+        onclick="window.location.href='customer.html'">
+        Back to Dashboard
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const servicesData = {
+      'Plumber': { icon: '🔧', desc: 'Professional plumbing services for repairs, installations, and maintenance', price: 700, priceRange: '₹300 – ₹1500 per visit' },
+      'Electrician': { icon: '⚡', desc: 'Expert electrical repairs, wiring, and appliance installation', price: 800, priceRange: '₹300 – ₹2000 per job' },
+      'Carpenter': { icon: '🧱', desc: 'Custom woodwork, furniture repair, and carpentry services', price: 1000, priceRange: '₹500 – ₹2500 per work' },
+      'Cleaner': { icon: '🧽', desc: 'Deep cleaning, regular housekeeping, and sanitation', price: 600, priceRange: '₹500 – ₹2000' },
+      'Gardener': { icon: '🌿', desc: 'Lawn care, landscaping, and garden maintenance', price: 800, priceRange: '₹300 – ₹1500 per visit' },
+      'Painter': { icon: '🎨', desc: 'Interior and exterior house painting and touch-ups', price: 2000, priceRange: '₹1500 – ₹20,000+ (depends on area)' },
+      'HVAC': { icon: '❄️', desc: 'AC and heating system installation, repair, and maintenance', price: 1500, priceRange: '₹500 – ₹3000 (service/repair)' },
+      'Security': { icon: '🛡️', desc: 'Installation of security cameras, alarms, and smart locks', price: 3000, priceRange: '₹2000 – ₹15,000 (installation)' },
+      'Packers': { icon: '📦', desc: 'Professional packing and unpacking services', price: 2500, priceRange: '₹1500 – ₹10,000' },
+      'Handyman': { icon: '🧰', desc: 'General home repairs, mounting, and odd jobs', price: 500, priceRange: '₹300 – ₹1500' },
+      'Smart Home': { icon: '💡', desc: 'Smart device setup, automation, and home networking', price: 3000, priceRange: '₹2000 – ₹25,000 (installation/setup)' }
+    };
+
+    let currentCalDate = new Date();
+    let selectedDate = null;
+    let problemImageBase64 = null; // Script-scope so confirm handler can access it
+
+    function renderCalendar() {
+      const year = currentCalDate.getFullYear();
+      const month = currentCalDate.getMonth();
+
+      const monthName = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date(year, month));
+      document.getElementById('cal-month-year').textContent = `${monthName} ${year}`;
+
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const daysContainer = document.getElementById('calendar-days');
+      daysContainer.innerHTML = '';
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      for (let i = 0; i < firstDay; i++) {
+        const div = document.createElement('div');
+        div.classList.add('cal-day', 'empty');
+        daysContainer.appendChild(div);
+      }
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const div = document.createElement('div');
+        div.classList.add('cal-day');
+        div.textContent = d;
+
+        const dateObj = new Date(year, month, d);
+        if (dateObj < today) {
+          div.classList.add('disabled');
+        } else {
+          if (dateObj.getTime() === today.getTime()) div.classList.add('today');
+          if (selectedDate && dateObj.getTime() === selectedDate.getTime()) div.classList.add('active');
+
+          div.addEventListener('click', (e) => {
+            e.stopPropagation();
+            selectDate(dateObj);
+            document.getElementById('calendar-container').classList.remove('active');
+          });
+        }
+        daysContainer.appendChild(div);
+      }
+    }
+
+    function selectDate(date) {
+      selectedDate = date;
+      document.getElementById('booking-date').value = date.toISOString().split('T')[0];
+
+      const options = { month: 'short', day: 'numeric', year: 'numeric' };
+      const formatted = date.toLocaleDateString('en-US', options);
+
+      document.getElementById('sum-date').textContent = formatted;
+      document.getElementById('selected-date-text').textContent = formatted;
+      document.getElementById('selected-date-text').style.color = 'var(--ink-950)';
+
+      document.querySelectorAll('.date-chip').forEach(c => c.classList.remove('active'));
+      renderCalendar();
+      updateTotalCost();
+    }
+
+    function handleQuickDate(type) {
+      const d = new Date();
+      d.setHours(0, 0, 0, 0);
+      if (type === 'tomorrow') d.setDate(d.getDate() + 1);
+
+      currentCalDate = new Date(d);
+      selectDate(d);
+
+      document.querySelectorAll('.date-chip').forEach(c => {
+        if (c.dataset.date === type) c.classList.add('active');
+        else c.classList.remove('active');
+      });
+    }
+
+    function updateTotalCost() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const serviceName = urlParams.get('service') || 'Plumber';
+      const serviceData = servicesData[serviceName] || servicesData['Plumber'];
+
+      let total = serviceData.price;
+      const isEmergency = document.getElementById('emergency-checkbox').checked;
+      const emergencyRow = document.getElementById('sum-emergency-row');
+
+      if (isEmergency) {
+        const emergencyOption = document.querySelector('input[name="emergency-time"]:checked')?.value || 'Within 2 Hours';
+        const emergencyFee = (emergencyOption === 'Within 1 Hour') ? 800 : 500;
+
+        total += emergencyFee;
+        emergencyRow.style.display = 'flex';
+        emergencyRow.querySelector('.s-value').textContent = `+₹${emergencyFee}`;
+        document.getElementById('emergency-box-container').classList.add('highlight');
+        document.getElementById('emergency-time-select').style.display = 'block';
+
+        document.getElementById('sum-time').textContent = `Emergency (${emergencyOption})`;
+      } else {
+        emergencyRow.style.display = 'none';
+        document.getElementById('emergency-box-container').classList.remove('highlight');
+        document.getElementById('emergency-time-select').style.display = 'none';
+
+        const activeTime = document.querySelector('input[name="timeslot"]:checked');
+        if (activeTime) {
+          if (activeTime.value === 'Custom') {
+            document.getElementById('sum-time').textContent = document.getElementById('custom-time-picker').value || 'Custom Time';
+          } else {
+            document.getElementById('sum-time').textContent = activeTime.value;
+          }
+        }
+      }
+
+      document.getElementById('sum-price').textContent = `₹${total} (Est.)`;
+
+      // Update other summary fields
+      document.getElementById('sum-service').textContent = serviceName;
+      const paymentVal = document.querySelector('input[name="payment"]:checked')?.value || 'Cash on Service';
+      document.getElementById('sum-payment').textContent = paymentVal;
+    }
+
+    function updateBookingUI() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const serviceName = urlParams.get('service') || 'Plumber';
+      const serviceData = servicesData[serviceName] || servicesData['Plumber'];
+      const providerName = urlParams.get('providerName') || 'David Parker'; // Default for demo
+
+      document.getElementById('service-title').textContent = serviceName;
+      document.getElementById('service-icon').textContent = serviceData.icon;
+      document.getElementById('service-desc').textContent = serviceData.desc;
+      document.getElementById('service-price').textContent = serviceData.priceRange;
+      document.getElementById('sum-service').textContent = serviceName;
+
+      updateTotalCost();
+
+      // Popup Toggle
+      const trigger = document.getElementById('date-box-trigger');
+      const calendar = document.getElementById('calendar-container');
+
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        calendar.classList.toggle('active');
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.calendar-wrapper')) {
+          calendar.classList.remove('active');
+        }
+      });
+
+      // Time Slot Logic
+      const timeRadios = document.querySelectorAll('input[name="timeslot"]');
+      const customPicker = document.getElementById('custom-time-picker');
+
+      timeRadios.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+          if (e.target.value === 'Custom') {
+            customPicker.style.display = 'block';
+          } else {
+            customPicker.style.display = 'none';
+          }
+          document.querySelectorAll('#time-slot-group .radio-card').forEach(card => card.classList.remove('active'));
+          e.target.closest('.radio-card').classList.add('active');
+          updateTotalCost();
+        });
+      });
+
+      customPicker.addEventListener('input', updateTotalCost);
+
+      // Emergency Logic
+      document.getElementById('emergency-checkbox').addEventListener('change', updateTotalCost);
+      document.querySelectorAll('input[name="emergency-time"]').forEach(radio => {
+        radio.addEventListener('change', updateTotalCost);
+      });
+
+      // Payment Logic
+      const paymentRadios = document.querySelectorAll('input[name="payment"]');
+      const paymentDetails = document.getElementById('payment-details-container');
+      const paymentStatus = document.getElementById('payment-status-msg');
+
+      paymentRadios.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+          document.querySelectorAll('#payment-group .radio-card').forEach(card => card.classList.remove('active'));
+          e.target.closest('.radio-card').classList.add('active');
+
+          if (e.target.value !== 'Cash on Service') {
+            paymentDetails.style.display = 'block';
+          } else {
+            paymentDetails.style.display = 'none';
+            paymentStatus.style.display = 'none';
+          }
+          updateTotalCost();
+        });
+      });
+
+      // UPI Copy
+      document.getElementById('copy-upi-btn').addEventListener('click', () => {
+        const upiId = document.getElementById('upi-val').textContent;
+        navigator.clipboard.writeText(upiId);
+        const btn = document.getElementById('copy-upi-btn');
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy', 2000);
+      });
+
+      // Wallet Demos
+      document.querySelectorAll('.wallet-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.wallet-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          paymentStatus.textContent = `Processing via ${btn.dataset.wallet}...`;
+          paymentStatus.className = 'payment-status verifying';
+
+          setTimeout(() => {
+            paymentStatus.textContent = `Payment Successful via ${btn.dataset.wallet}! (Demo)`;
+            paymentStatus.className = 'payment-status success';
+          }, 1500);
+        });
+      });
+
+      // Problem Image Upload & Preview
+      const problemImageInput = document.getElementById('problem-image-input');
+      const imagePreviewContainer = document.getElementById('image-preview-container');
+      const imagePreview = document.getElementById('image-preview');
+      const removeImageBtn = document.getElementById('remove-image-btn');
+      const fileNameDisplay = document.getElementById('file-name-display');
+      // problemImageBase64 is declared at script scope above
+
+      problemImageInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          fileNameDisplay.textContent = `Selected: ${file.name}`;
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            problemImageBase64 = event.target.result;
+            imagePreview.src = problemImageBase64;
+            imagePreviewContainer.style.display = 'block';
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      removeImageBtn.addEventListener('click', () => {
+        problemImageInput.value = '';
+        problemImageBase64 = null;
+        imagePreviewContainer.style.display = 'none';
+        fileNameDisplay.textContent = '';
+      });
+
+      // I Have Paid / Screenshot
+      const screenshotInput = document.getElementById('payment-screenshot');
+      const screenshotName = document.getElementById('screenshot-name');
+      screenshotInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+          screenshotName.textContent = `Selected: ${e.target.files[0].name}`;
+        }
+      });
+
+      document.getElementById('i-have-paid-btn').addEventListener('click', () => {
+        if (screenshotInput.files.length === 0) {
+          alert('Please upload a payment screenshot first.');
+          return;
+        }
+        paymentStatus.textContent = 'Payment under verification. Please wait...';
+        paymentStatus.className = 'payment-status verifying';
+      });
+
+      // Calendar Nav
+      document.getElementById('prev-month').addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentCalDate.setMonth(currentCalDate.getMonth() - 1);
+        renderCalendar();
+      });
+      document.getElementById('next-month').addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentCalDate.setMonth(currentCalDate.getMonth() + 1);
+        renderCalendar();
+      });
+
+      // Quick Chips
+      document.querySelectorAll('.date-chip').forEach(btn => {
+        btn.addEventListener('click', () => handleQuickDate(btn.dataset.date));
+      });
+
+      // Geolocation
+      const detectBtn = document.getElementById('detect-location-btn');
+      const addressInput = document.getElementById('cust-address');
+      const pincodeInput = document.getElementById('cust-pincode');
+      const cityInput = document.getElementById('cust-city');
+      const statusDiv = document.getElementById('location-status');
+      const GOOGLE_MAPS_API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY';
+
+      function setStatus(msg, type = 'info') {
+        if (!statusDiv) return;
+        statusDiv.textContent = msg;
+        statusDiv.style.display = 'block';
+        statusDiv.style.color = type === 'error' ? '#ef4444' : (type === 'success' ? '#16a34a' : '#64748b');
+      }
+
+      if (detectBtn && addressInput) {
+        detectBtn.addEventListener('click', () => {
+          const originalContent = detectBtn.innerHTML;
+          detectBtn.innerHTML = '<span>⏳</span> Locating...';
+          detectBtn.disabled = true;
+          setStatus('Detecting your location...', 'info');
+
+          if (!navigator.geolocation) {
+            setStatus('❌ Geolocation not supported by browser.', 'error');
+            detectBtn.innerHTML = originalContent; detectBtn.disabled = false;
+            return;
+          }
+
+          navigator.geolocation.getCurrentPosition(async (pos) => {
+            const { latitude, longitude } = pos.coords;
+            let success = false;
+
+            // 1. Try Google Maps API
+            if (GOOGLE_MAPS_API_KEY && GOOGLE_MAPS_API_KEY !== 'YOUR_GOOGLE_MAPS_API_KEY') {
+              try {
+                const res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_MAPS_API_KEY}`);
+                const data = await res.json();
+                if (data.status === 'OK' && data.results.length > 0) {
+                  const result = data.results[0];
+                  addressInput.value = result.formatted_address;
+                  result.address_components.forEach(c => {
+                    if (c.types.includes('postal_code')) pincodeInput.value = c.long_name;
+                    if (c.types.includes('locality')) cityInput.value = c.long_name;
+                  });
+                  success = true;
+                }
+              } catch (e) { console.error('Google Maps error:', e); }
+            }
+
+            // 2. Fallback to Nominatim if Google failed or was skipped
+            if (!success) {
+              try {
+                setStatus('Fetching address details...', 'info');
+                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`, {
+                  headers: { 'Accept-Language': 'en' }
+                });
+                const data = await res.json();
+                if (data && data.display_name) {
+                  addressInput.value = data.display_name;
+                  if (data.address) {
+                    if (data.address.postcode) pincodeInput.value = data.address.postcode;
+                    cityInput.value = data.address.city || data.address.town || data.address.village || data.address.suburb || '';
+                  }
+                  success = true;
+                }
+              } catch (e) {
+                console.error('Nominatim error:', e);
+                setStatus('❌ Failed to fetch address. Please enter manually.', 'error');
+              }
+            }
+
+            if (success) setStatus('✅ Location detected!', 'success');
+            detectBtn.innerHTML = originalContent; detectBtn.disabled = false;
+          }, (error) => {
+            let msg = '❌ Could not get location.';
+            if (error.code === error.PERMISSION_DENIED) msg = '❌ Location access denied by user.';
+            setStatus(msg, 'error');
+            detectBtn.innerHTML = originalContent; detectBtn.disabled = false;
+          }, { timeout: 10000 });
+        });
+      }
+
+      // Initial Selection
+      handleQuickDate('today');
+      renderCalendar();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentUser = JSON.parse(localStorage.getItem('servnet_user'));
+      if (!localStorage.getItem('servnet_token') || !currentUser) {
+        window.location.replace('login.html?role=customer&redirect=' + encodeURIComponent(window.location.href));
+        return;
+      }
+      updateBookingUI();
+
+      const confirmBtn = document.getElementById('confirm-booking-btn');
+      confirmBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('cust-name').value.trim();
+        const phone = document.getElementById('cust-phone').value.trim();
+        const address = document.getElementById('cust-address').value.trim();
+        const city = document.getElementById('cust-city').value.trim();
+        const pincode = document.getElementById('cust-pincode').value.trim();
+        const notes = document.querySelector('textarea').value.trim();
+
+        if (!name || !phone || !address || !city || !pincode || !selectedDate) {
+          alert("Please fill in all required fields and select a date.");
+          return;
+        }
+
+        const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+        const paymentStatusMsg = document.getElementById('payment-status-msg');
+
+        if (paymentMethod !== 'Cash on Service' && !paymentStatusMsg.classList.contains('success') && !paymentStatusMsg.classList.contains('verifying')) {
+          alert("Please complete the online payment or upload a screenshot first.");
+          return;
+        }
+
+        confirmBtn.disabled = true;
+        confirmBtn.innerHTML = '<span>⏳</span> processing...';
+
+        const serviceName = document.getElementById('sum-service').textContent;
+        const bookingDate = document.getElementById('sum-date').textContent;
+        const bookingTime = document.getElementById('sum-time').textContent;
+        const totalCost = document.getElementById('sum-price').textContent;
+
+        const token = localStorage.getItem('servnet_token');
+        const isEmergency = document.getElementById('emergency-checkbox').checked;
+        const emergencyOption = document.querySelector('input[name="emergency-time"]:checked')?.value || 'Within 2 Hours';
+        const displayTime = isEmergency ? `Emergency (${emergencyOption})` : bookingTime;
+        const urlParams2 = new URLSearchParams(window.location.search);
+        const providerName = urlParams2.get('providerName') || '';
+
+        const bookingData = {
+          service: serviceName,
+          date: bookingDate,
+          timeSlot: displayTime,
+          location: `${address}, ${city}`,
+          pincode: pincode,
+          landmark: document.getElementById('cust-landmark').value.trim(),
+          problemDescription: notes,
+          paymentMethod: paymentMethod,
+          isEmergency: isEmergency,
+          status: 'Pending',
+          customerName: name,
+          customerPhone: phone,
+          totalCost: totalCost,
+          providerName: providerName
+        };
+
+        try {
+          const response = await fetch('/api/bookings', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(bookingData)
+          });
+
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || 'Failed to create booking');
+          }
+
+          const result = await response.json();
+          console.log('Booking created successfully:', result);
+
+          // Update modal dynamic fields
+          document.getElementById('modal-serviceName').textContent = serviceName;
+          document.getElementById('modal-date').textContent = bookingDate;
+          document.getElementById('modal-time').textContent = displayTime;
+          document.getElementById('modal-price').textContent = totalCost;
+
+          document.getElementById('successModal').classList.add('active');
+
+        } catch (error) {
+          console.error('Booking Error:', error);
+          alert('Error: ' + error.message);
+        } finally {
+          confirmBtn.disabled = false;
+          confirmBtn.innerHTML = '<span>✔️</span> Confirm Booking';
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+/* Topbar Dropdowns */
+.dropdown-wrapper { position: relative; }
+.dropdown-panel { position: absolute; top: calc(100% + 14px); right: -10px; background: #fff; width: 340px; border-radius: 16px; box-shadow: 0 12px 40px -10px rgba(17,41,71,0.15); border: 1px solid #dbe9f2; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); z-index: 100; text-align: left; }
+.dropdown-panel.show { opacity: 1; visibility: visible; transform: translateY(0); }
+.dropdown-panel::before { content: ''; position: absolute; top: -7px; right: 24px; width: 14px; height: 14px; background: #fff; transform: rotate(45deg); border-left: 1px solid #dbe9f2; border-top: 1px solid #dbe9f2; z-index: -1; }
+
+/* Notification Panel */
+.notif-panel-header { display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; border-bottom: 1px solid #f0f4f8; }
+.notif-panel-header h3 { font-size: 1.1rem; margin: 0; color: var(--ink-950); }
+.text-btn { background: none; border: none; font-size: 0.85rem; color: var(--brand-700); font-weight: 700; cursor: pointer; padding: 0; }
+.text-btn:hover { text-decoration: underline; }
+.notif-list { max-height: 380px; overflow-y: auto; }
+.notif-list::-webkit-scrollbar { width: 6px; }
+.notif-list::-webkit-scrollbar-thumb { background: #dbe9f2; border-radius: 10px; }
+.notif-item { display: flex; gap: 14px; padding: 16px 20px; border-bottom: 1px solid #f0f4f8; transition: background 0.2s; cursor: pointer; text-decoration: none; color: inherit; }
+.notif-item:hover { background: #f8fbff; }
+.notif-item.unread { background: #f0fdf9; }
+.notif-item.unread:hover { background: #e6fbf5; }
+.notif-icon { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-size: 1.25rem; flex-shrink: 0; }
+.bg-light-blue { background: #e0f2fe; color: #0284c7; }
+.bg-light-green { background: #dcfce7; color: #16a34a; }
+.bg-light-purple { background: #f3e8ff; color: #9333ea; }
+.notif-content { flex: 1; }
+.notif-content h4 { margin: 0 0 4px; font-size: 0.95rem; color: var(--ink-950); }
+.notif-content p { margin: 0 0 6px; font-size: 0.85rem; color: var(--ink-500); line-height: 1.4; }
+.notif-time { font-size: 0.75rem; color: #8a9bb3; font-weight: 600; display: block; }
+.unread-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brand-700); margin-top: 6px; flex-shrink: 0; }
+.notif-footer { padding: 16px; text-align: center; border-top: 1px solid #f0f4f8; background: #fafcff; border-radius: 0 0 16px 16px; }
+.notif-footer a { font-size: 0.9rem; color: var(--brand-700); font-weight: 700; text-decoration: none; }
+.notif-footer a:hover { text-decoration: underline; }
+.notif-badge-icon { position: absolute; top: -4px; right: -4px; background: #ef4444; color: white; font-size: 0.65rem; font-weight: 800; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; border: 2px solid white; z-index: 10; }
+
+/* Profile Panel */
+.profile-panel { width: 280px; }
+.profile-panel::before { right: 28px; }
+.profile-panel-header { padding: 24px 20px; border-bottom: 1px solid #f0f4f8; display: flex; gap: 16px; align-items: center; background: #fafcff; border-radius: 16px 16px 0 0; }
+.profile-panel-header img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+.profile-panel-header h3 { margin: 0 0 2px; font-size: 1.1rem; color: var(--ink-950); }
+.profile-panel-header p { margin: 0; font-size: 0.85rem; color: var(--ink-500); }
+.p-menu-list { padding: 8px 0; display: flex; flex-direction: column; }
+.p-menu-item { display: flex; align-items: center; gap: 14px; padding: 12px 20px; font-size: 0.95rem; color: var(--ink-700); font-weight: 600; transition: all 0.2s; cursor: pointer; text-decoration: none; }
+.p-menu-item:hover { background: #f8fbff; color: var(--brand-700); }
+.p-menu-item span.emoji { font-size: 1.2rem; }
+.p-menu-divider { height: 1px; background: #f0f4f8; margin: 8px 0; }
+.text-danger { color: #ef4444; }
+.text-danger:hover { background: #fef2f2; color: #ef4444; }

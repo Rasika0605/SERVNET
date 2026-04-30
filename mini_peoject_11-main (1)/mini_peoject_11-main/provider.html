@@ -1,0 +1,2270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ServNet | Service Provider Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="provider.css" />
+</head>
+
+<body class="dash-v2-body">
+  <!-- Top Navigation -->
+  <header class="topbar dash-v2-topbar">
+    <div class="container nav-wrap dash-v2-nav">
+      <a class="brand" href="provider.html">
+        <span class="brand-mark">S</span><span style="letter-spacing: 0.05em; font-weight: 800;">SERVNET</span>
+      </a>
+
+      <nav class="nav-links dash-v2-links provider-links">
+        <a href="#dashboard" class="active" onclick="switchTab('dashboard')">Dashboard</a>
+        <a href="#requests" onclick="switchTab('requests')">Service Requests</a>
+        <a href="#services" onclick="switchTab('services')">My Services</a>
+        <a href="#schedule" onclick="switchTab('schedule')">My Schedule</a>
+        <a href="#reviews" onclick="switchTab('reviews')">Reviews & Ratings</a>
+      </nav>
+
+      <div class="user-menu dash-v2-user" style="position: relative; gap: 16px; display: flex; align-items: center;">
+
+        <!-- Notification Dropdown Wrapper -->
+        <div class="dropdown-wrapper" id="notif-wrapper">
+          <button class="icon-btn" aria-label="Notifications" id="notif-btn"
+            style="position: relative; background: none; border: none; cursor: pointer; color: var(--ink-700); padding: 4px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="notif-badge-icon"
+              style="position: absolute; top: 0px; right: 0px; background: #ef4444; color: white; font-size: 0.65rem; font-weight: bold; width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">4</span>
+          </button>
+
+          <div class="dropdown-panel" id="notif-panel"
+            style="display: none; position: absolute; top: 120%; right: 0; width: 320px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 1000;">
+            <div class="notif-panel-header"
+              style="padding: 16px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+              <h3 style="margin: 0; font-size: 1rem; color: var(--ink-700);">Notifications</h3>
+              <div style="display:flex; gap: 12px;">
+                <button class="text-btn"
+                  onclick="document.querySelector('.notif-badge-icon').style.display='none'; document.querySelectorAll('.unread-dot').forEach(el=>el.style.display='none');"
+                  style="font-size: 0.8rem; color: var(--brand-500); cursor: pointer; border: none; background: none; padding: 0;">Mark
+                  as read</button>
+                <button class="text-btn"
+                  onclick="document.getElementById('notif-list-items').innerHTML='<div style=\'padding:20px;text-align:center;color:#64748b;\'>No notifications</div>'; document.querySelector('.notif-badge-icon').style.display='none';"
+                  style="font-size: 0.8rem; color: #ef4444; cursor: pointer; border: none; background: none; padding: 0;">Clear
+                  all</button>
+              </div>
+            </div>
+            <div class="notif-list" id="notif-list-items" style="max-height: 350px; overflow-y: auto;">
+              <a href="#" class="notif-item unread"
+                style="display: flex; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; text-decoration: none; color: inherit; align-items: flex-start; gap: 12px; position: relative;">
+                <div class="notif-icon"
+                  style="background: #dcfce7; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; font-size: 14px;">
+                  ✅</div>
+                <div class="notif-content" style="flex: 1;">
+                  <h4 style="margin: 0; font-size: 0.9rem; color: var(--ink-700);">Booking Accepted</h4>
+                  <p style="margin: 4px 0 0; font-size: 0.8rem; color: #475569;">Your booking is accepted.</p>
+                </div>
+                <div class="unread-dot"
+                  style="width: 8px; height: 8px; background: var(--brand-500); border-radius: 50%; margin-top: 6px;">
+                </div>
+              </a>
+              <a href="#" class="notif-item unread"
+                style="display: flex; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; text-decoration: none; color: inherit; align-items: flex-start; gap: 12px; position: relative;">
+                <div class="notif-icon"
+                  style="background: #fee2e2; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; font-size: 14px;">
+                  ❌</div>
+                <div class="notif-content" style="flex: 1;">
+                  <h4 style="margin: 0; font-size: 0.9rem; color: var(--ink-700);">Booking Rejected</h4>
+                  <p style="margin: 4px 0 0; font-size: 0.8rem; color: #475569;">Your request is rejected.</p>
+                </div>
+                <div class="unread-dot"
+                  style="width: 8px; height: 8px; background: var(--brand-500); border-radius: 50%; margin-top: 6px;">
+                </div>
+              </a>
+              <a href="#" class="notif-item unread"
+                style="display: flex; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; text-decoration: none; color: inherit; align-items: flex-start; gap: 12px; position: relative;">
+                <div class="notif-icon"
+                  style="background: #fef3c7; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; font-size: 14px;">
+                  ⭐</div>
+                <div class="notif-content" style="flex: 1;">
+                  <h4 style="margin: 0; font-size: 0.9rem; color: var(--ink-700);">New Review</h4>
+                  <p style="margin: 4px 0 0; font-size: 0.8rem; color: #475569;">New review received.</p>
+                </div>
+                <div class="unread-dot"
+                  style="width: 8px; height: 8px; background: var(--brand-500); border-radius: 50%; margin-top: 6px;">
+                </div>
+              </a>
+              <a href="#" class="notif-item unread"
+                style="display: flex; padding: 12px 16px; text-decoration: none; color: inherit; align-items: flex-start; gap: 12px; position: relative;">
+                <div class="notif-icon"
+                  style="background: #dbeafe; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; font-size: 14px;">
+                  📅</div>
+                <div class="notif-content" style="flex: 1;">
+                  <h4 style="margin: 0; font-size: 0.9rem; color: var(--ink-700);">Upcoming Service</h4>
+                  <p style="margin: 4px 0 0; font-size: 0.8rem; color: #475569;">Upcoming service reminder.</p>
+                </div>
+                <div class="unread-dot"
+                  style="width: 8px; height: 8px; background: var(--brand-500); border-radius: 50%; margin-top: 6px;">
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Logout Button -->
+        <a href="#" onclick="handleLogout()" title="Logout"
+          style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; color: #ef4444; background: #fef2f2; text-decoration: none; transition: background 0.2s;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </a>
+
+        <!-- Avatar -->
+        <a href="#profile" onclick="switchTab('dashboard')">
+          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80"
+            alt="DP" class="user-avatar-img"
+            style="cursor: pointer; width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+        </a>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero / Welcome -->
+  <section class="dash-v2-hero" id="dashboard">
+    <div class="container dash-v2-hero-content provider-hero">
+      <div class="hero-text-block">
+        <h1 id="welcome-message">Welcome back, David 👋</h1>
+        <p>Manage your services and view booking requests.</p>
+
+
+        <!-- Diagnostic Panel (Temporary for verification) -->
+
+
+        <!-- Quick stats -->
+        <div class="stats-grid" aria-label="Quick Stats">
+          <div class="stat-card">
+            <div class="stat-label">Total Bookings</div>
+            <div class="stat-value" id="stat-total">24</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Pending Requests</div>
+            <div class="stat-value" id="stat-pending">5</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Completed Jobs</div>
+            <div class="stat-value" id="stat-completed">19</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Average Rating</div>
+            <div class="stat-value"><span class="star">★</span> <span id="stat-rating">4.7</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Earnings</div>
+            <div class="stat-value" id="stat-earnings">₹0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-illustration provider-hero-badge" aria-hidden="true">
+        <div class="provider-badge">
+          <div class="badge-title">Today</div>
+          <div class="badge-row"><span>Requests</span><strong id="badge-requests">2</strong></div>
+          <div class="badge-row"><span>Next job</span><strong>3:30 PM</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main -->
+  <main class="dash-v2-main">
+    <div class="container dash-v2-grid provider-grid">
+      <div class="dash-v2-columns provider-columns">
+        <!-- Left column -->
+        <div class="dash-v2-left">
+          <!-- Incoming Requests -->
+          <section class="widget-card" id="requests">
+            <div class="sec-head">
+              <h2 class="section-title">Incoming Service Requests</h2>
+              <button class="btn btn-teal-outline" id="seed-requests-btn" type="button">Add Demo Requests</button>
+            </div>
+
+            <div class="request-list" id="request-list">
+              <div class="empty-state" id="requests-empty">
+                No new requests right now.
+              </div>
+            </div>
+          </section>
+
+          <!-- My Services -->
+          <section class="widget-card mt-16" id="services">
+            <div class="sec-head">
+              <h2 class="section-title">My Services</h2>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn btn-teal" type="button" id="add-service-btn-main" style="font-weight: 700;">+ Add
+                  Service</button>
+              </div>
+            </div>
+
+            <div class="service-chips" id="service-chips">
+              <span class="chip">Plumbing Repair</span>
+              <span class="chip">Electrical Maintenance</span>
+              <span class="chip">Appliance Installation</span>
+            </div>
+          </section>
+
+          <!-- Upcoming Schedule -->
+          <section class="widget-card mt-16" id="schedule">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h2 class="section-title" style="margin: 0;">Upcoming Schedule</h2>
+              <select id="schedule-sort" class="input-field" style="width: auto; padding: 6px 12px; font-size: 0.85rem;" onchange="renderSchedule()">
+                <option value="nearest">Sort by: Nearest Date</option>
+                <option value="farthest">Sort by: Farthest Date</option>
+              </select>
+            </div>
+            <div class="table-wrap">
+              <table class="dash-table">
+                <thead>
+                  <tr>
+                    <th>Date & Time</th>
+                    <th>Service Name</th>
+                    <th>Customer Name</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="schedule-body">
+                  <!-- JS toggled -->
+                </tbody>
+              </table>
+            </div>
+            <div class="helper-row">
+              <button class="btn btn-teal-sm" type="button" id="sync-from-bookings">Import from Customer
+                Bookings</button>
+              <span class="helper-text" style="color:var(--brand-700); font-weight:700;">✔ Fetch bookings from
+                database/server</span>
+            </div>
+          </section>
+
+          <!-- Completed Jobs History -->
+          <section class="widget-card mt-16" id="completed-jobs-section">
+            <h2 class="section-title">Completed Jobs History</h2>
+            <div class="table-wrap">
+              <table class="dash-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Service</th>
+                    <th>Customer</th>
+                    <th>Earnings</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="completed-jobs-body">
+                  <tr><td colspan="5" style="text-align:center; padding: 20px; color: var(--ink-500);">No completed jobs yet.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <!-- Right column -->
+        <div class="dash-v2-right">
+          <!-- Reviews -->
+          <section class="widget-card" id="reviews">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+              <h3 class="section-title" style="margin:0;">Customer Reviews & Ratings</h3>
+              <label
+                style="font-size: 0.82rem; color: var(--ink-500); cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                <input type="checkbox" id="show-all-reviews-cb" onchange="updateStatsFromData()"
+                  style="accent-color: var(--brand-700);"> Show all system reviews
+              </label>
+            </div>
+            <div id="avg-rating-bar"
+              style="display:none; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 14px 18px; margin-bottom: 16px; display: flex; align-items: center; gap: 16px;">
+              <div style="font-size: 2rem; font-weight: 800; color: #16a34a;" id="avg-rating-val">—</div>
+              <div>
+                <div id="avg-rating-stars" style="color: #fbbf24; font-size: 1.2rem;">☆☆☆☆☆</div>
+                <div id="avg-rating-count" style="font-size: 0.8rem; color: #64748b; margin-top: 2px;">No reviews yet
+                </div>
+              </div>
+            </div>
+            <div class="review-list" id="review-list">
+              <div style="padding: 20px; text-align: center; color: var(--ink-500); font-size: 0.9rem;">Loading
+                reviews...</div>
+            </div>
+          </section>
+
+          <!-- Profile -->
+          <section class="widget-card" id="profile">
+            <div class="sec-head">
+              <h2 class="section-title">Profile</h2>
+              <button class="btn btn-teal-outline" type="button" id="edit-profile-btn">Edit Profile</button>
+            </div>
+
+            <div class="profile-rows" id="profile-display-rows">
+              <div class="p-row"><strong>Status</strong><span id="display-prof-status"
+                  class="pill pill-ok">Online</span></div>
+              <div class="p-row"><strong>Next Slot</strong><span id="display-prof-slot" style="font-weight:700;">10:00
+                  AM</span></div>
+              <div class="p-row"
+                style="margin-top: 8px; border-top: 1px dashed rgba(219,233,242,0.95); padding-top: 12px;">
+                <strong>Name</strong><span id="display-prof-name">David Parker</span>
+              </div>
+              <div class="p-row"><strong>Email</strong><span id="display-prof-email">david.parker@example.com</span>
+              </div>
+              <div class="p-row"><strong>Phone</strong><span id="display-prof-phone">+1 (555) 642-1109</span></div>
+              <div class="p-row"><strong>Service Category</strong><span id="display-prof-cat">Plumbing</span></div>
+              <div class="p-row"><strong>Location</strong><span id="display-prof-loc">Vasai</span></div>
+              <div class="p-row p-bio">
+                <strong>Bio / Description</strong>
+                <span id="display-prof-bio">Professional plumber with over 10
+                  years of experience.</span>
+              </div>
+            </div>
+
+            <div class="actions-row">
+              <button class="btn btn-teal-sm" type="button" id="availability-btn" style="width: 100%;">Update
+                Availability</button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Global Modal UI -->
+  <div class="modal-overlay" id="global-modal"
+    style="position: fixed; inset: 0; background: rgba(16, 29, 64, 0.6); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; visibility: hidden; transition: all 0.3s ease;">
+    <div class="modal-card"
+      style="background: white; border-radius: 24px; padding: 40px 32px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 24px 64px -12px rgba(17,41,71,0.2); transform: scale(0.95) translateY(20px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column;">
+      <div id="modal-icon-container"></div>
+      <h3 class="modal-title" id="modal-title"
+        style="font-size: 1.5rem; color: #101d40; margin-bottom: 12px; font-weight: 700;">Title</h3>
+      <p class="modal-message" id="modal-desc"
+        style="font-size: 1rem; color: #475569; line-height: 1.5; margin-bottom: 24px;">Message description.</p>
+
+      <div id="modal-details-container"
+        style="display: none; text-align: left; background: #f8fbff; border: 1px solid #eef4f9; padding: 16px; border-radius: 12px; margin-bottom: 24px; font-size: 0.95rem;">
+      </div>
+
+      <button class="btn btn-teal-outline" id="modal-close-btn" style="width: 100%; border-radius: 12px;">Close</button>
+    </div>
+  </div>
+
+  <!-- ═══════════ Rich Booking Details Modal ═══════════ -->
+  <div id="booking-details-modal" style="
+      position: fixed; inset: 0;
+      background: rgba(16, 29, 64, 0.65);
+      backdrop-filter: blur(6px);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 10000;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;">
+    <div id="bdk-card" style="
+        background: #fff;
+        border-radius: 24px;
+        width: 94%; max-width: 560px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 32px 80px -12px rgba(17,41,71,0.25);
+        transform: scale(0.94) translateY(24px);
+        transition: transform 0.35s cubic-bezier(0.175,0.885,0.32,1.275), opacity 0.3s ease;">
+
+      <!-- Header -->
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:24px 28px 0;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div
+            style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#12463e,#07ab7f);display:flex;align-items:center;justify-content:center;font-size:1.25rem;">
+            📋</div>
+          <div>
+            <h3 style="margin:0;font-size:1.25rem;color:#101d40;font-weight:800;">Booking Details</h3>
+            <p style="margin:0;font-size:0.78rem;color:#64748b;">Full service request information</p>
+          </div>
+        </div>
+        <button onclick="closeBookingDetails()"
+          style="background:none;border:none;cursor:pointer;font-size:1.3rem;color:#94a3b8;line-height:1;"
+          title="Close">✕</button>
+      </div>
+
+      <!-- Divider -->
+      <div style="height:1px;background:#e2e8f0;margin:18px 28px;"></div>
+
+      <!-- Content -->
+      <div style="padding:0 28px 0;">
+
+        <!-- Customer Info -->
+        <div
+          style="display:flex;align-items:center;gap:14px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:14px 18px;margin-bottom:18px;">
+          <div
+            style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">
+            👤</div>
+          <div>
+            <div id="bdk-name" style="font-size:1.1rem;font-weight:800;color:#101d40;"></div>
+            <div id="bdk-phone" style="font-size:0.85rem;color:#16a34a;font-weight:600;margin-top:2px;"></div>
+          </div>
+          <span id="bdk-emergency-badge"
+            style="display:none;margin-left:auto;background:#fef2f2;color:#dc2626;border:1px solid #fecaca;border-radius:99px;padding:4px 12px;font-size:0.78rem;font-weight:800;">🚨
+            Emergency</span>
+        </div>
+
+        <!-- Detail rows -->
+        <div style="display:grid;gap:10px;margin-bottom:18px;">
+          <div
+            style="display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:#f8fafc;border-radius:10px;border:1px solid #e2e8f0;">
+            <span style="font-size:1.1rem;flex-shrink:0;">🛠</span>
+            <div>
+              <div
+                style="font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.05em;">
+                Service</div>
+              <div id="bdk-service" style="font-weight:700;color:#101d40;margin-top:2px;"></div>
+            </div>
+          </div>
+          <div
+            style="display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:#f8fafc;border-radius:10px;border:1px solid #e2e8f0;">
+            <span style="font-size:1.1rem;flex-shrink:0;">📅</span>
+            <div>
+              <div
+                style="font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.05em;">
+                Date</div>
+              <div id="bdk-date" style="font-weight:700;color:#101d40;margin-top:2px;"></div>
+            </div>
+          </div>
+          <div
+            style="display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:#f8fafc;border-radius:10px;border:1px solid #e2e8f0;">
+            <span style="font-size:1.1rem;flex-shrink:0;">⏰</span>
+            <div>
+              <div
+                style="font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.05em;">
+                Time Slot</div>
+              <div id="bdk-time" style="font-weight:700;color:#101d40;margin-top:2px;"></div>
+            </div>
+          </div>
+          <div
+            style="display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:#f8fafc;border-radius:10px;border:1px solid #e2e8f0;">
+            <span style="font-size:1.1rem;flex-shrink:0;">📍</span>
+            <div>
+              <div
+                style="font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.05em;">
+                Location</div>
+              <div id="bdk-address" style="font-weight:700;color:#101d40;margin-top:2px;"></div>
+            </div>
+          </div>
+          <div
+            style="display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:#f8fafc;border-radius:10px;border:1px solid #e2e8f0;">
+            <span style="font-size:1.1rem;flex-shrink:0;">💳</span>
+            <div>
+              <div
+                style="font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.05em;">
+                Payment</div>
+              <div id="bdk-payment" style="font-weight:700;color:#101d40;margin-top:2px;"></div>
+            </div>
+          </div>
+          <div id="bdk-notes-row"
+            style="display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:#fffbeb;border-radius:10px;border:1px solid #fde68a;">
+            <span style="font-size:1.1rem;flex-shrink:0;">📝</span>
+            <div>
+              <div
+                style="font-size:0.72rem;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:.05em;">
+                Problem Description</div>
+              <div id="bdk-notes" style="font-weight:600;color:#78350f;margin-top:2px;font-size:0.9rem;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Problem Image -->
+        <div style="margin-bottom:20px;">
+          <div
+            style="font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">
+            📷 Problem Image</div>
+          <div id="bdk-image-wrap">
+            <!-- filled by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div
+        style="display:flex;gap:10px;padding:20px 28px 24px;border-top:1px solid #e2e8f0;background:#f8fafc;border-radius:0 0 24px 24px;">
+        <button id="bdk-back-btn" onclick="closeBookingDetails()"
+          style="flex:1;padding:12px;border:1px solid #e2e8f0;border-radius:12px;background:#fff;color:#475569;font-weight:700;cursor:pointer;font-size:0.9rem;transition:all 0.2s;"
+          onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='#fff'">🔙 Back</button>
+        <button id="bdk-reject-btn"
+          style="flex:1;padding:12px;border:1px solid #fca5a5;border-radius:12px;background:#fef2f2;color:#dc2626;font-weight:700;cursor:pointer;font-size:0.9rem;transition:all 0.2s;"
+          onmouseover="this.style.background='#fee2e2'" onmouseout="this.style.background='#fef2f2'">✖ Reject</button>
+        <button id="bdk-accept-btn"
+          style="flex:2;padding:12px;border:none;border-radius:12px;background:linear-gradient(135deg,#12463e,#07ab7f);color:#fff;font-weight:800;cursor:pointer;font-size:0.9rem;box-shadow:0 4px 14px rgba(7,171,127,0.3);transition:all 0.2s;"
+          onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='none'">✔
+          Accept</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Zoom Overlay -->
+  <div id="img-zoom-overlay" onclick="this.style.display='none'"
+    style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:11000;cursor:zoom-out;align-items:center;justify-content:center;">
+    <img id="img-zoom-src" src="" alt="Zoomed"
+      style="max-width:92vw;max-height:90vh;border-radius:12px;box-shadow:0 0 60px rgba(0,0,0,0.5);">
+    <button onclick="document.getElementById('img-zoom-overlay').style.display='none'"
+      style="position:absolute;top:20px;right:24px;background:rgba(255,255,255,0.15);border:none;color:white;font-size:1.5rem;width:42px;height:42px;border-radius:50%;cursor:pointer;">✕</button>
+  </div>
+
+  <!-- Request Accepted Modal -->
+  <div class="modal-overlay" id="accept-success-modal"
+    style="position: fixed; inset: 0; background: rgba(16, 29, 64, 0.6); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 10001; opacity: 0; visibility: hidden; transition: all 0.3s ease;">
+    <div class="modal-card"
+      style="background: white; border-radius: 20px; padding: 40px 32px; text-align: center; max-width: 360px; width: 90%; box-shadow: 0 24px 64px -12px rgba(17,41,71,0.2); transform: scale(0.95) translateY(20px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+      <div style="width: 64px; height: 64px; border-radius: 50%; background: #dcfce7; color: #16a34a; display: grid; place-items: center; font-size: 2rem; margin: 0 auto 20px; font-weight: bold;">✔️</div>
+      <h3 style="font-size: 1.4rem; color: #101d40; margin-bottom: 12px; font-weight: 800;">Request Accepted!</h3>
+      <p style="font-size: 0.95rem; color: #475569; line-height: 1.5; margin-bottom: 24px;">The service request has been accepted successfully.</p>
+      <div style="display: flex; gap: 12px;">
+        <button class="btn btn-outline" id="accept-modal-close" style="flex: 1;">Close</button>
+        <button class="btn btn-teal" id="accept-modal-ok" style="flex: 1;">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Services Modal UI -->
+  <div class="modal-overlay" id="edit-services-modal"
+    style="position: fixed; inset: 0; background: rgba(16, 29, 64, 0.6); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 9998; opacity: 0; visibility: hidden; transition: all 0.3s ease;">
+    <div class="svc-modal-card">
+      <div class="svc-modal-head">
+        <h3 style="font-size: 1.4rem; color: #101d40; font-weight: 800; margin: 0;">Manage Your Services</h3>
+        <button id="close-svc-btn" class="text-btn"
+          style="font-size: 1.2rem; cursor: pointer; color: var(--ink-500); border: none; background: transparent;">✖</button>
+      </div>
+
+      <div class="svc-modal-body">
+        <!-- Left Side: Catalog -->
+        <div class="svc-catalog">
+          <input type="text" id="svc-search" class="svc-search-input input-field" placeholder="🔍 Search services..."
+            style="margin-bottom: 12px; width: 100%;">
+          <div class="svc-list" id="svc-catalog-list">
+            <!-- Dynamically populated checkboxes -->
+          </div>
+          <div class="svc-add-custom" style="margin-top: 12px;">
+            <input type="text" id="custom-svc-input" class="input-field" placeholder="Custom service..."
+              style="flex:1;">
+            <button class="btn btn-teal-sm" id="add-custom-btn" style="white-space: nowrap;">+ Add</button>
+          </div>
+        </div>
+
+        <!-- Right Side: Configured Selected Services -->
+        <div class="svc-configured">
+          <h4 style="font-size: 1rem; color: var(--ink-700); margin-bottom: 12px; font-weight: 800;">Selected Services
+          </h4>
+          <div class="svc-config-list" id="svc-config-list">
+            <!-- Dynamically populated config cards -->
+          </div>
+        </div>
+      </div>
+
+      <div class="svc-modal-foot">
+        <button class="btn btn-outline" id="cancel-svc-btn">Cancel</button>
+        <button class="btn btn-teal" id="save-svc-btn">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Profile Modal -->
+  <div class="modal-overlay" id="edit-profile-modal"
+    style="position: fixed; inset: 0; background: rgba(16, 29, 64, 0.6); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 9998; opacity: 0; visibility: hidden; transition: all 0.3s ease;">
+    <div class="svc-modal-card" style="max-width: 500px;">
+      <div class="svc-modal-head">
+        <h3 style="font-size: 1.4rem; color: #101d40; font-weight: 800; margin: 0;">Edit Profile</h3>
+        <button id="close-prof-btn" class="text-btn"
+          style="font-size: 1.2rem; cursor: pointer; color: var(--ink-500); border: none; background: transparent;">✖</button>
+      </div>
+      <div class="svc-modal-body" style="display: block; padding: 24px; overflow-y: auto;">
+        <div style="display: flex; gap: 16px; margin-bottom: 20px; align-items: center;">
+          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80"
+            alt="DP" id="edit-prof-img-preview"
+            style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 2px solid #dbecf2;">
+          <div>
+            <label class="btn btn-teal-sm" style="cursor: pointer;">
+              Upload Photo
+              <input type="file" id="edit-prof-photo" style="display: none;" accept="image/*">
+            </label>
+            <p style="font-size: 0.8rem; color: var(--ink-500); margin-top: 6px;">JPG, GIF or PNG. Max size of 800K</p>
+          </div>
+        </div>
+        <div style="display: grid; gap: 16px;">
+          <input type="text" id="edit-prof-name" class="input-field w-full" placeholder="Full Name">
+          <input type="email" id="edit-prof-email" class="input-field w-full" placeholder="Email Address">
+          <input type="tel" id="edit-prof-phone" class="input-field w-full" placeholder="Phone Number">
+          <input type="text" id="edit-prof-loc" class="input-field w-full" placeholder="Location">
+          <select id="edit-prof-cat" class="input-field w-full">
+            <option value="">Select Category</option>
+            <option value="Plumber">Plumber</option>
+            <option value="Electrician">Electrician</option>
+            <option value="Carpenter">Carpenter</option>
+            <option value="Cleaner">Cleaner</option>
+            <option value="Gardener">Gardener</option>
+            <option value="Painter">Painter</option>
+            <option value="HVAC">HVAC</option>
+            <option value="Security">Security</option>
+            <option value="Packers">Packers</option>
+            <option value="Handyman">Handyman</option>
+            <option value="Smart Home">Smart Home</option>
+          </select>
+          <div>
+            <label
+              style="font-weight: 700; font-size: 0.9rem; color: var(--ink-700); display: block; margin-bottom: 6px;">Bio
+              / Description</label>
+            <textarea id="edit-prof-bio" class="input-field w-full" placeholder="Short bio about your services..."
+              style="resize: vertical; min-height: 80px;"></textarea>
+          </div>
+          <div style="border-top: 1px dashed rgba(219, 233, 242, 0.95); margin: 8px 0;"></div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <input type="password" id="edit-prof-pass" class="input-field w-full" placeholder="New Password">
+            <input type="password" id="edit-prof-pass-confirm" class="input-field w-full"
+              placeholder="Confirm Password">
+          </div>
+          <div
+            style="display: flex; align-items: center; justify-content: space-between; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; margin-top: 8px;">
+            <span style="font-weight: 600; font-size: 0.9rem; color: var(--brand-700);">Live Preview Changes</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="edit-prof-preview-toggle">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="svc-modal-foot" style="justify-content: flex-end; align-items: center; gap: 12px;">
+        <span id="prof-pass-err"
+          style="color: #ef4444; font-size: 0.85rem; font-weight: 600; margin-right: auto;"></span>
+        <button class="btn btn-outline" id="reset-prof-btn" style="color: var(--ink-700);">Reset</button>
+        <button class="btn btn-outline" id="cancel-prof-btn">Cancel</button>
+        <button class="btn btn-teal" id="save-prof-btn">Save Profile</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Availability Modal -->
+  <div class="modal-overlay" id="availability-modal"
+    style="position: fixed; inset: 0; background: rgba(16, 29, 64, 0.6); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 9998; opacity: 0; visibility: hidden; transition: all 0.3s ease;">
+    <div class="svc-modal-card" style="max-width: 450px;">
+      <div class="svc-modal-head">
+        <h3 style="font-size: 1.4rem; color: #101d40; font-weight: 800; margin: 0;">Update Availability</h3>
+        <button id="close-avail-btn" class="text-btn"
+          style="font-size: 1.2rem; cursor: pointer; color: var(--ink-500); border: none; background: transparent;">✖</button>
+      </div>
+      <div class="svc-modal-body" style="display: block; padding: 24px;">
+        <div
+          style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding: 16px; background: #f8fbff; border-radius: 12px; border: 1px solid #eef4f9;">
+          <strong style="color: var(--ink-950);">Currently Accepting Jobs</strong>
+          <label class="toggle-switch">
+            <input type="checkbox" id="avail-status-toggle">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div style="margin-bottom: 24px;">
+          <strong style="display: block; margin-bottom: 12px; font-size: 0.9rem; color: var(--ink-700);">Working
+            Days</strong>
+          <div class="day-selector">
+            <label><input type="checkbox" value="M"><span>M</span></label>
+            <label><input type="checkbox" value="T"><span>T</span></label>
+            <label><input type="checkbox" value="W"><span>W</span></label>
+            <label><input type="checkbox" value="Th"><span>Th</span></label>
+            <label><input type="checkbox" value="F"><span>F</span></label>
+            <label><input type="checkbox" value="S"><span>S</span></label>
+            <label><input type="checkbox" value="Su"><span>Su</span></label>
+          </div>
+        </div>
+
+        <div style="display: grid; gap: 16px;">
+          <div>
+            <strong style="display: block; margin-bottom: 6px; font-size: 0.9rem; color: var(--ink-700);">Time
+              Slots</strong>
+            <input type="text" id="avail-slots" class="input-field w-full" placeholder="e.g. 9 AM - 6 PM">
+          </div>
+          <div>
+            <strong style="display: block; margin-bottom: 6px; font-size: 0.9rem; color: var(--ink-700);">Break Time
+              (Optional)</strong>
+            <input type="text" id="avail-break" class="input-field w-full" placeholder="e.g. 1 PM - 2 PM">
+          </div>
+        </div>
+      </div>
+      <div class="svc-modal-foot">
+        <button class="btn btn-outline" id="cancel-avail-btn">Cancel</button>
+        <button class="btn btn-teal" id="save-avail-btn">Update Availability</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Import Bookings Modal -->
+  <div class="modal-overlay" id="import-bookings-modal"
+    style="position: fixed; inset: 0; background: rgba(16, 29, 64, 0.6); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 9998; opacity: 0; visibility: hidden; transition: all 0.3s ease;">
+    <div class="svc-modal-card" style="max-width: 960px; width: 95%;">
+      <div class="svc-modal-head">
+        <h3 style="font-size: 1.4rem; color: #101d40; font-weight: 800; margin: 0;">Import Customer Bookings</h3>
+        <button id="close-import-btn" class="text-btn"
+          style="font-size: 1.2rem; cursor: pointer; color: var(--ink-500); border: none; background: transparent;">✖</button>
+      </div>
+
+      <div class="svc-modal-body" style="display: block; padding: 24px; overflow-y: auto;">
+        <!-- Filters Row -->
+        <div class="import-filter-bar">
+          <strong style="white-space: nowrap; color: var(--ink-950);">Filter By:</strong>
+          <input type="date" id="import-filter-date" class="input-field" style="flex: 1;">
+          <select id="import-filter-service" class="input-field" style="flex: 1;">
+            <option value="">All Services</option>
+            <option value="Plumber">Plumber</option>
+            <option value="Electrician">Electrician</option>
+            <option value="Carpenter">Carpenter</option>
+            <option value="Cleaner">Cleaner</option>
+            <option value="Gardener">Gardener</option>
+            <option value="Painter">Painter</option>
+            <option value="HVAC">HVAC</option>
+            <option value="Security">Security</option>
+            <option value="Packers">Packers</option>
+            <option value="Handyman">Handyman</option>
+            <option value="Smart Home">Smart Home</option>
+          </select>
+          <select id="import-filter-status" class="input-field" style="flex: 1;">
+            <option value="">All Statuses</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Pending">Pending</option>
+          </select>
+        </div>
+
+        <!-- Import Table -->
+        <div
+          style="max-height: 400px; overflow-y: auto; border: 1px solid rgba(219, 233, 242, 0.95); border-radius: 12px;">
+          <table class="dash-table" style="margin: 0; padding-bottom: 0;">
+            <thead>
+              <tr>
+                <th style="width: 40px; text-align: center;"><input type="checkbox" id="import-select-all"
+                    style="cursor:pointer; accent-color: var(--brand-700); width: 16px; height: 16px;"></th>
+                <th>Customer</th>
+                <th>Service</th>
+                <th>Requested Date</th>
+                <th>Assign Slot & Priority</th>
+                <th style="text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="import-table-body">
+              <!-- Dynamically populated rows -->
+            </tbody>
+          </table>
+          <div id="import-empty-state" style="padding: 40px; text-align: center; color: var(--ink-500); display: none;">
+            No bookings found matching your filters.
+          </div>
+        </div>
+      </div>
+
+      <div class="svc-modal-foot" style="justify-content: space-between; align-items: center;">
+        <button class="btn btn-outline" id="auto-schedule-btn"
+          style="color: var(--brand-700); border-color: var(--brand-700); font-weight: 800;">⚡ Auto-Schedule</button>
+        <div style="display: flex; gap: 12px;">
+          <button class="btn btn-outline-sm" id="seed-requests-btn">Seed Demo Requests</button>
+          <button class="btn btn-outline-sm" id="seed-reviews-btn" style="margin-left:8px;">Seed Sample Reviews</button>
+          <button class="btn btn-teal-sm" id="sync-from-bookings" style="margin-left:8px;">Import from Customer
+            Bookings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function checkRole() {
+      const u = JSON.parse(localStorage.getItem('servnet_user') || 'null');
+      if (!u || u.role !== 'provider') window.location.href = 'login.html';
+    })();
+    function handleLogout() {
+      localStorage.removeItem('servnet_token');
+      localStorage.removeItem('servnet_user');
+      window.location.href = 'index.html';
+    }
+
+    const globalModal = document.getElementById('global-modal');
+    const modalCard = globalModal.querySelector('.modal-card');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDesc = document.getElementById('modal-desc');
+    const modalIcon = document.getElementById('modal-icon-container');
+    const modalDetails = document.getElementById('modal-details-container');
+
+    function openModal(title, desc, type, detailsHTML = null) {
+      modalTitle.textContent = title;
+      modalDesc.innerHTML = desc;
+      modalDetails.style.display = 'none';
+
+      if (type === 'success') {
+        modalIcon.innerHTML = '<div style="width: 64px; height: 64px; border-radius: 50%; background: #dcfce7; color: #16a34a; display: grid; place-items: center; font-size: 2rem; margin: 0 auto 20px; font-weight: bold;">✓</div>';
+      } else if (type === 'error') {
+        modalIcon.innerHTML = '<div style="width: 64px; height: 64px; border-radius: 50%; background: #fee2e2; color: #ef4444; display: grid; place-items: center; font-size: 2rem; margin: 0 auto 20px; font-weight: bold;">✕</div>';
+      } else if (type === 'info') {
+        modalIcon.innerHTML = '<div style="width: 64px; height: 64px; border-radius: 50%; background: #e0f2fe; color: #0284c7; display: grid; place-items: center; font-size: 2rem; margin: 0 auto 20px; font-weight: bold;">i</div>';
+        if (detailsHTML) {
+          modalDetails.innerHTML = detailsHTML;
+          modalDetails.style.display = 'block';
+        }
+      }
+
+      globalModal.style.opacity = '1';
+      globalModal.style.visibility = 'visible';
+      modalCard.style.transform = 'scale(1) translateY(0)';
+    }
+
+    document.getElementById('modal-close-btn').addEventListener('click', () => {
+      globalModal.style.opacity = '0';
+      globalModal.style.visibility = 'hidden';
+      modalCard.style.transform = 'scale(0.95) translateY(20px)';
+    });
+
+    // ═══════════ Booking Details Modal Functions ═══════════
+    const bdkModal = document.getElementById('booking-details-modal');
+    const bdkCard = document.getElementById('bdk-card');
+    let currentBdkBooking = null;
+    let currentBdkCard = null;
+
+    function openBookingDetails(r, cardEl) {
+      currentBdkBooking = r;
+      currentBdkCard = cardEl;
+
+      document.getElementById('bdk-name').textContent = r.customerName || 'Customer';
+      document.getElementById('bdk-phone').textContent = '📞 ' + (r.customerPhone || 'N/A');
+      document.getElementById('bdk-service').textContent = r.service || 'Service';
+      document.getElementById('bdk-date').textContent = r.date || 'N/A';
+      document.getElementById('bdk-time').textContent = r.time || r.timeSlot || 'N/A';
+      document.getElementById('bdk-address').textContent = r.address || r.location || 'N/A';
+      document.getElementById('bdk-payment').textContent = (r.paymentMethod || 'Cash on Service') + (r.totalCost ? ' — ' + r.totalCost : '');
+
+      const notesRow = document.getElementById('bdk-notes-row');
+      const notesEl = document.getElementById('bdk-notes');
+      if (r.notes && r.notes.trim()) {
+        notesEl.textContent = r.notes;
+        notesRow.style.display = 'flex';
+      } else {
+        notesEl.textContent = 'No description provided.';
+        notesRow.style.display = 'flex';
+      }
+
+      // Emergency badge
+      const emergBadge = document.getElementById('bdk-emergency-badge');
+      if (r.isEmergency || (r.time && r.time.toLowerCase().includes('emergency'))) {
+        emergBadge.style.display = 'inline-block';
+      } else {
+        emergBadge.style.display = 'none';
+      }
+
+      // Problem Image
+      const imgWrap = document.getElementById('bdk-image-wrap');
+      if (r.problemImage) {
+        imgWrap.innerHTML = `
+          <div style="position:relative;border-radius:12px;overflow:hidden;border:1px solid #e2e8f0;cursor:pointer;" onclick="document.getElementById('img-zoom-src').src='${r.problemImage}';document.getElementById('img-zoom-overlay').style.display='flex';">
+            <img src="${r.problemImage}" alt="Problem" style="width:100%;max-height:240px;object-fit:cover;display:block;">
+            <div style="position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.6);color:white;padding:4px 10px;border-radius:6px;font-size:0.75rem;font-weight:700;">🔍 Click to zoom</div>
+          </div>`;
+      } else {
+        imgWrap.innerHTML = `
+          <div style="background:#f1f5f9;border:1px dashed #cbd5e1;border-radius:12px;padding:24px;text-align:center;color:#94a3b8;">
+            <div style="font-size:2rem;margin-bottom:6px;">📷</div>
+            <div style="font-weight:600;font-size:0.85rem;">No image uploaded</div>
+          </div>`;
+      }
+
+      // Show modal with animation
+      bdkModal.style.opacity = '1';
+      bdkModal.style.visibility = 'visible';
+      bdkCard.style.transform = 'scale(1) translateY(0)';
+    }
+
+    function closeBookingDetails() {
+      bdkModal.style.opacity = '0';
+      bdkModal.style.visibility = 'hidden';
+      bdkCard.style.transform = 'scale(0.94) translateY(24px)';
+      currentBdkBooking = null;
+      currentBdkCard = null;
+    }
+
+    // Close on overlay click
+    bdkModal.addEventListener('click', (e) => {
+      if (e.target === bdkModal) closeBookingDetails();
+    });
+
+    function showAcceptPopupAndMove(r, card) {
+      console.log("TRIGGERING ACCEPT POPUP MODAL FOR:", r);
+      
+      const bookingId = (r && typeof r === 'object') ? (r.id || r._id) : r;
+      
+      // 1. Fire and forget data update
+      updateBookingStatus(bookingId, 'Accepted');
+
+      // 2. Instant Optimistic UI removal
+      if (card) {
+        card.style.display = 'none';
+        card.remove();
+      }
+
+      // Hide empty state if needed
+      const remainingReqs = document.querySelectorAll('#request-list .request-card');
+      const emptyEl = document.getElementById('requests-empty');
+      if (emptyEl) {
+         emptyEl.style.display = remainingReqs.length === 0 ? 'block' : 'none';
+      }
+
+      // 3. Instant Optimistic Schedule Append
+      const s = r;
+      const todayISO = new Date().toISOString().split('T')[0];
+      let isToday = false;
+      try {
+        if (new Date(s.date).toISOString().split('T')[0] === todayISO) isToday = true;
+      } catch(e) {}
+
+      const todayBadge = isToday ? '<span style="background: #fef2f2; color: #dc2626; padding: 2px 6px; font-size: 0.7rem; border-radius: 6px; font-weight: 800; border: 1px solid #fecaca; margin-left: 6px;">Today 🔥</span>' : '';
+      const timeText = s.time || s.timeSlot || 'Anytime';
+      const locText = s.address || s.location || 'Location missing';
+      const statusStyle = 'background:#fef3c7;color:#d97706;'; 
+      const custName = s.customerName || (s.customer && s.customer.name) || 'Customer';
+
+      const newRowHtml = `
+        <tr data-id="${bookingId}">
+          <td>
+            <div style="font-weight:700; display:flex; align-items:center; gap:4px; margin-bottom: 2px;">${s.date} ${todayBadge}</div>
+            <div style="font-size:0.8rem; color:#64748b;">⏰ ${timeText}</div>
+          </td>
+          <td style="font-weight:600; color:var(--ink-700);">${s.service}</td>
+          <td style="font-weight:700; color:var(--ink-950);">${custName}</td>
+          <td>
+            <div style="display:flex; align-items:center; gap:4px; font-size:0.85rem; color:#475569;" title="${locText}">
+              <span style="font-size:1rem;">📍</span> <span style="max-width:180px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${locText}</span>
+            </div>
+          </td>
+          <td><span class="pill" style="${statusStyle}">Accepted</span></td>
+          <td>
+            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+              <button class="btn btn-teal-sm view-schedule-details" style="background:#f8fafc; color:var(--brand-700); border:1px solid #e2e8f0; font-weight:700;" data-id="${bookingId}">View Details</button>
+              <button class="btn btn-teal-sm" onclick="completeJob('${bookingId}')">Mark as Completed</button>
+              <button class="btn btn-outline small" style="color: #dc2626; border-color: #fca5a5;" onclick="cancelJob('${bookingId}')">Cancel</button>
+            </div>
+          </td>
+        </tr>
+      `;
+
+      const body = document.getElementById('schedule-body');
+      if (body && body.innerHTML.includes('No upcoming jobs')) {
+        body.innerHTML = '';
+      }
+      if (body) {
+         body.insertAdjacentHTML('beforeend', newRowHtml);
+         // Bind View Details
+         const newBtn = body.querySelector(`button.view-schedule-details[data-id="${bookingId}"]`);
+         if (newBtn) {
+            newBtn.addEventListener('click', (e) => {
+               s.status = 'Accepted';
+               openBookingDetails(s, e.target.closest('tr'));
+            });
+         }
+      }
+
+      // Re-calculate stats sync naturally
+      updateStatsFromData().catch(e => {});
+
+      // Scroll to show it
+      const scheduleSec = document.getElementById('schedule');
+      if (scheduleSec) {
+        scheduleSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        scheduleSec.style.transition = "box-shadow 0.3s";
+        scheduleSec.style.boxShadow = "0 0 0 4px var(--brand-500)";
+        setTimeout(() => { scheduleSec.style.boxShadow = "none"; }, 1500);
+      }
+
+      // Create modal for success feedback
+      let modal = document.getElementById('dynamic-accept-modal');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'dynamic-accept-modal';
+        modal.className = 'modal-overlay';
+        modal.style.cssText = 'position: fixed; inset: 0; background: rgba(16, 29, 64, 0.7); backdrop-filter: blur(6px); display: flex; justify-content: center; align-items: center; z-index: 2147483647; opacity: 0; visibility: hidden; transition: all 0.3s ease;';
+        
+        modal.innerHTML = `
+          <div class="modal-card" style="background: white; border-radius: 20px; padding: 40px 32px; text-align: center; max-width: 360px; width: 90%; box-shadow: 0 40px 80px -12px rgba(17,41,71,0.3); transform: scale(0.95) translateY(20px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+            <div style="width: 68px; height: 68px; border-radius: 50%; background: #dcfce7; color: #16a34a; display: grid; place-items: center; font-size: 2.2rem; margin: 0 auto 20px; font-weight: bold; box-shadow: 0 0 0 8px rgba(22, 163, 74, 0.1);">✔️</div>
+            <h3 style="font-size: 1.5rem; color: #101d40; margin-bottom: 12px; font-weight: 800;">Request Accepted!</h3>
+            <p style="font-size: 1rem; color: #475569; line-height: 1.5; margin-bottom: 24px; font-weight: 500;">The service request has been accepted successfully.</p>
+            <div style="display: flex; gap: 12px;">
+              <button class="btn btn-outline" id="dyn-accept-close" style="flex: 1; border-radius: 12px; padding: 12px; font-weight: 700;">Close</button>
+              <button class="btn btn-teal" id="dyn-accept-ok" style="flex: 1; border-radius: 12px; padding: 12px; font-weight: 700;">OK</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+      }
+
+      const modalCard = modal.querySelector('.modal-card');
+      void modal.offsetWidth;
+
+      modal.style.opacity = '1';
+      modal.style.visibility = 'visible';
+      modalCard.style.transform = 'scale(1) translateY(0)';
+
+      let timer;
+      const closePopup = () => {
+        clearTimeout(timer);
+        modal.style.opacity = '0';
+        modal.style.visibility = 'hidden';
+        modalCard.style.transform = 'scale(0.95) translateY(20px)';
+      };
+
+      const okBtn = document.getElementById('dyn-accept-ok');
+      const closeBtn = document.getElementById('dyn-accept-close');
+      
+      if(okBtn) okBtn.onclick = closePopup;
+      if(closeBtn) closeBtn.onclick = closePopup;
+
+      timer = setTimeout(closePopup, 3000);
+    }
+
+    // Accept from details modal
+    document.getElementById('bdk-accept-btn').addEventListener('click', async () => {
+      if (!currentBdkBooking) return;
+      const r = currentBdkBooking;
+      const card = currentBdkCard;
+      closeBookingDetails();
+      showAcceptPopupAndMove(r, card);
+    });
+
+    // Reject from details modal
+    document.getElementById('bdk-reject-btn').addEventListener('click', async () => {
+      if (!currentBdkBooking) return;
+      const r = currentBdkBooking;
+      const card = currentBdkCard;
+      await updateBookingStatus(r.id, 'Cancelled');
+      closeBookingDetails();
+      if (card) card.remove();
+      const remaining = document.querySelectorAll('#request-list .request-card');
+      document.getElementById('requests-empty').style.display = remaining.length === 0 ? 'block' : 'none';
+      updateStatsFromData();
+      setTimeout(() => openModal('❌ Request Rejected', `Booking from <strong>${r.customerName}</strong> was declined.`, 'error'), 350);
+    });
+
+    const LS_KEYS = {
+      providerRequests: 'providerRequests',
+      providerSchedule: 'providerSchedule',
+      userBookings: 'servnet_bookings',
+    };
+
+    const LS_PROF_KEY = 'providerProfile';
+    const LS_AVAIL_KEY = 'providerAvailability';
+
+    function safeJsonParse(value, fallback) {
+      try {
+        return JSON.parse(value);
+      } catch {
+        return fallback;
+      }
+    }
+
+    const userSESSION = safeJsonParse(localStorage.getItem('servnet_user'), null);
+    let profData = safeJsonParse(localStorage.getItem(LS_PROF_KEY), null);
+    
+    // Always sync the profile with the authentic user session to prevent stale cache
+    if (userSESSION) {
+      if (!profData) profData = {};
+      
+      // Overwrite cache with the source of truth
+      if (userSESSION.name) profData.name = userSESSION.name;
+      if (userSESSION.email) profData.email = userSESSION.email;
+      if (userSESSION.phone) profData.phone = userSESSION.phone;
+      if (userSESSION.location) profData.location = userSESSION.location;
+      if (userSESSION.category || userSESSION.serviceCategory) {
+        profData.category = userSESSION.category || userSESSION.serviceCategory;
+      }
+    }
+
+    function getCurrentProviderName() {
+      const userSESSION = safeJsonParse(localStorage.getItem('servnet_user'), null);
+      const lsProf = safeJsonParse(localStorage.getItem(LS_PROF_KEY), null);
+      return (lsProf && lsProf.name) || (userSESSION && userSESSION.name) || 'David Parker';
+    }
+
+    // Provide default fallback inside parse just to guarantee logic
+    if (!profData) {
+      profData = { 
+        name: 'David Parker', 
+        email: 'd@e.com', 
+        phone: '', 
+        category: 'Plumber', 
+        location: 'Vasai', 
+        photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80' 
+      };
+    } else {
+      // Ensure defaults for missing non-identity fields
+      if (!profData.bio) profData.bio = 'Professional provider with over 10 years of experience.';
+      if (!profData.photo) profData.photo = 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80';
+      if (!profData.name) profData.name = 'David Parker'; // Safe fallback
+    }
+
+    // Persist the synced data back to cache immediately
+    localStorage.setItem(LS_PROF_KEY, JSON.stringify(profData));
+
+    let availData = safeJsonParse(localStorage.getItem(LS_AVAIL_KEY), {
+      isOnline: true,
+      days: ['M', 'T', 'W', 'Th', 'F'],
+      slots: '10:00 AM - 6:00 PM',
+      breakTime: '1:00 PM - 2:00 PM'
+    });
+
+    if (!availData) availData = { isOnline: true, days: ['M', 'T', 'W', 'Th', 'F'], slots: '10:00 AM - 6:00 PM', breakTime: '' };
+
+    // UI Sync Function
+    function renderProfileDashboard() {
+      // Must wait for DOM for some elements
+      const nameEl = document.getElementById('display-prof-name');
+      if (nameEl) nameEl.textContent = profData.name;
+      const emailEl = document.getElementById('display-prof-email');
+      if (emailEl) emailEl.textContent = profData.email;
+      const phoneEl = document.getElementById('display-prof-phone');
+      if (phoneEl) phoneEl.textContent = profData.phone;
+      const catEl = document.getElementById('display-prof-cat');
+      if (catEl) catEl.textContent = profData.category;
+      const locEl = document.getElementById('display-prof-loc');
+      if (locEl) locEl.textContent = profData.location;
+
+      const topbarAvatar = document.querySelector('.user-avatar-img');
+      if (topbarAvatar) topbarAvatar.src = profData.photo;
+
+      const statusPill = document.getElementById('display-prof-status');
+      if (statusPill) {
+        if (availData.isOnline) {
+          statusPill.textContent = 'Online';
+          statusPill.className = 'pill pill-ok';
+        } else {
+          statusPill.textContent = 'Busy';
+          statusPill.className = 'pill pill-warn';
+        }
+      }
+
+      const slotEl = document.getElementById('display-prof-slot');
+      if (slotEl) slotEl.textContent = availData.slots.split('-')[0] || 'N/A';
+    }
+
+    const profModal = document.getElementById('edit-profile-modal');
+    const availModal = document.getElementById('availability-modal');
+
+    function fmtDateHuman(isoOrText) {
+      const d = new Date(isoOrText);
+      if (Number.isNaN(d.getTime())) return isoOrText;
+      return d.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    async function loadAllBookings() {
+      const localBookings = JSON.parse(localStorage.getItem('servnet_bookings') || '[]');
+      try {
+        const token = localStorage.getItem('servnet_token');
+        if (!token) return localBookings;
+        const response = await fetch('/api/bookings', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (response.ok) {
+          const apiBookings = await response.json();
+          const mappedApiBookings = apiBookings.map(b => ({
+            id: b._id,
+            customerName: b.customerName || (b.customer && b.customer.name) || 'Customer',
+            customerPhone: b.customerPhone || (b.customer && b.customer.phone) || 'N/A',
+            service: b.service || 'Service',
+            date: b.date,
+            time: b.timeSlot,
+            address: b.location,
+            notes: b.problemDescription || '',
+            paymentMethod: b.paymentMethod,
+            totalCost: b.totalCost || '',
+            status: b.status,
+            providerName: b.providerName || ((b.provider && b.provider.name) ? b.provider.name : ''),
+            providerId: b.provider ? (typeof b.provider === 'object' ? b.provider._id : b.provider) : null,
+            problemImage: b.problemImage || null,
+            createdAt: b.createdAt
+          }));
+          const apiIds = new Set(mappedApiBookings.map(b => b.id));
+          const localOnly = localBookings.filter(b => !apiIds.has(b.id));
+          return [...mappedApiBookings, ...localOnly];
+        }
+      } catch (e) {
+        console.error('Could not fetch bookings from API:', e);
+      }
+      return localBookings;
+    }
+
+    async function updateBookingStatus(id, newStatus) {
+      const currentProviderName = getCurrentProviderName();
+      const userObj = safeJsonParse(localStorage.getItem('servnet_user'), {});
+
+      // 1. Local fallback update for mock/demo IDs
+      const rawBookings = safeJsonParse(localStorage.getItem('servnet_bookings'), []);
+      const bookings = Array.isArray(rawBookings) ? rawBookings : [];
+      const index = bookings.findIndex(b => b.id === id || b._id === id);
+      if (index !== -1) {
+        bookings[index].status = newStatus;
+        if (newStatus === 'Accepted') {
+          bookings[index].providerName = currentProviderName;
+          bookings[index].providerId = userObj._id || userObj.id || null;
+        }
+        localStorage.setItem('servnet_bookings', JSON.stringify(bookings));
+      }
+
+      // 2. Database update
+      try {
+        const token = localStorage.getItem('servnet_token');
+
+        if (token && id && !String(id).startsWith('BK-demo') && !String(id).startsWith('imp_')) {
+          await fetch(`/api/bookings/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ 
+              status: newStatus,
+              provider: userObj.id || userObj._id,
+              providerName: currentProviderName
+            })
+          });
+        }
+      } catch (e) {
+        console.error('API failed to update status:', e);
+      }
+    }
+
+    async function renderRequests(preloadedBookings = null) {
+      const listEl = document.getElementById('request-list');
+      const emptyEl = document.getElementById('requests-empty');
+      const allBookings = preloadedBookings || await loadAllBookings();
+
+      const currentName = getCurrentProviderName().toLowerCase();
+      const currentUserObj = safeJsonParse(localStorage.getItem('servnet_user'), null);
+      const currentUserId = currentUserObj ? currentUserObj._id || currentUserObj.id : null;
+
+      // Show all Pending bookings — either unassigned (no providerName/providerId set) OR explicitly assigned to this provider
+      const requests = allBookings.filter(b => {
+        if (b.status !== 'Pending') return false;
+        
+        const isUnassigned = (!b.providerName || b.providerName.trim() === '') && !b.providerId;
+        if (isUnassigned) return true; // unassigned — visible to all providers
+        
+        if (currentUserId && b.providerId === currentUserId) return true;
+        return b.providerName && b.providerName.trim().toLowerCase() === currentName;
+      });
+
+      listEl.querySelectorAll('.request-card').forEach(n => n.remove());
+      emptyEl.style.display = requests.length ? 'none' : 'block';
+
+      requests.forEach((r) => {
+        const card = document.createElement('div');
+        card.className = 'request-card';
+        card.innerHTML = `
+          <div class="req-main">
+            <div class="req-title">${r.customerName}</div>
+            <div class="req-meta">
+              <span><strong>Service:</strong> ${r.service}</span>
+              <span><strong>Date:</strong> ${r.date}</span>
+              <span><strong>Location:</strong> ${r.address}</span>
+            </div>
+            <button type="button" class="text-btn view-details-btn" data-action="details" style="margin-top: 10px; text-decoration: underline; color: var(--brand-700); background: none; border: none; cursor: pointer; font-weight: 700; font-size: 0.85rem; padding: 0;">View Details</button>
+          </div>
+          <div class="req-actions">
+            <button class="btn btn-teal-sm" type="button" data-action="accept">✔ Accept</button>
+            <button class="btn btn-outline small" type="button" data-action="reject">✖ Reject</button>
+          </div>
+        `;
+
+        card.addEventListener('click', async (e) => {
+          const btn = e.target.closest('button');
+          if (!btn) return;
+          const action = btn.getAttribute('data-action');
+
+          if (action === 'details') {
+            openBookingDetails(r, card);
+            return;
+          }
+
+          if (action === 'accept') {
+            showAcceptPopupAndMove(r, card);
+
+          } else if (action === 'reject') {
+            await updateBookingStatus(r.id, 'Cancelled');
+            openModal('❌ Request Rejected', `Booking from <strong>${r.customerName}</strong> was declined.`, 'error');
+            card.remove();
+            const remaining2 = document.querySelectorAll('#request-list .request-card');
+            document.getElementById('requests-empty').style.display = remaining2.length === 0 ? 'block' : 'none';
+            updateStatsFromData();
+          }
+        });
+
+        listEl.appendChild(card);
+      });
+    }
+
+    async function renderSchedule(preloadedBookings = null) {
+      const body = document.getElementById('schedule-body');
+      const allBookings = preloadedBookings || await loadAllBookings();
+      const currentName = getCurrentProviderName().toLowerCase();
+      const currentUserObj = safeJsonParse(localStorage.getItem('servnet_user'), null);
+      const currentUserId = currentUserObj ? currentUserObj._id || currentUserObj.id : null;
+
+      let schedule = allBookings.filter(b => {
+        const isAccepted = b.status === 'Accepted';
+        if (!isAccepted) return false;
+        
+        // Only show if assigned to this provider via ID or Name
+        if (currentUserId && b.providerId === currentUserId) return true;
+        return b.providerName && b.providerName.trim().toLowerCase() === currentName;
+      });
+
+      // Implement Sorting
+      const sortOrder = document.getElementById('schedule-sort') ? document.getElementById('schedule-sort').value : 'nearest';
+      schedule.sort((a, b) => {
+        const dA = new Date(a.date);
+        const dB = new Date(b.date);
+        if(isNaN(dA)) return 1;
+        if(isNaN(dB)) return -1;
+        return sortOrder === 'farthest' ? dB - dA : dA - dB;
+      });
+
+      const todayISO = new Date().toISOString().split('T')[0];
+
+      if (!schedule.length) {
+        body.innerHTML = '<tr><td colspan="5" class="empty-state" style="text-align:center; padding: 20px;">No upcoming jobs in your schedule.</td></tr>';
+      } else {
+        body.innerHTML = schedule.map(s => {
+          let isToday = false;
+          try {
+            const rowDateISO = new Date(s.date).toISOString().split('T')[0];
+            if (rowDateISO === todayISO) isToday = true;
+          } catch(e) {}
+
+          const todayBadge = isToday ? '<span style="background: #fef2f2; color: #dc2626; padding: 2px 6px; font-size: 0.7rem; border-radius: 6px; font-weight: 800; border: 1px solid #fecaca; margin-left: 6px;">Today 🔥</span>' : '';
+          
+          const timeText = s.time || s.timeSlot || 'Anytime';
+          const locText = s.address || s.location || 'Location missing';
+          
+          let statusStyle = 'background:#dcfce7;color:#16a34a;'; // green (default/completed)
+          if (s.status === 'Accepted') statusStyle = 'background:#fef3c7;color:#d97706;'; // yellow
+          else if (s.status === 'Cancelled') statusStyle = 'background:#fef2f2;color:#ef4444;'; // red
+
+          return `
+            <tr data-id="${s.id}">
+              <td>
+                <div style="font-weight:700; display:flex; align-items:center; gap:4px; margin-bottom: 2px;">${s.date} ${todayBadge}</div>
+                <div style="font-size:0.8rem; color:#64748b;">⏰ ${timeText}</div>
+              </td>
+              <td style="font-weight:600; color:var(--ink-700);">${s.service}</td>
+              <td style="font-weight:700; color:var(--ink-950);">${s.customerName}</td>
+              <td>
+                <div style="display:flex; align-items:center; gap:4px; font-size:0.85rem; color:#475569;" title="${locText}">
+                  <span style="font-size:1rem;">📍</span> <span style="max-width:180px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${locText}</span>
+                </div>
+              </td>
+              <td><span class="pill" style="${statusStyle}">${s.status}</span></td>
+              <td>
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                  <button class="btn btn-teal-sm view-schedule-details" style="background:#f8fafc; color:var(--brand-700); border:1px solid #e2e8f0; font-weight:700;" data-id="${s.id}">View Details</button>
+                  <button class="btn btn-teal-sm" onclick="completeJob('${s.id}')">Mark as Completed</button>
+                  <button class="btn btn-outline small" style="color: #dc2626; border-color: #fca5a5;" onclick="cancelJob('${s.id}')">Cancel</button>
+                </div>
+              </td>
+            </tr>`;
+        }).join('');
+      }
+
+      // Action Listeners for dynamically generated View Details buttons
+      body.querySelectorAll('.view-schedule-details').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = e.currentTarget.getAttribute('data-id');
+          const row = e.currentTarget.closest('tr');
+          const bookingObj = allBookings.find(b => String(b.id || b._id) === String(id));
+          if (bookingObj) {
+            openBookingDetails(bookingObj, row);
+          }
+        });
+      });
+
+      // Also render completed jobs
+      renderCompletedJobs(allBookings);
+    }
+
+    function renderCompletedJobs(allBookings) {
+      const body = document.getElementById('completed-jobs-body');
+      const currentName = getCurrentProviderName().toLowerCase();
+      const currentUserObj = safeJsonParse(localStorage.getItem('servnet_user'), null);
+      const currentUserId = currentUserObj ? currentUserObj._id || currentUserObj.id : null;
+
+      // Only show completed jobs belonging to this provider
+      const completed = allBookings.filter(b => {
+        if (b.status !== 'Completed') return false;
+        // If the booking has a provider ID match, show it
+        if (currentUserId && b.providerId === currentUserId) return true;
+        // Fall back to name match
+        if (b.providerName && b.providerName.trim().toLowerCase() === currentName) return true;
+        return false;
+      });
+
+      if (!completed.length) {
+        body.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px; color: var(--ink-500);">No completed jobs yet.</td></tr>';
+        return;
+      }
+
+      body.innerHTML = completed.map(s => {
+        return `
+          <tr>
+            <td>${s.date}</td>
+            <td>${s.service}</td>
+            <td>${s.customerName}</td>
+            <td style="font-weight:700; color:#16a34a;">${s.totalCost || '₹0'}</td>
+            <td><span class="pill pill-ok">Completed</span></td>
+          </tr>`;
+      }).join('');
+    }
+
+    window.cancelJob = async function (id) {
+      if (confirm("Are you sure you want to cancel this scheduled service?")) {
+        await updateBookingStatus(id, 'Cancelled');
+        openModal('❌ Service Cancelled', `This service request has been successfully cancelled and removed from your schedule.`, 'error');
+        renderSchedule();
+        updateStatsFromData();
+      }
+    };
+
+    window.showCompletePopupAndMove = function (id) {
+      let modal = document.getElementById('dynamic-complete-modal');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'dynamic-complete-modal';
+        modal.className = 'modal-overlay';
+        modal.style.cssText = 'position: fixed; inset: 0; background: rgba(16, 29, 64, 0.7); backdrop-filter: blur(6px); display: flex; justify-content: center; align-items: center; z-index: 2147483647; opacity: 0; visibility: hidden; transition: all 0.3s ease;';
+        
+        modal.innerHTML = `
+          <div class="modal-card" style="background: white; border-radius: 20px; padding: 40px 32px; text-align: center; max-width: 360px; width: 90%; box-shadow: 0 40px 80px -12px rgba(17,41,71,0.3); transform: scale(0.95) translateY(20px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+            <div style="width: 68px; height: 68px; border-radius: 50%; background: #dcfce7; color: #16a34a; display: grid; place-items: center; font-size: 2.2rem; margin: 0 auto 20px; font-weight: bold; box-shadow: 0 0 0 8px rgba(22, 163, 74, 0.1);">✔️</div>
+            <h3 style="font-size: 1.5rem; color: #101d40; margin-bottom: 12px; font-weight: 800;">Service Completed!</h3>
+            <p style="font-size: 1rem; color: #475569; line-height: 1.5; margin-bottom: 24px; font-weight: 500;">Service Completed</p>
+            <div style="display: flex; gap: 12px;">
+              <button class="btn btn-teal" id="dyn-complete-ok" style="width: 100%; border-radius: 12px; padding: 12px; font-weight: 700;">OK</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+      }
+
+      const modalCard = modal.querySelector('.modal-card');
+      void modal.offsetWidth;
+
+      modal.style.opacity = '1';
+      modal.style.visibility = 'visible';
+      modalCard.style.transform = 'scale(1) translateY(0)';
+
+      let timer;
+      const closePopup = () => {
+        clearTimeout(timer);
+        modal.style.opacity = '0';
+        modal.style.visibility = 'hidden';
+        modalCard.style.transform = 'scale(0.95) translateY(20px)';
+        renderSchedule();
+        updateStatsFromData();
+      };
+      
+      const okBtn = document.getElementById('dyn-complete-ok');
+      if(okBtn) okBtn.onclick = closePopup;
+
+      timer = setTimeout(closePopup, 3000);
+    };
+
+    window.completeJob = async function (id) {
+      await updateBookingStatus(id, 'Completed');
+      // Re-render both schedule and history so the row moves immediately
+      const updatedBookings = await loadAllBookings();
+      const body = document.getElementById('schedule-body');
+      // Remove the completed row from schedule immediately without full re-render flicker
+      const row = body.querySelector(`tr[data-id="${id}"]`);
+      if (row) row.remove();
+      const remaining = body.querySelectorAll('tr:not(.empty-state-row)');
+      if (!remaining.length) {
+        body.innerHTML = '<tr><td colspan="5" class="empty-state" style="text-align:center; padding: 20px;">No upcoming jobs in your schedule.</td></tr>';
+      }
+      renderCompletedJobs(updatedBookings);
+      updateStatsFromData(updatedBookings);
+      showCompletePopupAndMove(id);
+    };
+
+    async function updateStatsFromData(preloadedBookings = null) {
+      const allBookings = preloadedBookings || await loadAllBookings();
+
+      // --- Identify the logged-in provider ---
+      const currentUserObj = safeJsonParse(localStorage.getItem('servnet_user'), null);
+      const currentUserId = currentUserObj ? currentUserObj._id || currentUserObj.id : null;
+      const currentName = (profData && profData.name) ? profData.name.trim().toLowerCase()
+                        : (currentUserObj?.name || '').trim().toLowerCase() || 'david parker';
+      const currentCat  = (profData && profData.category) ? profData.category.trim().toLowerCase() : '';
+
+      // Helper: does this booking belong to the logged-in provider?
+      function isMyBooking(b) {
+        if (currentUserId && b.providerId === currentUserId) return true;
+        if (b.providerName && b.providerName.trim().toLowerCase() === currentName) return true;
+        return false;
+      }
+
+      // Bookings relevant to this provider:
+      // - Pending (unassigned) that this provider could accept, counted as "pending requests"
+      // - Accepted / Completed / Cancelled that are explicitly assigned to this provider
+      const myPending = allBookings.filter(b => {
+        if (b.status !== 'Pending') return false;
+        const isUnassigned = (!b.providerName || b.providerName.trim() === '') && !b.providerId;
+        return isUnassigned || isMyBooking(b);
+      });
+      const myAssigned = allBookings.filter(b => b.status !== 'Pending' && isMyBooking(b));
+      const myAllBookings = [...myPending, ...myAssigned];
+
+      const completedJobs = myAssigned.filter(b => b.status === 'Completed');
+      const totalEarnings = completedJobs.reduce((sum, b) => {
+        const costStr = b.totalCost ? String(b.totalCost) : '0';
+        const val = parseInt(costStr.replace(/[^0-9]/g, '')) || 0;
+        return sum + val;
+      }, 0);
+
+      // Reviews — match by providerId first, then fall back to name / category
+      const reviewsAll = JSON.parse(localStorage.getItem('servnet_reviews') || '[]');
+      const showAll = document.getElementById('show-all-reviews-cb')?.checked || false;
+      const reviews = reviewsAll.filter(r => {
+        if (showAll) return true;
+        // Strong match: provider ID
+        if (currentUserId && r.providerId && r.providerId === currentUserId) return true;
+        // Name match
+        const rName = (r.providerName || '').trim().toLowerCase();
+        if (rName && rName === currentName) return true;
+        // Category / service match (soft fallback)
+        const rService = (r.service || '').trim().toLowerCase();
+        return currentCat && rService.includes(currentCat);
+      });
+
+      const reviewsWithRating = reviews.filter(r => r.rating);
+      const avgRating = reviewsWithRating.length
+        ? (reviewsWithRating.reduce((s, r) => s + (parseFloat(r.rating) || 0), 0) / reviewsWithRating.length).toFixed(1)
+        : '5.0';
+
+      // Update stat cards — uses provider-specific counts
+      document.getElementById('stat-total').textContent = myAllBookings.length;
+      document.getElementById('stat-pending').textContent = myPending.length;
+      document.getElementById('stat-completed').textContent = completedJobs.length;
+      document.getElementById('badge-requests').textContent = myPending.length;
+
+      const ratingEl = document.getElementById('stat-rating');
+      if (ratingEl) ratingEl.textContent = avgRating;
+
+      const earningsValue = document.getElementById('stat-earnings');
+      if (earningsValue) earningsValue.textContent = `₹${totalEarnings}`;
+
+      renderReviews(reviews);
+    }
+
+    function renderReviews(allReviews) {
+      const listEl = document.getElementById('review-list');
+      const avgBar = document.getElementById('avg-rating-bar');
+      if (!listEl) return;
+
+      // reviews are already filtered by updateStatsFromData, but we'll double check for safety
+      const reviews = allReviews;
+
+      if (!reviews.length) {
+        listEl.innerHTML = '<div style="padding: 24px; text-align: center; color: var(--ink-500); font-size: 0.9rem;">No customer reviews yet.<br><small>Reviews submitted by customers will appear here.</small></div>';
+        if (avgBar) avgBar.style.display = 'none';
+        return;
+      }
+
+      // Average rating
+      const avg = (reviews.reduce((s, r) => s + (parseInt(r.rating) || 0), 0) / reviews.length).toFixed(1);
+      const fullStars = Math.round(parseFloat(avg));
+      if (avgBar) {
+        avgBar.style.display = 'flex';
+        document.getElementById('avg-rating-val').textContent = avg + ' ⭐';
+        document.getElementById('avg-rating-stars').textContent = '★'.repeat(fullStars) + '☆'.repeat(5 - fullStars);
+        document.getElementById('avg-rating-count').textContent = reviews.length + ' review' + (reviews.length !== 1 ? 's' : '');
+      }
+
+      listEl.innerHTML = reviews.map(r => `
+        <div style="background: #f8fbff; border: 1px solid #eef4f9; border-radius: 14px; padding: 16px; margin-bottom: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+            <div>
+              <div style="font-weight: 800; color: var(--ink-950); font-size: 0.97rem;">${r.customerName || 'Customer'}</div>
+              <div style="font-size: 0.82rem; color: var(--ink-500); margin-top: 2px;">${r.service || ''} • ${r.date || ''}</div>
+            </div>
+            <div style="background: #fefce8; border: 1px solid #fde68a; border-radius: 8px; padding: 4px 10px; font-weight: 800; color: #b45309; font-size: 0.88rem;">
+              ${'★'.repeat(parseInt(r.rating) || 0)}${'☆'.repeat(5 - (parseInt(r.rating) || 0))} ${r.rating}/5
+            </div>
+          </div>
+          <p style="font-size: 0.92rem; color: var(--ink-700); margin: 0; line-height: 1.5;">${r.comment}</p>
+        </div>
+      `).join('');
+    }
+
+    // Add filtering functionality to requests
+    document.getElementById('req-search')?.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      document.querySelectorAll('#request-list .request-card').forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(term) ? '' : 'none';
+      });
+    });
+
+    function seedDemoRequests() {
+      const bookings = JSON.parse(localStorage.getItem('servnet_bookings') || '[]');
+      const currentCat = profData.category || 'Plumbing';
+      const demo = [
+        { id: 'BK-demo-1', customerName: 'Rahul Sharma', service: currentCat + ' Repair', date: '20 Mar', time: '10:00 AM', address: 'Bandra West, Mumbai', status: 'Pending', totalCost: '₹800', notes: 'Urgent checkup', providerName: '' },
+        { id: 'BK-demo-2', customerName: 'Sneha Patel', service: currentCat + ' Installation', date: '21 Mar', time: '02:00 PM', address: 'Andheri East, Mumbai', status: 'Pending', totalCost: '₹1200', notes: 'New setup', providerName: '' },
+      ];
+      localStorage.setItem('servnet_bookings', JSON.stringify([...bookings, ...demo]));
+    }
+
+    function seedSampleReviews() {
+      const reviews = JSON.parse(localStorage.getItem('servnet_reviews') || '[]');
+      const currentName = profData.name || 'David Parker';
+      const sample = [
+        {
+          customerName: 'Alice Johnson',
+          service: profData.category || 'General Service',
+          rating: 5,
+          comment: 'Excellent work! Very professional and arrived on time.',
+          date: '25 Mar',
+          providerName: currentName
+        },
+        {
+          customerName: 'Robert Smith',
+          service: profData.category || 'General Service',
+          rating: 4,
+          comment: 'Good service, fixed the issue quickly.',
+          date: '24 Mar',
+          providerName: currentName
+        }
+      ];
+      localStorage.setItem('servnet_reviews', JSON.stringify([...sample, ...reviews]));
+    }
+
+    // Sync button
+    document.getElementById('sync-from-bookings')?.addEventListener('click', openImportModal);
+
+    // Initial render
+    // consolidated initial load below (line 1478)
+
+    document.getElementById('availability-btn').addEventListener('click', () => {
+      // Replaced by real logic below
+    });
+
+    document.getElementById('add-service-btn-main').addEventListener('click', () => {
+      openServiceEditor();
+      setTimeout(() => {
+        document.getElementById('custom-svc-input').focus();
+      }, 300);
+    });
+
+
+    function updateDynamicUsername() {
+      const userJSON = localStorage.getItem('servnet_user');
+      if (userJSON) {
+        try {
+          const user = JSON.parse(userJSON);
+          if (user.name) {
+            // Update hero welcome
+            const welcomeMsg = document.getElementById('welcome-message');
+            if (welcomeMsg) welcomeMsg.textContent = `Welcome back, ${user.name} 👋`;
+
+            // Update profile section
+            const displayProfName = document.getElementById('display-prof-name');
+            if (displayProfName) displayProfName.textContent = user.name;
+          }
+          if (user.email) {
+            const displayProfEmail = document.getElementById('display-prof-email');
+            if (displayProfEmail) displayProfEmail.textContent = user.email;
+          }
+          if (user.phone) {
+            const displayProfPhone = document.getElementById('display-prof-phone');
+            if (displayProfPhone) displayProfPhone.textContent = user.phone;
+          }
+          if (user.location) {
+            const displayProfLoc = document.getElementById('display-prof-loc');
+            if (displayProfLoc) displayProfLoc.textContent = user.location;
+          }
+        } catch (e) {
+          console.error('Error parsing user data:', e);
+        }
+      }
+    }
+
+    // Initial render
+    updateDynamicUsername();
+    renderRequests();
+    renderSchedule();
+    updateStatsFromData();
+
+    // --- Service Editor Logic ---
+    const svcModal = document.getElementById('edit-services-modal');
+    const svcCatList = document.getElementById('svc-catalog-list');
+    const svcCfgList = document.getElementById('svc-config-list');
+
+    let catalog = [
+      'Plumbing Repair', 'Electrical Maintenance', 'Appliance Installation',
+      'Home Cleaning', 'Carpentry Services', 'Pest Control', 'Painting'
+    ];
+
+    const LS_SVC_KEY = 'providerServicesList';
+    let myServices = safeJsonParse(localStorage.getItem(LS_SVC_KEY), null);
+
+    if (!myServices) {
+      myServices = [
+        { name: 'Plumbing Repair', price: 500, time: '9 AM - 6 PM' },
+        { name: 'Electrical Maintenance', price: 600, time: '10 AM - 5 PM' },
+        { name: 'Appliance Installation', price: 400, time: 'Anytime' }
+      ];
+      localStorage.setItem(LS_SVC_KEY, JSON.stringify(myServices));
+    }
+
+    function renderMainServiceChips() {
+      const container = document.getElementById('service-chips');
+      container.innerHTML = myServices.map(s => "<span class=\"chip\">" + s.name + "</span>").join('');
+    }
+
+    let editState = [];
+
+    function openServiceEditor() {
+      editState = JSON.parse(JSON.stringify(myServices));
+
+      editState.forEach(s => {
+        if (!catalog.includes(s.name)) catalog.push(s.name);
+      });
+
+      document.getElementById('svc-search').value = '';
+      renderSvcCatalog('');
+      renderSvcConfig();
+
+      svcModal.classList.add('active');
+    }
+
+    function renderSvcCatalog(query) {
+      const norm = query.toLowerCase();
+      const filtered = catalog.filter(c => c.toLowerCase().includes(norm));
+
+      svcCatList.innerHTML = filtered.map(c => {
+        const isChecked = editState.some(s => s.name === c) ? 'checked' : '';
+        return "" +
+          "<label class=\"svc-checkbox-label\">" +
+          "<input type=\"checkbox\" value=\"" + c + "\" " + isChecked + " onchange=\"toggleSvc(this.value, this.checked)\">" +
+          "<span>" + c + "</span>" +
+          "</label>";
+      }).join('');
+    }
+
+    function renderSvcConfig() {
+      if (editState.length === 0) {
+        svcCfgList.innerHTML = "<div class=\"empty-state\">No services selected. Check items on the left to add them.</div>";
+        return;
+      }
+
+      svcCfgList.innerHTML = editState.map((s, idx) => {
+        return "" +
+          "<div class=\"svc-config-card\">" +
+          "<div>" +
+          "<div class=\"svc-name\">" + s.name + "</div>" +
+          "<div class=\"svc-config-inputs\">" +
+          "<span>Price (₹):</span>" +
+          "<input type=\"number\" class=\"input-field input-money\" value=\"" + s.price + "\" onchange=\"updateSvcProp(" + idx + ", 'price', this.value)\">" +
+          "<span>Time:</span>" +
+          "<input type=\"text\" class=\"input-field input-time\" value=\"" + s.time + "\" placeholder=\"ex: 9 AM - 5 PM\" onchange=\"updateSvcProp(" + idx + ", 'time', this.value)\">" +
+          "</div>" +
+          "</div>" +
+          "<button class=\"remove-svc-btn\" title=\"Remove Service\" onclick=\"removeSvc(" + idx + ")\">✖</button>" +
+          "</div>";
+      }).join('');
+    }
+
+    window.toggleSvc = function (name, isChecked) {
+      if (isChecked) {
+        editState.push({ name, price: 500, time: '9 AM - 5 PM' });
+      } else {
+        editState = editState.filter(s => s.name !== name);
+      }
+      renderSvcConfig();
+    };
+
+    window.updateSvcProp = function (idx, prop, val) {
+      editState[idx][prop] = val;
+    };
+
+    window.removeSvc = function (idx) {
+      const name = editState[idx].name;
+      editState.splice(idx, 1);
+      renderSvcConfig();
+      // Uncheck catalog
+      const cbKeys = document.querySelectorAll(".svc-checkbox-label input");
+      cbKeys.forEach(cb => { if (cb.value === name) cb.checked = false; });
+    };
+
+    document.getElementById('close-svc-btn').addEventListener('click', () => svcModal.classList.remove('active'));
+    document.getElementById('cancel-svc-btn').addEventListener('click', () => svcModal.classList.remove('active'));
+
+    document.getElementById('save-svc-btn').addEventListener('click', () => {
+      myServices = JSON.parse(JSON.stringify(editState));
+      localStorage.setItem(LS_SVC_KEY, JSON.stringify(myServices));
+      renderMainServiceChips();
+      svcModal.classList.remove('active');
+    });
+
+    document.getElementById('add-custom-btn').addEventListener('click', () => {
+      const inp = document.getElementById('custom-svc-input');
+      const val = inp.value.trim();
+      if (!val) return;
+      if (!catalog.includes(val)) catalog.push(val);
+      if (!editState.some(s => s.name === val)) {
+        editState.unshift({ name: val, price: 500, time: '9 AM - 5 PM' });
+      }
+      inp.value = '';
+      renderSvcCatalog(document.getElementById('svc-search').value);
+      renderSvcConfig();
+    });
+
+    document.getElementById('svc-search').addEventListener('input', (e) => {
+      renderSvcCatalog(e.target.value);
+    });
+
+    renderMainServiceChips();
+
+    // Check for hash-based trigger
+    if (window.location.hash === '#add-service') {
+      setTimeout(() => {
+        openServiceEditor();
+        document.getElementById('custom-svc-input').focus();
+      }, 500);
+    }
+
+
+    // Profile Handlers
+    let origProviderProfile = {};
+    document.getElementById('edit-profile-btn').addEventListener('click', () => {
+      origProviderProfile = { ...profData };
+      document.getElementById('edit-prof-name').value = profData.name;
+      document.getElementById('edit-prof-email').value = profData.email;
+      document.getElementById('edit-prof-phone').value = profData.phone || '';
+      document.getElementById('edit-prof-loc').value = profData.location;
+      document.getElementById('edit-prof-cat').value = profData.category;
+      document.getElementById('edit-prof-bio').value = profData.bio || 'Professional plumber with over 10 years of experience.';
+      document.getElementById('edit-prof-img-preview').src = profData.photo;
+      document.getElementById('edit-prof-pass').value = '';
+      document.getElementById('edit-prof-pass-confirm').value = '';
+      document.getElementById('prof-pass-err').textContent = '';
+      profModal.classList.add('active');
+    });
+
+    document.getElementById('edit-prof-photo').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (ev) => document.getElementById('edit-prof-img-preview').src = ev.target.result;
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Live Preview Logic
+    document.getElementById('edit-profile-modal').addEventListener('input', () => {
+      const isLive = document.getElementById('edit-prof-preview-toggle').checked;
+      if (isLive) {
+        document.getElementById('display-prof-name').textContent = document.getElementById('edit-prof-name').value || 'Unknown';
+        document.getElementById('display-prof-email').textContent = document.getElementById('edit-prof-email').value;
+        document.getElementById('display-prof-phone').textContent = document.getElementById('edit-prof-phone').value;
+        document.getElementById('display-prof-loc').textContent = document.getElementById('edit-prof-loc').value;
+        document.getElementById('display-prof-cat').textContent = document.getElementById('edit-prof-cat').value;
+        document.getElementById('display-prof-bio').textContent = document.getElementById('edit-prof-bio').value;
+        document.querySelector('.user-avatar-img').src = document.getElementById('edit-prof-img-preview').src;
+      }
+    });
+
+    const closeProf = () => profModal.classList.remove('active');
+    document.getElementById('close-prof-btn').addEventListener('click', closeProf);
+    document.getElementById('cancel-prof-btn').addEventListener('click', closeProf);
+
+    document.getElementById('reset-prof-btn').addEventListener('click', () => {
+      document.getElementById('edit-prof-name').value = origProviderProfile.name;
+      document.getElementById('edit-prof-email').value = origProviderProfile.email;
+      document.getElementById('edit-prof-phone').value = origProviderProfile.phone || '';
+      document.getElementById('edit-prof-loc').value = origProviderProfile.location;
+      document.getElementById('edit-prof-cat').value = origProviderProfile.category;
+      document.getElementById('edit-prof-bio').value = origProviderProfile.bio || 'Professional plumber with over 10 years of experience.';
+      document.getElementById('edit-prof-img-preview').src = origProviderProfile.photo;
+      document.getElementById('edit-prof-pass').value = '';
+      document.getElementById('edit-prof-pass-confirm').value = '';
+      document.getElementById('prof-pass-err').textContent = '';
+      if (document.getElementById('edit-prof-preview-toggle').checked) {
+        document.getElementById('edit-profile-modal').dispatchEvent(new Event('input'));
+      }
+    });
+
+    document.getElementById('save-prof-btn').addEventListener('click', () => {
+      const pass = document.getElementById('edit-prof-pass').value;
+      const passConfirm = document.getElementById('edit-prof-pass-confirm').value;
+      const errMsg = document.getElementById('prof-pass-err');
+
+      if (pass || passConfirm) {
+        if (pass !== passConfirm) {
+          errMsg.textContent = 'Passwords do not match!';
+          return;
+        }
+      }
+      errMsg.textContent = '';
+
+      profData.name = document.getElementById('edit-prof-name').value || 'Unknown';
+      profData.email = document.getElementById('edit-prof-email').value;
+      profData.phone = document.getElementById('edit-prof-phone').value;
+      profData.location = document.getElementById('edit-prof-loc').value;
+      profData.category = document.getElementById('edit-prof-cat').value;
+      profData.bio = document.getElementById('edit-prof-bio').value;
+      profData.photo = document.getElementById('edit-prof-img-preview').src;
+
+      if (pass) {
+        openModal('Password Updated', 'Your security parameters have been updated successfully.', 'success');
+      }
+
+      localStorage.setItem(LS_PROF_KEY, JSON.stringify(profData));
+      renderProfileDashboard();
+      closeProf();
+    });
+
+    // Availability Handlers
+    document.getElementById('availability-btn').addEventListener('click', () => {
+      document.getElementById('avail-status-toggle').checked = availData.isOnline;
+      document.getElementById('avail-slots').value = availData.slots;
+      document.getElementById('avail-break').value = availData.breakTime;
+
+      const dayLabs = document.querySelectorAll('.day-selector input');
+      dayLabs.forEach(cb => {
+        cb.checked = availData.days.includes(cb.value);
+      });
+
+      availModal.classList.add('active');
+    });
+
+    const closeAvail = () => availModal.classList.remove('active');
+    document.getElementById('close-avail-btn').addEventListener('click', closeAvail);
+    document.getElementById('cancel-avail-btn').addEventListener('click', closeAvail);
+
+    document.getElementById('save-avail-btn').addEventListener('click', () => {
+      availData.isOnline = document.getElementById('avail-status-toggle').checked;
+      availData.slots = document.getElementById('avail-slots').value || '10:00 AM';
+      availData.breakTime = document.getElementById('avail-break').value;
+
+      availData.days = [];
+      document.querySelectorAll('.day-selector input:checked').forEach(cb => {
+        availData.days.push(cb.value);
+      });
+
+      localStorage.setItem(LS_AVAIL_KEY, JSON.stringify(availData));
+      renderProfileDashboard();
+      closeAvail();
+    });
+
+    // Initial load
+    renderProfileDashboard();
+    renderRequests();
+    renderSchedule();
+    updateStatsFromData();
+
+    // --- Import Customer Bookings Logic ---
+    const importModal = document.getElementById('import-bookings-modal');
+    const importTbody = document.getElementById('import-table-body');
+    const importEmpty = document.getElementById('import-empty-state');
+
+    let importState = [];
+
+    async function openImportModal() {
+      const rawBookings = await loadAllBookings();
+      const currentCat = (profData && profData.category) ? profData.category.trim().toLowerCase() : '';
+
+      // Filter for bookings that:
+      // 1. Have no providerName assigned
+      // 2. Match the provider's category (or are general/demo)
+      const availableBookings = rawBookings.filter(b => {
+        const isUnassigned = !b.providerName || b.providerName === '';
+        const matchesCategory = !currentCat || (b.service && b.service.toLowerCase().includes(currentCat));
+        return isUnassigned && matchesCategory;
+      });
+
+      importState = availableBookings.map((b, idx) => ({
+        id: b.id || ('imp_' + idx),
+        customer: b.customerName || 'Customer',
+        service: b.service || 'General Service',
+        date: b.date || new Date().toISOString().split('T')[0],
+        status: b.status || 'Pending',
+        timeSlot: b.time || '',
+        priority: 'Normal',
+        selected: false
+      }));
+
+      document.getElementById('import-filter-date').value = '';
+      document.getElementById('import-filter-service').value = '';
+      document.getElementById('import-filter-status').value = '';
+      document.getElementById('import-select-all').checked = false;
+
+      renderImportTable();
+      importModal.classList.add('active');
+    }
+
+    // Unbind ancient sync button
+    const oldSyncBtn = document.getElementById('sync-from-bookings');
+    const newSyncBtn = oldSyncBtn.cloneNode(true);
+    oldSyncBtn.parentNode.replaceChild(newSyncBtn, oldSyncBtn);
+    newSyncBtn.addEventListener('click', openImportModal);
+
+    function renderImportTable() {
+      const fDate = document.getElementById('import-filter-date').value;
+      const fSvc = document.getElementById('import-filter-service').value.toLowerCase();
+      const fStat = document.getElementById('import-filter-status').value.toLowerCase();
+
+      const filtered = importState.filter(item => {
+        if (fDate && item.date !== fDate) return false;
+        if (fSvc && !item.service.toLowerCase().includes(fSvc)) return false;
+        if (fStat && !item.status.toLowerCase().includes(fStat)) return false;
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        importTbody.innerHTML = '';
+        importEmpty.style.display = 'block';
+        return;
+      }
+
+      importEmpty.style.display = 'none';
+      importTbody.innerHTML = filtered.map(item => {
+        const checked = item.selected ? 'checked' : '';
+        const statClass = item.status === 'Confirmed' ? 'pill-ok' : 'pill-warn';
+        return "" +
+          "<tr>" +
+          "<td style=\"text-align:center;\"><input type=\"checkbox\" class=\"import-row-cb\" data-id=\"" + item.id + "\" " + checked + " style=\"width:16px; height:16px; accent-color:var(--brand-700); cursor:pointer;\"></td>" +
+          "<td><strong>" + item.customer + "</strong></td>" +
+          "<td>" + item.service + "</td>" +
+          "<td>" + fmtDateHuman(item.date) + " <span class=\"pill " + statClass + "\" style=\"font-size:0.7rem; padding: 2px 6px;\">" + item.status + "</span></td>" +
+          "<td>" +
+          "<div style=\"display:flex; gap:8px;\">" +
+          "<input type=\"text\" class=\"import-time-input\" placeholder=\"e.g. 10:00 AM\" value=\"" + item.timeSlot + "\" onchange=\"updateImportVal('" + item.id + "', 'timeSlot', this.value)\">" +
+          "<select class=\"import-select-priority\" onchange=\"updateImportVal('" + item.id + "', 'priority', this.value)\">" +
+          "<option value=\"Normal\" " + (item.priority === 'Normal' ? 'selected' : '') + ">Normal</option>" +
+          "<option value=\"High\" " + (item.priority === 'High' ? 'selected' : '') + ">High ⚡</option>" +
+          "</select>" +
+          "</div>" +
+          "</td>" +
+          "<td style=\"text-align: right;\"><button class=\"text-btn\" title=\"Remove Booking\" style=\"color:#ef4444; font-weight:800; cursor:pointer; font-size: 1.1rem;\" onclick=\"removeImportItem('" + item.id + "')\">✖</button></td>" +
+          "</tr>";
+      }).join('');
+    }
+
+    // Filter Listeners
+    ['import-filter-date', 'import-filter-service', 'import-filter-status'].forEach(id => {
+      document.getElementById(id).addEventListener('change', renderImportTable);
+      document.getElementById(id).addEventListener('input', renderImportTable);
+    });
+
+    // Select All
+    document.getElementById('import-select-all').addEventListener('change', (e) => {
+      const isChecked = e.target.checked;
+      document.querySelectorAll('.import-row-cb').forEach(cb => {
+        cb.checked = isChecked;
+        updateImportVal(cb.getAttribute('data-id'), 'selected', isChecked);
+      });
+    });
+
+    // Row Delegation
+    importTbody.addEventListener('change', (e) => {
+      if (e.target.classList.contains('import-row-cb')) {
+        updateImportVal(e.target.getAttribute('data-id'), 'selected', e.target.checked);
+      }
+    });
+
+    window.updateImportVal = function (id, key, val) {
+      const item = importState.find(x => x.id === id);
+      if (item) item[key] = val;
+    };
+
+    window.removeImportItem = function (id) {
+      importState = importState.filter(x => x.id !== id);
+      renderImportTable();
+    };
+
+    const closeImport = () => importModal.classList.remove('active');
+    document.getElementById('close-import-btn').addEventListener('click', closeImport);
+    document.getElementById('cancel-import-btn').addEventListener('click', closeImport);
+
+    // Auto Schedule logic
+    document.getElementById('auto-schedule-btn').addEventListener('click', () => {
+      const selectedItems = importState.filter(x => x.selected);
+      if (selectedItems.length === 0) {
+        alert('Please use the checkboxes on the left to select at least one booking to auto-schedule.');
+        return;
+      }
+      let currentHour = 9;
+      selectedItems.forEach(item => {
+        const ampm = currentHour >= 12 ? 'PM' : 'AM';
+        const displayHr = currentHour > 12 ? currentHour - 12 : currentHour;
+        item.timeSlot = displayHr + ':00 ' + ampm;
+        currentHour++;
+        if (currentHour > 17) currentHour = 9;
+      });
+      renderImportTable();
+    });
+
+    // Save Selected
+    document.getElementById('save-import-btn').addEventListener('click', async () => {
+      const selectedItems = importState.filter(x => x.selected);
+      if (selectedItems.length === 0) {
+        alert('Please select bookings using the checkboxes to import.');
+        return;
+      }
+
+      const currentName = profData.name || 'David Parker';
+      const token = localStorage.getItem('servnet_token');
+
+      for (const item of selectedItems) {
+        if (token && item.id && !item.id.startsWith('imp_')) {
+          try {
+            await fetch(`/api/bookings/${item.id}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+              body: JSON.stringify({ providerName: currentName, timeSlot: item.timeSlot, status: 'Pending' })
+            });
+          } catch (e) {
+            console.error('Failed to import booking:', e);
+          }
+        }
+      }
+
+      renderRequests();
+      updateStatsFromData();
+      closeImport();
+
+      openModal('Bookings Imported!', "Successfully moved <strong>" + selectedItems.length + "</strong> requests to your Incoming section.", 'success');
+    });
+
+    window.handleLogout = function () {
+      localStorage.removeItem('servnet_token');
+      localStorage.removeItem('servnet_user');
+      window.location.href = 'index.html';
+    };
+
+    // Debug helper for the user
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+        const reviews = JSON.parse(localStorage.getItem('servnet_reviews') || '[]');
+        const name = profData.name;
+        alert(`DEBUG INFO:\nNAME: ${name}\nTOTAL REVIEWS IN STORAGE: ${reviews.length}\nMATCHING REVIEWS: ${reviews.filter(r => r.providerName && r.providerName.trim().toLowerCase() === name.trim().toLowerCase()).length}`);
+      }
+    });
+
+    const globalNotifBtn = document.getElementById('notif-btn');
+    const globalNotifPanel = document.getElementById('notif-panel');
+    if (globalNotifBtn && globalNotifPanel) {
+      globalNotifBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        globalNotifPanel.style.display = globalNotifPanel.style.display === 'none' || globalNotifPanel.style.display === '' ? 'block' : 'none';
+      });
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('#notif-wrapper')) {
+          globalNotifPanel.style.display = 'none';
+        }
+      });
+    }
+    // Diagnostic Panel Logic
+    function updateDiag() {
+      const diagName = document.getElementById('diag-name');
+      const diagCount = document.getElementById('diag-count');
+      if (diagName) diagName.textContent = 'Active Provider: ' + (profData.name || 'Unknown');
+      if (diagCount) {
+        const reviewsAll = JSON.parse(localStorage.getItem('servnet_reviews') || '[]');
+        const currentName = (profData && profData.name) ? profData.name.trim().toLowerCase() : 'david parker';
+        const matches = reviewsAll.filter(r => r.providerName && r.providerName.trim().toLowerCase() === currentName).length;
+        diagCount.textContent = matches + ' / ' + reviewsAll.length;
+      }
+    }
+
+    // Set up Seed & Reset Listeners
+    document.getElementById('seed-requests-btn')?.addEventListener('click', () => {
+      seedDemoRequests();
+      renderRequests();
+      updateStatsFromData();
+      openModal('Demo Requests Seeded', 'Added a few pending requests to your dashboard.', 'success');
+    });
+
+    document.getElementById('seed-reviews-btn')?.addEventListener('click', () => {
+      seedSampleReviews();
+      updateStatsFromData();
+      updateDiag();
+      openModal('Sample Reviews Added', 'Added 2 customer reviews for ' + profData.name + '.', 'success');
+    });
+
+    document.getElementById('reset-dash-btn')?.addEventListener('click', () => {
+      if (confirm('This will reset your provider profile and clear its cached data. Your login session will remain. Continue?')) {
+        localStorage.removeItem('providerProfile');
+        localStorage.removeItem('providerServicesList');
+        localStorage.removeItem('providerAvailability');
+        window.location.reload();
+      }
+    });
+
+    // Initial Diagnostic Update
+    updateDiag();
+
+    // ═══════════ Tab Navigation Logic ═══════════
+    function switchTab(tabId) {
+      if (window.event) window.event.preventDefault();
+      
+      // Update nav active state
+      document.querySelectorAll('.provider-links a').forEach(link => {
+        if (link.getAttribute('href') === '#' + tabId) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+
+      const allWidgets = ['requests', 'services', 'schedule', 'reviews'];
+      const heroSection = document.getElementById('dashboard');
+      const rightCol = document.querySelector('.dash-v2-right');
+      const leftColWrapper = document.querySelector('.dash-v2-columns');
+
+      if (tabId === 'dashboard') {
+        // Show all defaults (Dashboard Overview)
+        if (heroSection) heroSection.style.display = 'block';
+        if (rightCol) rightCol.style.display = 'block';
+        if (leftColWrapper) leftColWrapper.style.gridTemplateColumns = '';
+        document.querySelector('.dash-v2-left').style.display = 'block';
+        allWidgets.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.style.display = 'block';
+        });
+      } else {
+        // Single Page Section View
+        if (heroSection) heroSection.style.display = 'none';
+
+        allWidgets.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.style.display = (id === tabId) ? 'block' : 'none';
+        });
+
+        if (tabId === 'reviews') {
+          // Reviews is in the right column
+          if (rightCol) rightCol.style.display = 'block';
+          if (leftColWrapper) leftColWrapper.style.gridTemplateColumns = '1fr';
+          document.querySelector('.dash-v2-left').style.display = 'none';
+        } else {
+          // Other tabs are in the left column
+          if (rightCol) rightCol.style.display = 'none';
+          document.querySelector('.dash-v2-left').style.display = 'block';
+          if (leftColWrapper) leftColWrapper.style.gridTemplateColumns = '1fr';
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ServNet | Customer Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="dropdown.css" />
+  <style>
+    /* Rating Modal Styles */
+    #rating-modal .modal-card {
+      max-width: 450px;
+      text-align: center;
+    }
+
+    .star-rating {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 20px 0;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    .star-rating span {
+      color: #e2e8f0;
+      transition: color 0.2s;
+    }
+
+    .star-rating span.active {
+      color: #fbbf24;
+    }
+
+    .star-rating span:hover {
+      transform: scale(1.2);
+    }
+
+    .rating-textarea {
+      width: 100%;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px;
+      font-family: inherit;
+      margin-bottom: 20px;
+      resize: none;
+      height: 100px;
+    }
+  </style>
+</head>
+
+<body class="dash-v2-body">
+  <!-- Top Navigation -->
+  <header class="topbar dash-v2-topbar">
+    <div class="container nav-wrap dash-v2-nav">
+      <a class="brand" href="customer.html">
+        <span class="brand-mark">S</span><span style="letter-spacing: 0.05em; font-weight: 800;">SERVNET</span>
+      </a>
+      <nav class="nav-links dash-v2-links">
+        <a href="customer.html" class="active">Discover Services</a>
+        <a href="profile.html">Profile</a>
+      </nav>
+      <div class="user-menu dash-v2-user" style="position: relative; gap: 16px; display: flex; align-items: center;">
+
+        <a href="profile.html"
+          style="text-decoration: none; color: var(--ink-700); font-weight: 600; font-size: 0.95rem;">Profile</a>
+
+        <!-- Notification Dropdown Wrapper -->
+        <div class="dropdown-wrapper" id="notif-wrapper">
+          <button class="icon-btn" aria-label="Notifications" id="notif-btn"
+            style="position: relative; background: none; border: none; cursor: pointer; color: var(--ink-700); padding: 4px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="notif-badge-icon"
+              style="position: absolute; top: 0px; right: 0px; background: #ef4444; color: white; font-size: 0.65rem; font-weight: bold; width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">4</span>
+          </button>
+
+          <div class="dropdown-panel" id="notif-panel"
+            style="display: none; position: absolute; top: 120%; right: 0; width: 320px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 1000;">
+            <div class="notif-panel-header"
+              style="padding: 16px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+              <h3 style="margin: 0; font-size: 1rem; color: var(--ink-700);">Notifications</h3>
+              <div style="display:flex; gap: 12px;">
+                <button class="text-btn"
+                  onclick="document.querySelector('.notif-badge-icon').style.display='none'; document.querySelectorAll('.unread-dot').forEach(el=>el.style.display='none');"
+                  style="font-size: 0.8rem; color: var(--brand-500); cursor: pointer; border: none; background: none; padding: 0;">Mark
+                  as read</button>
+                <button class="text-btn"
+                  onclick="document.getElementById('notif-list-items').innerHTML='<div style=\'padding:20px;text-align:center;color:#64748b;\'>No notifications</div>'; document.querySelector('.notif-badge-icon').style.display='none';"
+                  style="font-size: 0.8rem; color: #ef4444; cursor: pointer; border: none; background: none; padding: 0;">Clear
+                  all</button>
+              </div>
+            </div>
+            <div class="notif-list" id="notif-list-items" style="max-height: 350px; overflow-y: auto;">
+              <a href="#" class="notif-item unread"
+                style="display: flex; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; text-decoration: none; color: inherit; align-items: flex-start; gap: 12px; position: relative;">
+                <div class="notif-icon"
+                  style="background: #dcfce7; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; font-size: 14px;">
+                  ✅</div>
+                <div class="notif-content" style="flex: 1;">
+                  <h4 style="margin: 0; font-size: 0.9rem; color: var(--ink-700);">Booking Accepted</h4>
+                  <p style="margin: 4px 0 0; font-size: 0.8rem; color: #475569;">Your booking is accepted.</p>
+                </div>
+                <div class="unread-dot"
+                  style="width: 8px; height: 8px; background: var(--brand-500); border-radius: 50%; margin-top: 6px;">
+                </div>
+              </a>
+              <a href="#" class="notif-item unread"
+                style="display: flex; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; text-decoration: none; color: inherit; align-items: flex-start; gap: 12px; position: relative;">
+                <div class="notif-icon"
+                  style="background: #fee2e2; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; font-size: 14px;">
+                  ❌</div>
+                <div class="notif-content" style="flex: 1;">
+                  <h4 style="margin: 0; font-size: 0.9rem; color: var(--ink-700);">Booking Rejected</h4>
+                  <p style="margin: 4px 0 0; font-size: 0.8rem; color: #475569;">Your request is rejected.</p>
+                </div>
+                <div class="unread-dot"
+                  style="width: 8px; height: 8px; background: var(--brand-500); border-radius: 50%; margin-top: 6px;">
+                </div>
+              </a>
+              <a href="#" class="notif-item unread"
+                style="display: flex; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; text-decoration: none; color: inherit; align-items: flex-start; gap: 12px; position: relative;">
+                <div class="notif-icon"
+                  style="background: #fef3c7; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; font-size: 14px;">
+                  ⭐</div>
+                <div class="notif-content" style="flex: 1;">
+                  <h4 style="margin: 0; font-size: 0.9rem; color: var(--ink-700);">New Review</h4>
+                  <p style="margin: 4px 0 0; font-size: 0.8rem; color: #475569;">New review received.</p>
+                </div>
+                <div class="unread-dot"
+                  style="width: 8px; height: 8px; background: var(--brand-500); border-radius: 50%; margin-top: 6px;">
+                </div>
+              </a>
+              <a href="#" class="notif-item unread"
+                style="display: flex; padding: 12px 16px; text-decoration: none; color: inherit; align-items: flex-start; gap: 12px; position: relative;">
+                <div class="notif-icon"
+                  style="background: #dbeafe; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; font-size: 14px;">
+                  📅</div>
+                <div class="notif-content" style="flex: 1;">
+                  <h4 style="margin: 0; font-size: 0.9rem; color: var(--ink-700);">Upcoming Service</h4>
+                  <p style="margin: 4px 0 0; font-size: 0.8rem; color: #475569;">Upcoming service reminder.</p>
+                </div>
+                <div class="unread-dot"
+                  style="width: 8px; height: 8px; background: var(--brand-500); border-radius: 50%; margin-top: 6px;">
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Logout Button -->
+        <a href="#" onclick="handleLogout()" title="Logout"
+          style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; color: #ef4444; background: #fef2f2; text-decoration: none; transition: background 0.2s;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </a>
+
+        <!-- Avatar -->
+        <a href="profile.html">
+          <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=100&q=80"
+            alt="JD" class="user-avatar-img"
+            style="cursor: pointer; width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+        </a>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="dash-v2-hero">
+    <div class="container dash-v2-hero-content">
+      <div class="hero-text-block">
+        <h1 id="welcome-message">Welcome back, John 👋</h1>
+        <p>What can we help you with today?</p>
+
+        <div class="dash-v2-search">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" placeholder="Search for services..." />
+          <button class="btn btn-teal">Search</button>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- Main Content Wrapper (White Board) -->
+  <main class="dash-v2-main">
+    <div class="container dash-v2-grid">
+
+      <!-- Top Full Width Section -->
+      <section class="dash-v2-categories-sec">
+        <h2 class="section-title">Service Categories</h2>
+        <div class="category-grid-v2" id="customer-categories-list">
+          <div style="padding: 16px; text-align: center; color: var(--ink-500); grid-column: 1 / -1;">
+            <span style="font-size: 1.5rem; display: block; margin-bottom: 8px;">🔄</span>
+            Loading Live Services from Database...
+          </div>
+        </div>
+      </section>
+
+      <!-- Two Column Layout below -->
+      <div class="dash-v2-columns">
+
+        <!-- Left Column (Providers) -->
+        <div class="dash-v2-left">
+          <h2 class="section-title">Top Rated Providers</h2>
+          <div class="provider-list-v2" id="provider-list">
+
+            <div class="pro-card-v2">
+              <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=150&q=80"
+                alt="Michael T." class="pro-avatar-v2">
+              <div class="pro-info-v2">
+                <h3>Michael Thompson</h3>
+                <p>HVAC Technician</p>
+                <div class="pro-rating-v2">⭐⭐⭐⭐⭐ <span>102 Reviews</span></div>
+              </div>
+              <a href="booking.html?service=HVAC&providerName=Michael+Thompson" class="btn btn-teal-sm">Book Now</a>
+            </div>
+
+            <div class="pro-card-v2">
+              <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&q=80"
+                alt="Emma J." class="pro-avatar-v2">
+              <div class="pro-info-v2">
+                <h3>Emma Jenkins</h3>
+                <p>Professional Cleaner</p>
+                <div class="pro-rating-v2">⭐⭐⭐⭐⭐ <span>87 Reviews</span></div>
+              </div>
+              <a href="booking.html?service=Cleaner&providerName=Emma+Jenkins" class="btn btn-teal-sm">Book Now</a>
+            </div>
+
+            <div class="pro-card-v2">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80"
+                alt="Daniel M." class="pro-avatar-v2">
+              <div class="pro-info-v2">
+                <h3>Daniel Miller</h3>
+                <p>Licensed Electrician</p>
+                <div class="pro-rating-v2">⭐⭐⭐⭐⭐ <span>94 Reviews</span></div>
+              </div>
+              <a href="booking.html?service=Electrician&providerName=Daniel+Miller" class="btn btn-teal-sm">Book Now</a>
+            </div>
+
+            <div class="pro-card-v2">
+              <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=150&q=80"
+                alt="Sarah C." class="pro-avatar-v2">
+              <div class="pro-info-v2">
+                <h3>Sarah Connor</h3>
+                <p>Master Plumber</p>
+                <div class="pro-rating-v2">⭐⭐⭐⭐⭐ <span>115 Reviews</span></div>
+              </div>
+              <a href="booking.html?service=Plumber&providerName=Sarah+Connor" class="btn btn-teal-sm">Book Now</a>
+            </div>
+
+            <div class="pro-card-v2">
+              <img src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&w=150&q=80"
+                alt="David C." class="pro-avatar-v2">
+              <div class="pro-info-v2">
+                <h3>David Chen</h3>
+                <p>Expert Carpenter</p>
+                <div class="pro-rating-v2">⭐⭐⭐⭐⭐ <span>78 Reviews</span></div>
+              </div>
+              <a href="booking.html?service=Carpenter&providerName=David+Chen" class="btn btn-teal-sm">Book Now</a>
+            </div>
+
+            <div class="pro-card-v2">
+              <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80"
+                alt="Olivia D." class="pro-avatar-v2">
+              <div class="pro-info-v2">
+                <h3>Olivia Davis</h3>
+                <p>Interior Painter</p>
+                <div class="pro-rating-v2">⭐⭐⭐⭐⭐ <span>62 Reviews</span></div>
+              </div>
+              <a href="booking.html?service=Painter&providerName=Olivia+Davis" class="btn btn-teal-sm">Book Now</a>
+            </div>
+
+
+          </div>
+          <div id="provider-empty"
+            style="display:none; margin-top: 12px; padding: 14px 16px; border-radius: 16px; border: 1px dashed rgba(219, 233, 242, 0.95); background: rgba(248, 251, 255, 0.8); color: var(--ink-500); font-weight: 700;">
+            No providers found. Try a different name.
+          </div>
+        </div>
+
+        <!-- Right Column (Widgets) -->
+        <div class="dash-v2-right">
+
+          <div class="widget-card">
+            <h2 class="section-title">Active Bookings</h2>
+            <div class="widget-list" id="customer-bookings-list">
+              <div style="padding: 16px; text-align: center; color: var(--ink-500);">Loading active bookings...</div>
+            </div>
+          </div>
+
+          <div class="widget-card" style="margin-top: 20px;">
+            <h2 class="section-title">Previous Bookings</h2>
+            <div class="widget-list" id="customer-completed-list">
+              <div style="padding: 16px; text-align: center; color: var(--ink-500);">No previous bookings.</div>
+            </div>
+          </div>
+
+
+
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Rating Modal -->
+  <div class="modal-overlay" id="rating-modal"
+    style="position: fixed; inset: 0; background: rgba(16, 29, 64, 0.6); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; visibility: hidden; transition: all 0.3s ease;">
+    <div class="modal-card"
+      style="background: white; border-radius: 24px; padding: 32px; width: 90%; max-width: 400px; box-shadow: 0 24px 64px -12px rgba(17,41,71,0.2);">
+      <h3 style="font-size: 1.5rem; margin-bottom: 8px;">Rate Your Service</h3>
+      <!-- Context filled by openRatingModal(booking) -->
+      <div id="rating-context" style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:10px 14px; margin-bottom:14px; font-size:0.85rem; color:#065f46; display:none;">
+        <strong id="rating-ctx-service"></strong> &nbsp;•&nbsp; Provider: <strong id="rating-ctx-provider"></strong>
+      </div>
+      <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 20px;">Your feedback helps our providers improve!</p>
+
+      <div class="star-rating" id="star-input">
+        <span data-val="1">★</span>
+        <span data-val="2">★</span>
+        <span data-val="3">★</span>
+        <span data-val="4">★</span>
+        <span data-val="5">★</span>
+      </div>
+
+      <textarea class="rating-textarea" id="rating-comment" placeholder="Write a short review..."></textarea>
+
+      <div style="display: flex; gap: 12px;">
+        <button class="btn btn-outline" style="flex: 1;" onclick="closeRatingModal()">Cancel</button>
+        <button class="btn btn-teal" style="flex: 1;" id="submit-rating-btn">Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function checkRole() {
+      const u = JSON.parse(localStorage.getItem('servnet_user') || 'null');
+      if (!u || u.role !== 'customer') window.location.href = 'login.html';
+    })();
+    const searchInput = document.querySelector('.dash-v2-search input');
+    const searchBtn = document.querySelector('.dash-v2-search button');
+    const providerList = document.getElementById('provider-list');
+    const providerEmpty = document.getElementById('provider-empty');
+
+    function normalize(s) {
+      return String(s || '').toLowerCase().trim();
+    }
+
+    function filterProviders() {
+      const term = normalize(searchInput?.value);
+      const cards = Array.from(providerList?.querySelectorAll('.pro-card-v2') || []);
+      if (!cards.length) return;
+
+      let visibleCount = 0;
+      cards.forEach((card) => {
+        const name = card.querySelector('.pro-info-v2 h3')?.textContent || '';
+        const role = card.querySelector('.pro-info-v2 p')?.textContent || '';
+        const haystack = normalize(`${name} ${role}`);
+
+        const show = !term || haystack.includes(term);
+        card.style.display = show ? '' : 'none';
+        if (show) visibleCount += 1;
+      });
+
+      if (providerEmpty) providerEmpty.style.display = visibleCount ? 'none' : 'block';
+    }
+
+    searchBtn?.addEventListener('click', filterProviders);
+    searchInput?.addEventListener('input', filterProviders);
+    searchInput?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') filterProviders();
+    });
+
+    filterProviders();
+
+    // Dropdown Scripts
+    const notifBtn = document.getElementById('notif-btn');
+    const notifPanel = document.getElementById('notif-panel');
+    const profileBtn = document.getElementById('profile-btn');
+    const profilePanel = document.getElementById('profile-panel');
+
+    function closeAllPanels() {
+      notifPanel?.classList.remove('show');
+      profilePanel?.classList.remove('show');
+    }
+
+    notifBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isShowing = notifPanel.classList.contains('show');
+      closeAllPanels();
+      if (!isShowing) notifPanel.classList.add('show');
+    });
+
+    profileBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isShowing = profilePanel.classList.contains('show');
+      closeAllPanels();
+      if (!isShowing) profilePanel.classList.add('show');
+    });
+
+    document.addEventListener('click', () => {
+      closeAllPanels();
+    });
+
+    notifPanel?.addEventListener('click', (e) => e.stopPropagation());
+    profilePanel?.addEventListener('click', (e) => e.stopPropagation());
+
+    // Securely Fetch Personal Bookings from localStorage
+    async function loadCustomerBookings() {
+      const list = document.getElementById('customer-bookings-list');
+      if (!list) return;
+
+      const currentUser = JSON.parse(localStorage.getItem('servnet_user'));
+      if (!currentUser) {
+        list.innerHTML = '<div style="padding: 1rem; text-align: center; color: var(--ink-500);">Authentication missing. Log in to view your bookings.</div>';
+        return;
+      }
+
+      let MyBookings = [];
+      try {
+        const token = localStorage.getItem('servnet_token');
+        if (token) {
+          const res = await fetch('/api/bookings', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (res.ok) {
+            const apiData = await res.json();
+            // Map the MongoDB schema back to the dashboard's format
+            MyBookings = apiData.map(b => ({
+              id: b._id,
+              service: b.service || 'Service',
+              customerName: b.customerName || (b.customer && b.customer.name) || 'You',
+              date: b.date,
+              time: b.timeSlot,
+              status: b.status,
+              providerName: b.providerName || ''
+            }));
+          }
+        }
+      } catch (err) {
+        console.error('Failed to load private bookings from MongoDB API', err);
+      }
+
+      const activeList = document.getElementById('customer-bookings-list');
+      const completedList = document.getElementById('customer-completed-list');
+
+      const activeBookings = MyBookings.filter(b => b.status === 'Pending' || b.status === 'Accepted');
+      const pastBookings = MyBookings.filter(b => b.status === 'Completed' || b.status === 'Rejected' || b.status === 'Cancelled');
+
+      if (activeList) {
+        if (!activeBookings.length) {
+          activeList.innerHTML = '<div style="padding: 24px; text-align: center; color: var(--ink-500);">You have no active bookings.</div>';
+        } else {
+          activeList.innerHTML = activeBookings.map(b => renderBookingItem(b)).join('');
+        }
+      }
+
+      if (completedList) {
+        if (!pastBookings.length) {
+          completedList.innerHTML = '<div style="padding: 24px; text-align: center; color: var(--ink-500);">No past history.</div>';
+        } else {
+          completedList.innerHTML = pastBookings.map(b => renderBookingItem(b)).join('');
+        }
+      }
+
+      updateNotifications(MyBookings);
+    }
+
+    function renderBookingItem(b) {
+      let statusColor = '#fef3c7'; // yellow for pending
+      let textColor = '#b45309';
+      if (b.status === 'Accepted') { statusColor = '#dbeafe'; textColor = '#1e40af'; }
+      if (b.status === 'Completed') { statusColor = '#d1fae5'; textColor = '#047857'; }
+      if (b.status === 'Rejected' || b.status === 'Cancelled') { statusColor = '#fee2e2'; textColor = '#991b1b'; }
+
+      return `
+        <div class="widget-item">
+          <img src="https://ui-avatars.com/api/?name=${b.service.charAt(0)}&background=c5f1e8&color=12463e" alt="Icon" class="widget-avatar" style="object-fit:cover; border-radius:12px;">
+          <div class="widget-info">
+            <h4>${b.service}</h4>
+            <p>${b.providerName ? 'With ' + b.providerName : 'Awaiting Provider'}</p>
+            <span class="widget-time">
+              ${b.date} • ${b.time} 
+              <span style="display:inline-block; margin-left:8px; padding:2px 6px; border-radius:4px; font-weight:700; font-size:0.7rem; background: ${statusColor}; color: ${textColor};">${b.status}</span>
+            </span>
+            ${b.status === 'Completed' ? `<button class="btn btn-teal-sm" style="margin-top: 8px; font-size: 0.75rem; padding: 4px 10px;" onclick="openRatingModal(${JSON.stringify({service: b.service, providerName: b.providerName || '', providerId: b.providerId || ''})})">Rate Service</button>` : ''}
+          </div>
+        </div>`;
+    }
+
+    function updateNotifications(bookings) {
+      const notifList = document.querySelector('.notif-list');
+      const badge = document.querySelector('.notif-badge-icon');
+      if (!notifList) return;
+
+      const items = bookings.filter(b => b.status !== 'Pending' && b.status !== 'Rejected').slice(0, 5);
+
+      if (items.length === 0) {
+        notifList.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--ink-500);">No new notifications.</div>';
+        if (badge) badge.style.display = 'none';
+        return;
+      }
+
+      if (badge) {
+        badge.style.display = 'block';
+        badge.textContent = items.length;
+      }
+
+      notifList.innerHTML = items.map(b => {
+        const icon = b.status === 'Accepted' ? '✅' : '🌟';
+        const colorClass = b.status === 'Accepted' ? 'bg-light-blue' : 'bg-light-green';
+        const title = b.status === 'Accepted' ? 'Booking Accepted' : 'Service Completed';
+        const msg = b.status === 'Accepted' ? `Your ${b.service} request was accepted!` : `How was your ${b.service}? Rate it now!`;
+
+        return `
+          <a href="#" class="notif-item unread">
+            <div class="notif-icon ${colorClass}">${icon}</div>
+            <div class="notif-content">
+              <h4>${title}</h4>
+              <p>${msg}</p>
+              <span class="notif-time">Just now</span>
+            </div>
+            <div class="unread-dot"></div>
+          </a>`;
+      }).join('');
+    }
+
+    // Holds context of the booking being rated
+    let _ratingContext = { service: '', providerName: '', providerId: '' };
+
+    window.openRatingModal = function (bookingCtx) {
+      // bookingCtx can be a booking object {service, providerName, providerId}
+      if (bookingCtx && typeof bookingCtx === 'object') {
+        _ratingContext = {
+          service: bookingCtx.service || '',
+          providerName: bookingCtx.providerName || '',
+          providerId: bookingCtx.providerId || ''
+        };
+      } else {
+        _ratingContext = { service: '', providerName: '', providerId: '' };
+      }
+
+      // Show context chip in modal
+      const ctxBox = document.getElementById('rating-context');
+      const ctxSvc = document.getElementById('rating-ctx-service');
+      const ctxProv = document.getElementById('rating-ctx-provider');
+      if (_ratingContext.service || _ratingContext.providerName) {
+        if (ctxSvc)  ctxSvc.textContent  = _ratingContext.service  || '—';
+        if (ctxProv) ctxProv.textContent = _ratingContext.providerName || 'Unknown';
+        if (ctxBox)  ctxBox.style.display = 'block';
+      } else {
+        if (ctxBox) ctxBox.style.display = 'none';
+      }
+
+      // Reset stars
+      currentRating = 0;
+      document.querySelectorAll('#star-input span').forEach(s => s.classList.remove('active'));
+      document.getElementById('rating-comment').value = '';
+
+      const modal = document.getElementById('rating-modal');
+      modal.style.opacity = '1';
+      modal.style.visibility = 'visible';
+    };
+
+    window.closeRatingModal = function () {
+      const modal = document.getElementById('rating-modal');
+      modal.style.opacity = '0';
+      modal.style.visibility = 'hidden';
+    };
+
+    // Rating Submission Logic
+    let currentRating = 0;
+    const stars = document.querySelectorAll('#star-input span');
+    stars.forEach(s => {
+      s.addEventListener('click', () => {
+        currentRating = parseInt(s.dataset.val);
+        stars.forEach(star => {
+          star.classList.toggle('active', parseInt(star.dataset.val) <= currentRating);
+        });
+      });
+    });
+
+    document.getElementById('submit-rating-btn').addEventListener('click', () => {
+      if (currentRating === 0) {
+        alert('Please select a rating!');
+        return;
+      }
+
+      const comment = document.getElementById('rating-comment').value.trim();
+      const user = JSON.parse(localStorage.getItem('servnet_user'));
+
+      const reviews = JSON.parse(localStorage.getItem('servnet_reviews') || '[]');
+      reviews.push({
+        id: Date.now(),
+        customerName: user ? user.name : 'Customer',
+        customerId: user ? (user._id || user.id) : '',
+        rating: currentRating,
+        comment: comment,
+        date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+        service: _ratingContext.service || 'Service',
+        providerName: _ratingContext.providerName || '',
+        providerId: _ratingContext.providerId || ''
+      });
+
+      localStorage.setItem('servnet_reviews', JSON.stringify(reviews));
+      alert('Thank you for your feedback!');
+      closeRatingModal();
+    });
+
+    async function loadCustomerCategories() {
+      const list = document.getElementById('customer-categories-list');
+      if (!list) return;
+
+      try {
+        const res = await fetch('http://localhost:5000/api/services');
+        const services = await res.json();
+
+        if (!res.ok || !Array.isArray(services) || !services.length) {
+          list.innerHTML = '<div style="padding: 24px; text-align: center; color: var(--ink-500); grid-column: 1 / -1;">No custom services created in database yet!</div>';
+          return;
+        }
+
+        const emojis = ['💧', '🧹', '⚡', '⚙️', '🪚', '🎨', '🐜', '🪴', '🛠️', '📱', '🚗'];
+
+        list.innerHTML = services.map((s, i) => `
+          <a href="booking.html?service=${encodeURIComponent(s.name)}" class="cat-card-v2">
+            <div class="cat-icon-lg">${s.icon || emojis[i % emojis.length]}</div>
+            <h3>${s.name}</h3>
+            <div class="cat-btn-book">Book Now</div>
+          </a>
+        `).join('');
+      } catch (err) {
+        console.error('Fetch Categories Error:', err);
+        list.innerHTML = '<div style="text-align:center; padding:20px; color:#ef4444; grid-column: 1 / -1;">Failed to connect to database.</div>';
+      }
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('servnet_token');
+      localStorage.removeItem('servnet_user');
+      window.location.href = 'index.html';
+    }
+
+    const globalNotifBtn = document.getElementById('notif-btn');
+    const globalNotifPanel = document.getElementById('notif-panel');
+    if (globalNotifBtn && globalNotifPanel) {
+      globalNotifBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        globalNotifPanel.style.display = globalNotifPanel.style.display === 'none' || globalNotifPanel.style.display === '' ? 'block' : 'none';
+      });
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('#notif-wrapper')) {
+          globalNotifPanel.style.display = 'none';
+        }
+      });
+    }
+
+    function updateDynamicUsername() {
+      const userJSON = localStorage.getItem('servnet_user');
+      if (userJSON) {
+        try {
+          const user = JSON.parse(userJSON);
+          if (user.name) {
+            // Update hero welcome
+            const welcomeMsg = document.getElementById('welcome-message');
+            if (welcomeMsg) welcomeMsg.textContent = `Welcome back, ${user.name} 👋`;
+
+            // Update dropdown profile name
+            const dropName = document.getElementById('dropdown-user-name');
+            if (dropName) dropName.textContent = user.name;
+          }
+        } catch (e) {
+          console.error('Error parsing user data:', e);
+        }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateDynamicUsername();
+      loadCustomerBookings();
+      loadCustomerCategories();
+    });
+  </script>
+</body>
+
+</html>

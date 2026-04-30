@@ -1,0 +1,290 @@
+/* Plumbing services page */
+
+.plumbing-hero {
+  margin: 18px auto 0;
+}
+
+.plumbing-hero-inner {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  padding: 44px 28px;
+  background:
+    linear-gradient(180deg, rgba(3, 12, 27, 0.18), rgba(3, 12, 27, 0.58)),
+    url("https://images.unsplash.com/photo-1560840067-ddcaeb7831d2?auto=format&fit=crop&w=1600&q=80");
+  background-size: cover;
+  background-position: center;
+  box-shadow: var(--shadow-lg);
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+}
+
+.plumbing-hero-text h1 {
+  font-size: clamp(1.9rem, 4.6vw, 2.7rem);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.plumbing-hero-text p {
+  color: rgba(255, 255, 255, 0.92);
+  max-width: 64ch;
+}
+
+.mini-badge {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  color: var(--ink-950);
+  padding: 14px 16px;
+  border-radius: 18px;
+  width: 210px;
+  box-shadow: 0 14px 34px -26px rgba(0, 0, 0, 0.35);
+}
+
+.mini-title {
+  font-weight: 900;
+  color: var(--ink-700);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  margin-bottom: 8px;
+}
+
+.mini-value {
+  font-family: "Sora", sans-serif;
+  font-weight: 900;
+  font-size: 1.3rem;
+}
+
+.plumbing-grid {
+  padding: 22px;
+}
+
+.plumbing-layout {
+  display: grid;
+  grid-template-columns: 1.55fr 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.results-note {
+  color: var(--ink-500);
+  font-weight: 800;
+}
+
+.filters {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr 0.8fr 0.8fr;
+  gap: 12px;
+}
+
+.filter label {
+  display: block;
+  font-weight: 900;
+  color: var(--ink-700);
+  font-size: 0.82rem;
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+}
+
+.provider-cards {
+  margin-top: 14px;
+  display: grid;
+  gap: 12px;
+}
+
+.plumber-card {
+  border: 1px solid rgba(219, 233, 242, 0.95);
+  border-radius: 18px;
+  padding: 14px;
+  background: #fff;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+  align-items: center;
+  box-shadow: 0 10px 26px -24px rgba(17, 41, 71, 0.18);
+}
+
+.plumber-photo {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+.plumber-name {
+  font-family: "Sora", sans-serif;
+  font-weight: 900;
+  font-size: 1.02rem;
+  margin-bottom: 4px;
+}
+
+.plumber-spec {
+  color: var(--ink-500);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.plumber-meta {
+  margin-top: 8px;
+  color: var(--ink-700);
+  font-weight: 800;
+  font-size: 0.86rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.plumber-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.plumbing-right .sticky {
+  position: sticky;
+  top: 92px;
+}
+
+.details-empty {
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px dashed rgba(219, 233, 242, 0.95);
+  background: rgba(248, 251, 255, 0.8);
+  color: var(--ink-500);
+  font-weight: 800;
+  margin-top: 10px;
+}
+
+.details-head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.details-photo {
+  width: 62px;
+  height: 62px;
+  border-radius: 18px;
+  object-fit: cover;
+}
+
+.details-name {
+  font-family: "Sora", sans-serif;
+  font-weight: 900;
+  font-size: 1.1rem;
+}
+
+.details-sub {
+  color: var(--ink-500);
+  font-weight: 800;
+  margin-top: 3px;
+  font-size: 0.9rem;
+}
+
+.details-meta {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  color: var(--ink-700);
+  font-weight: 900;
+  font-size: 0.86rem;
+}
+
+.details-grid {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.kpi {
+  background: #f8fbff;
+  border: 1px solid #eef4f9;
+  border-radius: 16px;
+  padding: 12px 12px;
+}
+
+.kpi-label {
+  color: var(--ink-500);
+  font-weight: 900;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.kpi-value {
+  margin-top: 6px;
+  font-family: "Sora", sans-serif;
+  font-weight: 900;
+  font-size: 1.05rem;
+}
+
+.details-block {
+  margin-top: 14px;
+}
+
+.block-title {
+  font-weight: 900;
+  color: var(--ink-700);
+  margin-bottom: 10px;
+}
+
+.slots {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.slot {
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: rgba(16, 32, 56, 0.06);
+  border: 1px solid rgba(16, 32, 56, 0.10);
+  font-weight: 900;
+  color: var(--ink-700);
+  font-size: 0.86rem;
+}
+
+.details-actions {
+  margin-top: 16px;
+}
+
+@media (max-width: 1000px) {
+  .plumbing-layout {
+    grid-template-columns: 1fr;
+  }
+  .plumbing-right .sticky {
+    position: static;
+  }
+  .filters {
+    grid-template-columns: 1fr 1fr;
+  }
+  .mini-badge {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .filters {
+    grid-template-columns: 1fr;
+  }
+  .plumber-card {
+    grid-template-columns: auto 1fr;
+  }
+  .plumber-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
+}
+

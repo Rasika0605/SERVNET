@@ -1,0 +1,13 @@
+[
+  {
+    "id": "1",
+    "customerName": "John Doe",
+    "service": "Plumbing",
+    "date": "2024-03-27",
+    "time": "10:00 AM",
+    "address": "123 Main St",
+    "status": "Pending",
+    "totalCost": "₹500",
+    "paymentMethod": "Cash"
+  }
+]

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ServNet | Admin Profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="stylesheet" href="profile.css" />
+</head>
+<body class="dash-v2-body">
+
+  <header class="topbar dash-v2-topbar">
+    <div class="container nav-wrap dash-v2-nav">
+      <a class="brand" href="admin.html">
+        <span class="brand-mark">S</span><span style="letter-spacing: 0.05em; font-weight: 800;">SERVNET</span>
+      </a>
+
+      <nav class="nav-links dash-v2-links admin-links" aria-label="Admin navigation">
+        <a href="admin.html">← Back to Dashboard</a>
+      </nav>
+
+      <div class="user-menu dash-v2-user" style="position: relative; gap: 16px; display: flex; align-items: center;">
+        
+        <div class="dropdown-wrapper" id="notif-wrapper">
+          <button class="icon-btn" aria-label="Notifications" id="notif-btn" style="position: relative; background: none; border: none; cursor: pointer; color: var(--ink-700); padding: 4px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="notif-badge-icon" style="position: absolute; top: 0px; right: 0px; background: #ef4444; color: white; font-size: 0.65rem; font-weight: bold; width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">4</span>
+          </button>
+          
+          <div class="dropdown-panel" id="notif-panel" style="display: none; position: absolute; top: 120%; right: 0; width: 320px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 1000;">
+            <div class="notif-panel-header" style="padding: 16px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+              <h3 style="margin: 0; font-size: 1rem; color: var(--ink-700);">Notifications</h3>
+              <div style="display:flex; gap: 12px;">
+                <button class="text-btn" onclick="document.querySelector('.notif-badge-icon').style.display='none'; document.querySelectorAll('.unread-dot').forEach(el=>el.style.display='none');" style="font-size: 0.8rem; color: var(--brand-500); cursor: pointer; border: none; background: none; padding: 0;">Mark as read</button>
+                <button class="text-btn" onclick="document.getElementById('notif-list-items').innerHTML='<div style=\'padding:20px;text-align:center;color:#64748b;\'>No notifications</div>'; document.querySelector('.notif-badge-icon').style.display='none';" style="font-size: 0.8rem; color: #ef4444; cursor: pointer; border: none; background: none; padding: 0;">Clear all</button>
+              </div>
+            </div>
+            <div class="notif-list" id="notif-list-items" style="max-height: 350px; overflow-y: auto;">
+              <a href="#" class="notif-item unread" style="display: flex; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; text-decoration: none; color: inherit; align-items: flex-start; gap: 12px; position: relative;">
+                <div class="notif-icon" style="background: #dcfce7; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; font-size: 14px;">✅</div>
+                <div class="notif-content" style="flex: 1;">
+                  <h4 style="margin: 0; font-size: 0.9rem; color: var(--ink-700);">System Update</h4>
+                  <p style="margin: 4px 0 0; font-size: 0.8rem; color: #475569;">Platform version 2.1 deployed.</p>
+                </div>
+                <div class="unread-dot" style="width: 8px; height: 8px; background: var(--brand-500); border-radius: 50%; margin-top: 6px;"></div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div id="nav-edit-admin-profile" style="display: flex; align-items: center; gap: 12px; margin-left: 8px; padding-left: 16px; border-left: 1px solid #dbe9f2; cursor: pointer;">
+          <div style="text-align: right; display: none; @media(min-width: 768px){display: block;}">
+            <div id="nav-admin-name" style="font-size: 0.85rem; font-weight: 800; color: var(--ink-950);">Admin User</div>
+            <div id="nav-admin-role" style="font-size: 0.7rem; color: var(--ink-500); font-weight: 600;">Super Admin</div>
+          </div>
+          <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80" alt="Admin" id="nav-admin-avatar" class="user-avatar-img" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <main class="dash-v2-main">
+    <div class="container dash-v2-grid">
+      <section class="profile-grid">
+        <!-- Profile info -->
+        <div class="profile-card">
+          <div class="profile-header-large" style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80" alt="Admin avatar" id="main-admin-avatar" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;" />
+            <div>
+              <h3 id="profile-name" style="margin: 0; font-size: 1.5rem; color: var(--ink-900);">Admin User</h3>
+              <p id="profile-role-loc" style="margin: 4px 0 0; color: var(--ink-500);">Super Admin • Head Office</p>
+            </div>
+          </div>
+
+          <div class="profile-details">
+            <div class="p-row">
+              <strong>Full name</strong>
+              <span><input id="field-name" type="text" value="Admin User" readonly /></span>
+            </div>
+            <div class="p-row">
+              <strong>Email</strong>
+              <span><input id="field-email" type="email" value="admin@servnet.com" readonly /></span>
+            </div>
+            <div class="p-row">
+              <strong>Phone</strong>
+              <span><input id="field-phone" type="tel" value="+1 (555) 123-4567" readonly /></span>
+            </div>
+            <div class="p-row">
+              <strong>Location</strong>
+              <span><input id="field-location" type="text" value="Head Office" readonly /></span>
+            </div>
+            <div class="p-row">
+              <strong>Bio / Description</strong>
+              <span><textarea id="field-bio" rows="3" readonly style="width: 100%; resize: vertical; border: 1px solid transparent; background: transparent; color: inherit; font-family: inherit;">Experienced platform administrator ensuring smooth operations.</textarea></span>
+            </div>
+          </div>
+
+          <div id="profile-actions" style="display: flex; gap: 12px; margin-top: 16px;">
+            <button class="btn btn-outline-sm" type="button" id="edit-profile-btn">Edit Profile Details</button>
+            <button class="btn btn-teal-sm" type="button" id="save-profile-btn" style="display: none;">Save Changes</button>
+          </div>
+        </div>
+
+        <!-- Security -->
+        <div class="profile-card">
+          <h3 class="section-title">Security Settings</h3>
+          <div class="profile-form">
+            <div class="form-group">
+              <label>Current Password</label>
+              <input type="password" id="pwd-current" placeholder="Enter current password" />
+            </div>
+            <div class="form-group">
+              <label>New Password</label>
+              <input type="password" id="pwd-new" placeholder="Enter new password" />
+            </div>
+            <div class="form-group">
+              <label>Confirm New Password</label>
+              <input type="password" id="pwd-confirm" placeholder="Confirm new password" />
+            </div>
+            <button class="btn btn-outline" type="button" id="update-password-btn">Update Password</button>
+          </div>
+        </div>
+
+        <!-- Admin Preferences -->
+        <div class="profile-card">
+          <h3 class="section-title">Admin Preferences & Notifications</h3>
+          <div class="settings-list">
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <div class="toggle-title">New Provider Signups</div>
+                <div class="toggle-sub">Email notifications for new verification requests</div>
+              </div>
+              <input type="checkbox" id="pref-prov-signup" checked style="width: 20px; height: 20px;" />
+            </div>
+            
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <div class="toggle-title">Flagged Reviews</div>
+                <div class="toggle-sub">Instant alerts for inappropriate content report</div>
+              </div>
+              <input type="checkbox" id="pref-flag-review" checked style="width: 20px; height: 20px;" />
+            </div>
+            
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <div class="toggle-title">Daily System Health</div>
+                <div class="toggle-sub">Receive a consolidated report every morning</div>
+              </div>
+              <input type="checkbox" id="pref-system-health" style="width: 20px; height: 20px;" />
+            </div>
+            
+            <button class="btn btn-teal-sm" type="button" id="save-prefs-btn" style="align-self: flex-start; margin-top: 8px;">Save Preferences</button>
+          </div>
+        </div>
+
+        <!-- Session Management -->
+        <div class="profile-card" style="text-align: center; padding: 32px 24px;">
+          <h3 class="section-title" style="margin-bottom: 8px;">Session Management</h3>
+          <p class="text-muted" style="margin-bottom: 24px; font-size: 0.9rem;">You are currently logged in as an administrator. Logging out will end your session.</p>
+          <button class="btn btn-danger-outline" type="button" id="logout-btn" style="width: 100%; max-width: 300px; display: inline-flex; justify-content: center; align-items: center; gap: 8px;">
+            <span style="font-size: 1.2rem;">🚪</span> Logout of current session
+          </button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // Initial data setup if missing
+    let adminProfile = JSON.parse(localStorage.getItem('servnet_admin_profile'));
+    if (!adminProfile) {
+      adminProfile = {
+        name: 'Admin User',
+        email: 'admin@servnet.com',
+        phone: '+1 (555) 123-4567',
+        role: 'Super Admin',
+        location: 'Head Office',
+        bio: 'Experienced platform administrator ensuring smooth operations.',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80',
+        prefs: { provSignup: true, flagReview: true, systemHealth: false }
+      };
+      localStorage.setItem('servnet_admin_profile', JSON.stringify(adminProfile));
+    }
+
+    (function checkRole() {
+      const u = JSON.parse(localStorage.getItem('servnet_user') || 'null');
+      if (!u || u.role !== 'admin') window.location.href = 'login.html';
+    })();
+
+    function loadProfile() {
+      const p = JSON.parse(localStorage.getItem('servnet_admin_profile'));
+      if(p) {
+        document.getElementById('nav-admin-name').textContent = p.name;
+        document.getElementById('nav-admin-role').textContent = p.role;
+        document.getElementById('nav-admin-avatar').src = p.avatar || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80';
+        document.getElementById('main-admin-avatar').src = p.avatar || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80';
+        
+        document.getElementById('profile-name').textContent = p.name;
+        document.getElementById('profile-role-loc').textContent = p.role + ' • ' + p.location;
+        
+        document.getElementById('field-name').value = p.name;
+        document.getElementById('field-email').value = p.email;
+        document.getElementById('field-phone').value = p.phone;
+        document.getElementById('field-location').value = p.location;
+        document.getElementById('field-bio').value = p.bio;
+
+        if (p.prefs) {
+          document.getElementById('pref-prov-signup').checked = p.prefs.provSignup;
+          document.getElementById('pref-flag-review').checked = p.prefs.flagReview;
+          document.getElementById('pref-system-health').checked = p.prefs.systemHealth;
+        }
+      }
+    }
+
+    loadProfile();
+
+    // Edit Profile Details
+    const editBtn = document.getElementById('edit-profile-btn');
+    const saveBtn = document.getElementById('save-profile-btn');
+    const inputs = ['field-name', 'field-email', 'field-phone', 'field-location', 'field-bio'];
+
+    editBtn.addEventListener('click', () => {
+      inputs.forEach(id => {
+        const el = document.getElementById(id);
+        el.removeAttribute('readonly');
+        el.style.border = '1px solid #dbe9f2';
+        el.style.background = '#fff';
+        el.style.padding = '4px';
+        el.style.borderRadius = '4px';
+      });
+      editBtn.style.display = 'none';
+      saveBtn.style.display = 'inline-block';
+    });
+
+    saveBtn.addEventListener('click', () => {
+      const p = JSON.parse(localStorage.getItem('servnet_admin_profile'));
+      
+      p.name = document.getElementById('field-name').value.trim();
+      p.email = document.getElementById('field-email').value.trim();
+      p.phone = document.getElementById('field-phone').value.trim();
+      p.location = document.getElementById('field-location').value.trim();
+      p.bio = document.getElementById('field-bio').value.trim();
+
+      if (!p.name || !p.email) {
+        alert('Name and Email cannot be empty.');
+        return;
+      }
+
+      localStorage.setItem('servnet_admin_profile', JSON.stringify(p));
+
+      // Sync with global session user so dashboard reflects changes
+      const userSession = JSON.parse(localStorage.getItem('servnet_user') || '{}');
+      if (userSession.email === p.email) {
+        userSession.name = p.name;
+        userSession.phone = p.phone;
+        userSession.location = p.location;
+        userSession.bio = p.bio;
+        userSession.role = p.role;
+        localStorage.setItem('servnet_user', JSON.stringify(userSession));
+      }
+
+      // Revert styles
+      inputs.forEach(id => {
+        const el = document.getElementById(id);
+        el.setAttribute('readonly', true);
+        el.style.border = 'transparent';
+        el.style.background = 'transparent';
+        el.style.padding = '0';
+      });
+      editBtn.style.display = 'inline-block';
+      saveBtn.style.display = 'none';
+
+      loadProfile();
+      alert('Admin Profile updated successfully!');
+    });
+
+    // Preferences
+    document.getElementById('save-prefs-btn').addEventListener('click', () => {
+      const p = JSON.parse(localStorage.getItem('servnet_admin_profile'));
+      p.prefs = {
+        provSignup: document.getElementById('pref-prov-signup').checked,
+        flagReview: document.getElementById('pref-flag-review').checked,
+        systemHealth: document.getElementById('pref-system-health').checked
+      };
+      localStorage.setItem('servnet_admin_profile', JSON.stringify(p));
+      alert('Preferences saved successfully!');
+    });
+
+    // Password Update
+    document.getElementById('update-password-btn').addEventListener('click', () => {
+      const currentPwd = document.getElementById('pwd-current').value;
+      const newPwd = document.getElementById('pwd-new').value;
+      const confirmPwd = document.getElementById('pwd-confirm').value;
+
+      if (!currentPwd || !newPwd || !confirmPwd) {
+        alert('All password fields are required.');
+        return;
+      }
+
+      if (newPwd !== confirmPwd) {
+        alert('New passwords do not match.');
+        return;
+      }
+
+      if (newPwd.length < 4) {
+        alert('New password must be at least 4 characters long.');
+        return;
+      }
+
+      alert('Admin password updated successfully! (Mocked)');
+
+      // Clear fields
+      document.getElementById('pwd-current').value = '';
+      document.getElementById('pwd-new').value = '';
+      document.getElementById('pwd-confirm').value = '';
+    });
+
+    // Logout
+    window.handleLogout = function() {
+      localStorage.removeItem('servnet_token');
+      localStorage.removeItem('servnet_user');
+      window.location.href = 'index.html';
+    };
+
+    const logoutBtnEl = document.getElementById('logout-btn');
+    if (logoutBtnEl) {
+      logoutBtnEl.addEventListener('click', handleLogout);
+    }
+
+    // Notifications
+    const notifBtn = document.getElementById('notif-btn');
+    const notifPanel = document.getElementById('notif-panel');
+    if (notifBtn && notifPanel) {
+      notifBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        notifPanel.style.display = notifPanel.style.display === 'none' || notifPanel.style.display === '' ? 'block' : 'none';
+      });
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('#notif-wrapper')) {
+          notifPanel.style.display = 'none';
+        }
+      });
+    }
+
+  </script>
+</body>
+</html>
